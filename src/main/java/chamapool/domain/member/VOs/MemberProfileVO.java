@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public record MemberVO(
+public record MemberProfileVO(
     Integer id,
     String firstName,
     String lastName,
@@ -16,8 +16,11 @@ public record MemberVO(
     String phoneNumber,
     LocalDate joinedOn,
     Status status,
-    Set<String> roles) {
-  public MemberVO(Member member) {
+    Set<String> roles,
+    NextOfKinVO nextOfKin,
+    OccupationVO occupation,
+    AddressVO homeAddress) {
+  public MemberProfileVO(Member member) {
     this(
         member.id(),
         member.firstName(),
@@ -27,6 +30,9 @@ public record MemberVO(
         member.phoneNumber(),
         member.joinedOn(),
         member.status(),
-        member.roles().stream().map(Role::name).collect(Collectors.toSet()));
+        member.roles().stream().map(Role::name).collect(Collectors.toSet()),
+        new NextOfKinVO(member.nextOfKin()),
+        new OccupationVO(member.occupation()),
+        new AddressVO(member.homeAddress()));
   }
 }

@@ -3,8 +3,8 @@ package chamapool.application.members;
 import chamapool.application.members.requests.AcceptInvitationRequest;
 import chamapool.application.members.requests.NewMemberRequest;
 import chamapool.domain.member.VOs.InvitedMemberVO;
+import chamapool.domain.member.VOs.MemberProfileVO;
 import chamapool.domain.member.VOs.MemberVO;
-import chamapool.domain.member.enums.Role;
 import chamapool.domain.member.enums.Status;
 import chamapool.domain.member.models.*;
 import chamapool.domain.member.repositories.*;
@@ -56,16 +56,15 @@ public class MembersService {
   }
 
   @Transactional
-  public MemberVO acceptInvitation(Integer inviteId, AcceptInvitationRequest request) {
+  public MemberProfileVO acceptInvitation(Integer inviteId, AcceptInvitationRequest request) {
     var invitedMember = this.invitedMemberRepository.getReferenceById(inviteId);
     invitedMember.updateCredentials(request.username(), passwordEncoder.encode(request.password()));
-    return new MemberVO(this.registerMemberFromInvitation(invitedMember));
+    return new MemberProfileVO(this.registerMemberFromInvitation(invitedMember));
   }
 
   private Member registerMemberFromInvitation(InvitedMember invitedMember) {
     Member member =
         new Member()
-            .role(Role.MEMBER)
             .status(Status.ACTIVE)
             .username(invitedMember.username())
             .password(invitedMember.password())
@@ -101,6 +100,16 @@ public class MembersService {
     return this.memberRepository.save(member);
   }
 
+  public MemberProfileVO retrieveMemberProfile(String username) {
+    return this.memberRepository
+        .getMemberByUsername(username)
+        .map(MemberProfileVO::new)
+        .orElseThrow(
+            () ->
+                new NoSuchElementException(
+                    "Member with username %s not found".formatted(username)));
+  }
+
   public MemberVO retrieveMember(String username) {
     return this.memberRepository
         .getMemberByUsername(username)
@@ -113,5 +122,18 @@ public class MembersService {
 
   public List<MemberVO> retrieveMembers() {
     return this.memberRepository.findAll().stream().map(MemberVO::new).toList();
+  }
+
+  public List<MemberProfileVO> retrieveMemberProfiles() {
+    return this.memberRepository.findAll().stream().map(MemberProfileVO::new).toList();
+  }
+
+  public InvitedMemberVO getInvitation(Integer inviteId) {
+    var invitedMember = this.invitedMemberRepository.getReferenceById(inviteId);
+    return new InvitedMemberVO(invitedMember);
+  }
+
+  public List<InvitedMemberVO> getAllInvitations() {
+    return this.invitedMemberRepository.findAll().stream().map(InvitedMemberVO::new).toList();
   }
 }

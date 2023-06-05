@@ -1,8 +1,7 @@
 package chamapool.application.members.controllers;
 
 import chamapool.application.members.MembersService;
-import chamapool.application.members.responses.MemberResponse;
-
+import chamapool.application.members.responses.MemberProfileResponse;
 import chamapool.application.members.responses.MultipleMemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +19,8 @@ public class MemberController {
   }
 
   @GetMapping("/{username}")
-  public MemberResponse retrieveMemberProfile(@PathVariable String username) {
-    var member = this.membersService.retrieveMember(username);
-    return new MemberResponse(member);
+  public MemberProfileResponse retrieveMemberProfile(@PathVariable String username) {
+    var member = this.membersService.retrieveMemberProfile(username);
+    return new MemberProfileResponse(member);
   }
 }
