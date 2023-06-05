@@ -1,15 +1,17 @@
 package chamapool.domain.member.models;
 
-import chamapool.domain.member.enums.Role;
 import chamapool.domain.member.enums.Status;
 import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDate;
 
 @Entity
 @Setter
@@ -17,48 +19,57 @@ import java.time.LocalDate;
 @EntityListeners(AuditingEntityListener.class)
 @Accessors(chain = true, fluent = true)
 public class Member {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
 
-    private String firstName;
+  private String firstName;
 
-    private String lastName;
+  private String lastName;
 
-    @Column(unique = true)
-    private String username;
+  @Column(unique = true)
+  private String username;
 
-    @Column(name = "national_id", unique = true)
-    private String nationalId;
+  @Column(name = "national_id", unique = true)
+  private String nationalId;
 
-    @Column(name = "phone_number", unique = true)
-    private String phoneNumber;
+  @Column(name = "phone_number", unique = true)
+  private String phoneNumber;
 
-    @CreatedDate
-    private LocalDate joinedOn;
+  @CreatedDate private LocalDate joinedOn;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+  @Enumerated(EnumType.STRING)
+  private Status status;
 
-    private String password;
+  private String password;
 
-    @Enumerated(EnumType.STRING)
-    @Column()
-    private Role role;
+  @Transient private String token;
 
-    @Transient
-    private String token;
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "member_roles",
+      joinColumns = @JoinColumn(name = "member_id"),
+      inverseJoinColumns = @JoinColumn(name = "role_id"))
+  private Set<Role> roles = new HashSet<>();
 
-    @OneToOne
-    @JoinColumn(name = "next_of_kin_id")
-    private NextOfKin nextOfKin;
+  @OneToOne
+  @JoinColumn(name = "next_of_kin_id")
+  private NextOfKin nextOfKin;
 
-    @OneToOne
-    @JoinColumn(name = "occupation_id")
-    private Occupation occupation;
+  @OneToOne
+  @JoinColumn(name = "occupation_id")
+  private Occupation occupation;
 
-    @OneToOne
-    @JoinColumn(name = "address_id")
-    private Address homeAddress;
+  @OneToOne
+  @JoinColumn(name = "address_id")
+  private Address homeAddress;
+
+  public List<String> getRoles() {
+    return this.roles().stream().map(Role::name).toList();
+  }
+
+  public Member addRoles(Role... roles) {
+    this.roles.addAll(Arrays.asList(roles));
+    return this;
+  }
 }
-
