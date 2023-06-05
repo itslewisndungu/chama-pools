@@ -4,21 +4,24 @@ import chamapool.application.members.MembersService;
 import chamapool.application.members.requests.AcceptInvitationRequest;
 import chamapool.application.members.requests.NewMemberRequest;
 import chamapool.application.members.responses.InviteMemberResponse;
-import chamapool.application.members.responses.MemberResponse;
+import chamapool.application.members.responses.MemberProfileResponse;
+import chamapool.application.members.responses.MultipleInvitationsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/members/invite")
+@RequestMapping("/members/invites")
 @RequiredArgsConstructor
 public class MemberInvitationController {
   private final MembersService membersService;
 
-  @PostMapping("/")
+  @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  @PreAuthorize("hasAnyRole('CHAIRMAN', 'SECRETARY')")
+  //  @PreAuthorize("hasAnyRole('ROLE_CHAIRMAN', 'ROLE_SECRETARY')")
   public InviteMemberResponse inviteNewMember(@RequestBody NewMemberRequest request) {
     var invitedMember = this.membersService.inviteMember(request);
     return new InviteMemberResponse(invitedMember);
@@ -26,9 +29,21 @@ public class MemberInvitationController {
 
   @PostMapping("/{inviteId}/accept")
   @ResponseStatus(HttpStatus.CREATED)
-  public MemberResponse acceptInvitation(
+  public MemberProfileResponse acceptInvitation(
       @PathVariable Integer inviteId, @RequestBody AcceptInvitationRequest request) {
     var invitedMember = this.membersService.acceptInvitation(inviteId, request);
-    return new MemberResponse(invitedMember);
+    return new MemberProfileResponse(invitedMember);
+  }
+
+  @GetMapping
+  public MultipleInvitationsResponse getAllInvitations() {
+    var invitations = this.membersService.getAllInvitations();
+    return new MultipleInvitationsResponse(invitations);
+  }
+
+  @GetMapping("/{inviteId}")
+  public InviteMemberResponse getInvitation(@PathVariable Integer inviteId) {
+    var invitedMember = this.membersService.getInvitation(inviteId);
+    return new InviteMemberResponse(invitedMember);
   }
 }
