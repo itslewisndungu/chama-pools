@@ -1,21 +1,23 @@
 package chamapool.application.auth;
 
+import chamapool.domain.member.models.Member;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final AuthService authService;
+  private final AuthService authService;
 
-    @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
-        var member =  this.authService.login(request);
-        return new LoginResponse(member);
-    }
+  @GetMapping("/me")
+  public AuthResponse retrieveCurrentMember(Member member) {
+    return new AuthResponse(member);
+  }
+
+  @PostMapping("/login")
+  public AuthResponse login(@RequestBody LoginRequest request) {
+    var member = this.authService.login(request);
+    return new AuthResponse(member);
+  }
 }
