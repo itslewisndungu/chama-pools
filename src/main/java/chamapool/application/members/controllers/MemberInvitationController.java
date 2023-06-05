@@ -8,9 +8,6 @@ import chamapool.application.members.responses.MemberProfileResponse;
 import chamapool.application.members.responses.MultipleInvitationsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
