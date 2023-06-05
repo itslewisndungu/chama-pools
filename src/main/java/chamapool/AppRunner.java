@@ -28,6 +28,7 @@ public class AppRunner implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
     this.generateMembers();
+    this.generateChamaDetails();
   }
 
   private void generateChamaDetails() {
