@@ -26,7 +26,7 @@ public class AppRunner implements CommandLineRunner {
   private final ChamaRepository chamaRepository;
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
     this.generateMembers();
     this.generateChamaDetails();
   }

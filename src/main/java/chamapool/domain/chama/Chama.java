@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -22,7 +23,8 @@ public class Chama {
   @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name = "created_at", nullable = false)
+  @CreatedDate
+  @Column(name = "created_at")
   private LocalDate createdAt;
 
   @Column(name = "account_balance", nullable = false)
