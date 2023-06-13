@@ -1,6 +1,6 @@
 package chamapool.domain.loans;
 
-public enum LoanRequestStatus {
+public enum LoanApprovalStatus {
   AWAITING_APPROVAL,
   APPROVED,
   REJECTED,

@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @Accessors(chain = true, fluent = true)
-public class LoanRequest {
+public class LoanApproval {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
@@ -22,7 +22,7 @@ public class LoanRequest {
   private Loan loan;
 
   @Enumerated(EnumType.STRING)
-  private LoanRequestStatus status = LoanRequestStatus.AWAITING_APPROVAL;
+  private LoanApprovalStatus status = LoanApprovalStatus.AWAITING_APPROVAL;
 
   @OneToOne
   @JoinColumn(name = "chairman_id")
