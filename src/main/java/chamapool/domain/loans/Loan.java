@@ -2,6 +2,8 @@ package chamapool.domain.loans;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -25,4 +27,10 @@ public class Loan {
 
   @Enumerated(EnumType.STRING)
   private LoanStatus status;
+
+  @OneToOne(mappedBy = "loan")
+  private LoanApproval approval;
+
+  @OneToMany(mappedBy = "loan")
+  private List<LoanRepayment> repayments = new ArrayList<>();
 }
