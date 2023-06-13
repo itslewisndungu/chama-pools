@@ -1,8 +1,11 @@
 package chamapool;
 
+import chamapool.domain.chama.Chama;
+import chamapool.domain.chama.ChamaRepository;
 import chamapool.domain.member.enums.Status;
 import chamapool.domain.member.models.*;
 import chamapool.domain.member.repositories.*;
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +23,19 @@ public class AppRunner implements CommandLineRunner {
   private final AddressRepository addressRepository;
   private final OccupationRepository occupationRepository;
   private final RoleRepository roleRepository;
+  private final ChamaRepository chamaRepository;
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
     this.generateMembers();
+    this.generateChamaDetails();
+  }
+
+  private void generateChamaDetails() {
+    Chama visionAhead =
+        new Chama().name("Vision Ahead").accountBalance(BigDecimal.valueOf(200_000));
+
+    this.chamaRepository.save(visionAhead);
   }
 
   private void generateMembers() {
