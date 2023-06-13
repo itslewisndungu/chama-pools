@@ -1,8 +1,6 @@
 package chamapool.domain.member.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -11,13 +9,11 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @Accessors(chain = true, fluent = true)
+@Table(name = "roles")
 public class Role {
-  @Id @GeneratedValue private Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
 
   private String name;
-
-  @Override
-  public String toString() {
-    return this.name;
-  }
 }
