@@ -21,6 +21,8 @@ public class Meeting {
   @Column(name = "meeting_id")
   private Integer meetingId;
 
+  private String agenda;
+
   @Column(name = "date")
   private LocalDate date;
 
