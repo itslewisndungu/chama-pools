@@ -23,7 +23,7 @@ public class JwtService {
             .issuedAt(now)
             .expiresAt(now.plus(2, ChronoUnit.HOURS))
             .subject(user.username())
-            .claim("roles", user.roles().toString())
+            .claim("roles", user.getRoles())
             .build();
 
     return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
