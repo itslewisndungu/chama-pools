@@ -64,8 +64,8 @@ public class Member {
   @JoinColumn(name = "address_id")
   private Address homeAddress;
 
-  public List<String> getRoles() {
-    return this.roles().stream().map(Role::name).toList();
+  public Set<String> getRoles() {
+    return this.roles().stream().map(Role::name).collect(Collectors.toSet());
   }
 
   public Member addRoles(Role... roles) {
