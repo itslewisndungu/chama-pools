@@ -1,5 +1,6 @@
 package chamapool.domain.member.models;
 
+import chamapool.domain.member.enums.MemberRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,5 +16,6 @@ public class Role {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  private String name;
+  @Enumerated(EnumType.STRING)
+  private MemberRole name;
 }

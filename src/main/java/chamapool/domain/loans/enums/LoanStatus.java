@@ -1,4 +1,4 @@
-package chamapool.domain.loans;
+package chamapool.domain.loans.enums;
 
 public enum LoanStatus {
   PENDING,

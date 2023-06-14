@@ -2,6 +2,7 @@ package chamapool;
 
 import chamapool.domain.chama.Chama;
 import chamapool.domain.chama.ChamaRepository;
+import chamapool.domain.member.enums.MemberRole;
 import chamapool.domain.member.enums.Status;
 import chamapool.domain.member.models.*;
 import chamapool.domain.member.repositories.*;
@@ -41,8 +42,8 @@ public class AppRunner implements CommandLineRunner {
   private void generateMembers() {
     log.info("Generating chairman and member roles");
 
-    Role chairmanRole = new Role().name("CHAIRMAN");
-    Role memberRole = new Role().name("MEMBER");
+    Role chairmanRole = new Role().name(MemberRole.CHAIRMAN);
+    Role memberRole = new Role().name(MemberRole.MEMBER);
     roleRepository.saveAll(List.of(chairmanRole, memberRole));
 
     log.info("Generating a new Chairman...");

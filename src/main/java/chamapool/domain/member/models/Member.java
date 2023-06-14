@@ -1,5 +1,6 @@
 package chamapool.domain.member.models;
 
+import chamapool.domain.member.enums.MemberRole;
 import chamapool.domain.member.enums.Status;
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -64,7 +65,7 @@ public class Member {
   @JoinColumn(name = "address_id")
   private Address homeAddress;
 
-  public Set<String> getRoles() {
+  public Set<MemberRole> getRoles() {
     return this.roles().stream().map(Role::name).collect(Collectors.toSet());
   }
 

@@ -1,5 +1,6 @@
 package chamapool.domain.member.VOs;
 
+import chamapool.domain.member.enums.MemberRole;
 import chamapool.domain.member.enums.Status;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.member.models.Role;
@@ -16,7 +17,7 @@ public record MemberProfileVO(
     String phoneNumber,
     LocalDate joinedOn,
     Status status,
-    Set<String> roles,
+    Set<MemberRole> roles,
     NextOfKinVO nextOfKin,
     OccupationVO occupation,
     AddressVO homeAddress) {
