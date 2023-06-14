@@ -1,6 +1,5 @@
 package chamapool.domain.loans.VO;
 
-import chamapool.domain.loans.Loan;
 import chamapool.domain.loans.LoanApproval;
 import chamapool.domain.loans.enums.LoanApprovalStatus;
 
