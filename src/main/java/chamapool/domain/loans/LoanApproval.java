@@ -1,5 +1,6 @@
 package chamapool.domain.loans;
 
+import chamapool.domain.loans.enums.LoanApprovalStatus;
 import chamapool.domain.member.models.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,26 +14,20 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @Accessors(chain = true, fluent = true)
 public class LoanApproval {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
-
-  @OneToOne
-  @JoinColumn(name = "loan_id")
-  private Loan loan;
+  @EmbeddedId private LoanApprovalId id;
 
   @Enumerated(EnumType.STRING)
-  private LoanApprovalStatus status = LoanApprovalStatus.AWAITING_APPROVAL;
+  private LoanApprovalStatus status;
 
-  @OneToOne
-  @JoinColumn(name = "chairman_id")
-  private Member chairman;
+  private String message;
 
-  @OneToOne
-  @JoinColumn(name = "secretary_id")
-  private Member secretary;
+  @ManyToOne
+  @MapsId("loanApplicationId")
+  @JoinColumn(name = "loan_application_id")
+  private LoanApplication loanApplication;
 
-  @OneToOne
-  @JoinColumn(name = "treasurer_id")
-  private Member treasurer;
+  @ManyToOne
+  @MapsId("stakeholderId")
+  @JoinColumn(name = "stakeholder_id")
+  private Member stakeholder;
 }

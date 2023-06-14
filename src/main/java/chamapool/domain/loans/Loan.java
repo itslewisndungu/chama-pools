@@ -1,5 +1,6 @@
 package chamapool.domain.loans;
 
+import chamapool.domain.loans.enums.LoanStatus;
 import chamapool.domain.member.models.Member;
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -27,8 +28,7 @@ public class Loan {
   private LocalDate startDate;
   private LocalDate endDate;
 
-  @CreatedDate
-  private LocalDate applicationDate;
+  @CreatedDate private LocalDate applicationDate;
 
   @ManyToOne
   @JoinColumn(name = "member_id")
@@ -37,9 +37,9 @@ public class Loan {
   @Enumerated(EnumType.STRING)
   private LoanStatus status = LoanStatus.PENDING;
 
-  @OneToOne(mappedBy = "loan")
-  private LoanApproval approval;
-
   @OneToMany(mappedBy = "loan")
   private List<LoanRepayment> repayments = new ArrayList<>();
+
+  @OneToOne(mappedBy = "loan")
+  private LoanApplication loanApplication;
 }
