@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @Accessors(chain = true, fluent = true)
 public class LoanApproval {
-  @EmbeddedId private LoanApprovalId id;
+  @EmbeddedId private LoanApprovalId id = new LoanApprovalId();
 
   @Enumerated(EnumType.STRING)
   private LoanApprovalStatus status;
