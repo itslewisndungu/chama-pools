@@ -1,11 +1,14 @@
 package chamapool.domain.loans;
 
 import chamapool.domain.loans.enums.LoanApprovalStatus;
+import chamapool.domain.member.models.Member;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -18,11 +21,19 @@ public class LoanApplication {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @OneToOne
-  @JoinColumn(name = "loan_id")
-  private Loan loan;
+  @ManyToOne
+  @JoinColumn(name = "member_id")
+  private Member member;
 
-  private LoanApprovalStatus approvalStatus;
+  @CreatedDate
+  private LocalDate applicationDate;
+
+  private Double amount;
+
+  private String reasonForLoan;
+
+  @Enumerated(EnumType.STRING)
+  private LoanApprovalStatus approvalStatus = LoanApprovalStatus.AWAITING_APPROVAL;
 
   @OneToMany(mappedBy = "loanApplication")
   private List<LoanApproval> loanApproval;

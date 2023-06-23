@@ -8,22 +8,26 @@ public record LoanVO(
     Integer id,
     Integer memberId,
     Double amount,
+    Double interestEarned,
+    Double amountPayable,
     String reasonForLoan,
     Double interestRate,
     LocalDate startDate,
+    LocalDate expectedEndDate,
     LocalDate endDate,
-    LocalDate applicationDate,
     LoanStatus status) {
   public LoanVO(Loan loan) {
     this(
         loan.id(),
         loan.member().id(),
         loan.amount(),
+        loan.interestEarned(),
+        loan.amountPayable(),
         loan.reasonForLoan(),
         loan.interestRate(),
         loan.startDate(),
+        loan.expectedEndDate(),
         loan.endDate(),
-        loan.applicationDate(),
         loan.status());
   }
 }

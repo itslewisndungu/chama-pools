@@ -9,6 +9,7 @@ import chamapool.domain.loans.LoanApproval;
 import chamapool.domain.loans.LoanApprovalId;
 import chamapool.domain.loans.VO.*;
 import chamapool.domain.loans.enums.LoanApprovalStatus;
+import chamapool.domain.loans.enums.LoanStatus;
 import chamapool.domain.loans.repositories.LoanApplicationRepository;
 import chamapool.domain.loans.repositories.LoanApprovalRepository;
 import chamapool.domain.loans.repositories.LoanRepository;
@@ -30,16 +31,17 @@ public class LoansService {
   private final MemberRepository memberRepository;
 
   @Transactional
-  public LoanApplicationVO applyForLoan(Member member, LoanApplicationRequest req) {
-    log.info("Member {} applying for loan: {}", member.firstName() + ' ' + member.lastName(), req);
+  public LoanApplicationVO applyForLoan(Member applicant, LoanApplicationRequest req) {
+    log.info(
+        "Member {} applying for loan of amount: {}",
+        applicant.firstName() + ' ' + applicant.lastName(),
+        req.amount());
 
-    Loan loan = new Loan().member(member).amount(req.amount()).reasonForLoan(req.reasonForLoan());
-
-    loanRepository.save(loan);
-
-    LoanApplication application =
-        new LoanApplication().loan(loan).approvalStatus(LoanApprovalStatus.AWAITING_APPROVAL);
-
+    var application =
+        new LoanApplication()
+            .member(applicant)
+            .amount(req.amount())
+            .reasonForLoan(req.reasonForLoan());
     loanApplicationRepository.save(application);
 
     var approvals = this.retrieveLoanApprovals(application);
@@ -47,16 +49,17 @@ public class LoansService {
   }
 
   @Transactional
-  public LoanApprovalVO approveLoan(Member member, Integer loanId, LoanApprovalRequest req) {
-    var loanApplication = loanRepository.getReferenceById(loanId).loanApplication();
+  public LoanApprovalVO approveLoan(
+      Member stakeholder, Integer applicationId, LoanApprovalRequest req) {
+    var loanApplication = loanApplicationRepository.getReferenceById(applicationId);
 
     log.info(
-        "{} approving {}", member.firstName() + ' ' + member.lastName(), loanApplication.loan());
+        "{} approving {}", stakeholder.firstName() + ' ' + stakeholder.lastName(), loanApplication);
 
     var approval =
         new LoanApproval()
             .id(new LoanApprovalId())
-            .stakeholder(member)
+            .stakeholder(stakeholder)
             .loanApplication(loanApplication)
             .message(req.message());
 
@@ -68,6 +71,8 @@ public class LoansService {
 
     loanApprovalRepository.save(approval);
 
+    this.generateLoanOnSuccessfulApproval(loanApplication);
+
     return new LoanApprovalVO(approval);
   }
 
@@ -76,9 +81,8 @@ public class LoansService {
     return new LoanVO(loan);
   }
 
-  public LoanApplicationVO retrieveLoanApplication(Integer loanId) {
-    var loanApplication = this.loanRepository.getReferenceById(loanId).loanApplication();
-
+  public LoanApplicationVO retrieveLoanApplication(Integer applicationId) {
+    var loanApplication = this.loanApplicationRepository.getReferenceById(applicationId);
     var approvals = this.retrieveLoanApprovals(loanApplication);
     return new LoanApplicationVO(loanApplication, approvals);
   }
@@ -122,5 +126,25 @@ public class LoansService {
             .orElse(new Approval(LoanApprovalStatus.AWAITING_APPROVAL, null));
 
     return new Approvals(chairmanApproval, secretaryApproval, treasurerApproval);
+  }
+
+  private void generateLoanOnSuccessfulApproval(LoanApplication application) {
+    var loanApprovals = this.retrieveLoanApprovals(application);
+
+    var approved =
+        loanApprovals.chairman().status() == LoanApprovalStatus.APPROVED
+            && loanApprovals.secretary().status() == LoanApprovalStatus.APPROVED
+            && loanApprovals.treasurer().status() == LoanApprovalStatus.APPROVED;
+
+    if (approved) {
+      var loan =
+          new Loan()
+              .member(application.member())
+              .amount(application.amount())
+              .reasonForLoan(application.reasonForLoan())
+              .status(LoanStatus.AWAITING_DISBURSEMENT);
+
+      loanRepository.save(loan);
+    }
   }
 }

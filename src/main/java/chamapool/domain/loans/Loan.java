@@ -24,11 +24,13 @@ public class Loan {
 
   private Double amount;
   private String reasonForLoan;
-  private Double interestRate = 10.0;
-  private LocalDate startDate;
-  private LocalDate endDate;
 
-  @CreatedDate private LocalDate applicationDate;
+  @CreatedDate private
+  LocalDate approvedDate;
+
+  private LocalDate startDate;
+  private LocalDate expectedEndDate = LocalDate.now().plusMonths(3);
+  private LocalDate endDate;
 
   @ManyToOne
   @JoinColumn(name = "member_id")
@@ -40,6 +42,15 @@ public class Loan {
   @OneToMany(mappedBy = "loan")
   private List<LoanRepayment> repayments = new ArrayList<>();
 
-  @OneToOne(mappedBy = "loan")
-  private LoanApplication loanApplication;
+  public Double interestRate() {
+    return 10.0;
+  }
+
+  public Double interestEarned() {
+    return amount * interestRate() / 100;
+  }
+
+  public Double amountPayable() {
+    return this.amount + this.interestEarned();
+  }
 }
