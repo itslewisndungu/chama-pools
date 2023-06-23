@@ -40,11 +40,29 @@ public class AppRunner implements CommandLineRunner {
   }
 
   private void generateMembers() {
-    log.info("Generating chairman and member roles");
+    log.info("Generating a test chairman, treasurer, secretary and member");
 
+    log.info("Generating boilerplate roles...");
     Role chairmanRole = new Role().name(MemberRole.CHAIRMAN);
     Role memberRole = new Role().name(MemberRole.MEMBER);
-    roleRepository.saveAll(List.of(chairmanRole, memberRole));
+    Role treasurerRole = new Role().name(MemberRole.TREASURER);
+    Role secretaryRole = new Role().name(MemberRole.SECRETARY);
+
+    roleRepository.saveAll(List.of(chairmanRole, memberRole, treasurerRole, secretaryRole));
+
+    log.info("Generating boilerplate next of kin, home address and occupation");
+
+    NextOfKin kin =
+        new NextOfKin().firstName("Kimani").lastName("Wanjiku").mobileNumber("075478963214");
+    this.nextOfKinRepository.save(kin);
+
+    Address homeAddress =
+        new Address().constituency("Kiambaa").county("Kiambu").subCounty("Kiambaa");
+    this.addressRepository.save(homeAddress);
+
+    Occupation occupation =
+        new Occupation().organization("Equity Bank").salary(40000.0).position("Operations Manager");
+    this.occupationRepository.save(occupation);
 
     log.info("Generating a new Chairman...");
 
@@ -59,25 +77,11 @@ public class AppRunner implements CommandLineRunner {
             .phoneNumber("8430570482")
             .addRoles(chairmanRole, memberRole);
 
-    NextOfKin kin =
-        new NextOfKin().firstName("Kimani").lastName("Wanjiku").mobileNumber("075478963214");
-    this.nextOfKinRepository.save(kin);
-
-    Address homeAddress =
-        new Address().constituency("Kiambaa").county("Kiambu").subCounty("Kiambaa");
-    this.addressRepository.save(homeAddress);
-
-    Occupation occupation =
-        new Occupation().organization("Equity Bank").salary(40000.0).position("Operations Manager");
-    this.occupationRepository.save(occupation);
-
     chairman.nextOfKin(kin).homeAddress(homeAddress).occupation(occupation);
     memberRepository.save(chairman);
-    log.info("Done");
 
     log.info("Generating a new member...");
 
-    // Create a normal member
     Member member =
         new Member()
             .status(Status.ACTIVE)
@@ -95,6 +99,37 @@ public class AppRunner implements CommandLineRunner {
 
     member.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
     memberRepository.save(member);
+
+    log.info("Generating a new treasurer...");
+    var treasurer =
+        new Member()
+            .status(Status.ACTIVE)
+            .username("treasurer")
+            .password(passwordEncoder.encode("9326Kalewi"))
+            .firstName("Treasurer")
+            .lastName("Lewis")
+            .nationalId("34259057")
+            .phoneNumber("147896358974")
+            .addRoles(treasurerRole);
+
+    treasurer.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
+    memberRepository.save(treasurer);
+
+    log.info("Generating a new secretary...");
+
+    var secretary =
+        new Member()
+            .status(Status.ACTIVE)
+            .username("secretary")
+            .password(passwordEncoder.encode("9326Kalewi"))
+            .firstName("Secretary")
+            .lastName("Lewis")
+            .nationalId("37259057")
+            .phoneNumber("347896358974")
+            .addRoles(secretaryRole);
+
+    secretary.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
+    memberRepository.save(secretary);
 
     log.info("Done");
   }
