@@ -27,9 +27,4 @@ public class MemberController {
     var member = this.membersService.retrieveMemberProfile(username);
     return new MemberProfileResponse(member);
   }
-
-  @GetMapping("/loan-eligibility")
-  public LoanEligibilityResponse checkLoanEligibility(Member member) {
-    return this.loansService.checkLoanEligibility(member);
-  }
 }
