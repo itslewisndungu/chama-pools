@@ -5,6 +5,7 @@ import chamapool.application.loans.requests.LoanApprovalRequest;
 import chamapool.domain.loans.VO.LoanApplicationVO;
 import chamapool.domain.loans.VO.LoanApprovalVO;
 import chamapool.domain.member.models.Member;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +17,12 @@ import org.springframework.web.bind.annotation.*;
 public class LoanApplicationsController {
   private final LoansService loansService;
 
-  @GetMapping("/active-application")
+  @GetMapping()
+  public List<LoanApplicationVO> retrieveLoanApplications() {
+    return this.loansService.retrieveLoanApplications();
+  }
+
+  @GetMapping("/active")
   public LoanApplicationVO retrieveActiveLoanApplication(Member member) {
     return this.loansService.getMemberActiveLoanApplication(member);
   }

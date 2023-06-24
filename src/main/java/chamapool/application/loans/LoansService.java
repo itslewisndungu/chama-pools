@@ -17,6 +17,7 @@ import chamapool.domain.member.enums.MemberRole;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.member.repositories.MemberRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -169,5 +170,15 @@ public class LoansService {
   private Optional<LoanApplication> retrieveActiveLoanApplication(Member member) {
     return this.loanApplicationRepository.getLoanApplicationByMemberAndApprovalStatus(
         member, LoanApprovalStatus.AWAITING_APPROVAL);
+  }
+
+  public List<LoanApplicationVO> retrieveLoanApplications() {
+    return this.loanApplicationRepository.findAll().stream()
+        .map(
+            application -> {
+              var approvals = this.retrieveLoanApprovals(application);
+              return new LoanApplicationVO(application, approvals);
+            })
+        .toList();
   }
 }
