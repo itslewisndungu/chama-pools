@@ -14,24 +14,29 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/loans/applications")
 @RequiredArgsConstructor
 public class LoanApplicationsController {
-    private final LoansService loansService;
+  private final LoansService loansService;
 
-    @GetMapping("/{applicationId}")
-    public LoanApplicationVO retrieveLoanApplication(@PathVariable Integer applicationId) {
-        return this.loansService.retrieveLoanApplication(applicationId);
-    }
+  @GetMapping("/active")
+  public LoanApplicationVO retrieveActiveLoanApplication(Member member) {
+    return this.loansService.retrieveActiveLoanApplication(member);
+  }
 
-    @PostMapping("/apply")
-    @ResponseStatus(HttpStatus.CREATED)
-    public LoanApplicationVO applyForLoan(Member member, @RequestBody LoanApplicationRequest req) {
-        return this.loansService.applyForLoan(member, req);
-    }
+  @GetMapping("/{applicationId}")
+  public LoanApplicationVO retrieveLoanApplication(@PathVariable Integer applicationId) {
+    return this.loansService.retrieveLoanApplication(applicationId);
+  }
 
-    @PostMapping("/{applicationId}/approve")
-    @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAnyRole('CHAIRMAN', 'TREASURER', 'SECRETARY')")
-    public LoanApprovalVO approveLoan(
-            Member member, @PathVariable Integer applicationId, @RequestBody LoanApprovalRequest req) {
-        return this.loansService.approveLoan(member, applicationId, req);
-    }
+  @PostMapping("/apply")
+  @ResponseStatus(HttpStatus.CREATED)
+  public LoanApplicationVO applyForLoan(Member member, @RequestBody LoanApplicationRequest req) {
+    return this.loansService.applyForLoan(member, req);
+  }
+
+  @PostMapping("/{applicationId}/approve")
+  @ResponseStatus(HttpStatus.CREATED)
+  @PreAuthorize("hasAnyRole('CHAIRMAN', 'TREASURER', 'SECRETARY')")
+  public LoanApprovalVO approveLoan(
+      Member member, @PathVariable Integer applicationId, @RequestBody LoanApprovalRequest req) {
+    return this.loansService.approveLoan(member, applicationId, req);
+  }
 }

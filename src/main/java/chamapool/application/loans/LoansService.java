@@ -87,6 +87,16 @@ public class LoansService {
     return new LoanApplicationVO(loanApplication, approvals);
   }
 
+  public LoanApplicationVO retrieveActiveLoanApplication(Member member) {
+    var application =
+        this.loanApplicationRepository
+            .getLoanApplicationByMemberAndApprovalStatus(
+                member, LoanApprovalStatus.AWAITING_APPROVAL)
+            .orElseThrow();
+
+    return new LoanApplicationVO(application, this.retrieveLoanApprovals(application));
+  }
+
   public LoanEligibilityResponse checkLoanEligibility(Member member) {
     return new LoanEligibilityResponse(true, 100000, null);
   }
