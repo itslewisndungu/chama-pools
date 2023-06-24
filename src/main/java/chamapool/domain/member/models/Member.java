@@ -73,4 +73,9 @@ public class Member {
     this.roles.addAll(Arrays.asList(roles));
     return this;
   }
+
+
+  public String fullName() {
+    return this.firstName() + " " + this.lastName();
+  }
 }
