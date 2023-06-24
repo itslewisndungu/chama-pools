@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 public class LoanApplicationsController {
   private final LoansService loansService;
 
-  @GetMapping("/active")
+  @GetMapping("/active-application")
   public LoanApplicationVO retrieveActiveLoanApplication(Member member) {
-    return this.loansService.retrieveActiveLoanApplication(member);
+    return this.loansService.getMemberActiveLoanApplication(member);
   }
 
   @GetMapping("/{applicationId}")

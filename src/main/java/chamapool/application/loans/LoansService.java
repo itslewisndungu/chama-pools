@@ -17,6 +17,7 @@ import chamapool.domain.member.enums.MemberRole;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.member.repositories.MemberRepository;
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,11 @@ public class LoansService {
         "Member {} applying for loan of amount: {}",
         applicant.firstName() + ' ' + applicant.lastName(),
         req.amount());
+
+    var existingApplication = this.retrieveActiveLoanApplication(applicant);
+    if (existingApplication.isPresent()) {
+      throw new RuntimeException("You already have an active loan application");
+    }
 
     var application =
         new LoanApplication()
@@ -87,17 +93,19 @@ public class LoansService {
     return new LoanApplicationVO(loanApplication, approvals);
   }
 
-  public LoanApplicationVO retrieveActiveLoanApplication(Member member) {
-    var application =
-        this.loanApplicationRepository
-            .getLoanApplicationByMemberAndApprovalStatus(
-                member, LoanApprovalStatus.AWAITING_APPROVAL)
-            .orElseThrow();
+  public LoanApplicationVO getMemberActiveLoanApplication(Member member) {
+    var application = this.retrieveActiveLoanApplication(member).orElseThrow();
 
     return new LoanApplicationVO(application, this.retrieveLoanApprovals(application));
   }
 
   public LoanEligibilityResponse checkLoanEligibility(Member member) {
+    var application = this.retrieveActiveLoanApplication(member);
+
+    if (application.isPresent()) {
+      return new LoanEligibilityResponse(false, null, "You have an active loan application");
+    }
+
     return new LoanEligibilityResponse(true, 100000, null);
   }
 
@@ -156,5 +164,10 @@ public class LoansService {
 
       loanRepository.save(loan);
     }
+  }
+
+  private Optional<LoanApplication> retrieveActiveLoanApplication(Member member) {
+    return this.loanApplicationRepository.getLoanApplicationByMemberAndApprovalStatus(
+        member, LoanApprovalStatus.AWAITING_APPROVAL);
   }
 }
