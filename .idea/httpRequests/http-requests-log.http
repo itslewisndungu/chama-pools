@@ -1,3 +1,487 @@
+GET http://localhost:8080/loans/my-loans
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2ODgyNzUsImlhdCI6MTY4NzY4MTA3NSwicm9sZXMiOlsiTUVNQkVSIiwiQ0hBSVJNQU4iXX0.kaKlgMoc1bGp6DChamiUPGf2Zt2elpjOPatXYQ8SzVgu7cy1GPmY1BVQ3YCwmmoadzrlRPJxfcdm4XETOp6sXK0BlQ7oQPcLS2avo6GoClXsa7pfI_0SO6FLagDiAmNGnLW__p9PljKOj-vWKdkWkuFy6q5PCrsoh0JsAQDIHVSzqoinxNn_f41XjN-ibfdf9_mEUzFSBOGZAKOXhn8RZXSizxb3cPEirjnWo1Qal1B_kk3tkU3VHQOvmwFUUpMImDYSddBEkEDCZxCJawehV-q3JFq4x8KdTbzhSieBlt8jdgkSvYTtezrY4pn9bKCmBzSEpqIgaNNI98XlvOjEMg
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-06-25T111805.200.json
+
+###
+
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+Content-Length: 56
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "chairman",
+  "password": "9326Kalewi"
+}
+
+<> 2023-06-25T111755.200.json
+
+###
+
+POST http://localhost:8080/loans/applications/1/approve
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3Njg4MjU3LCJpYXQiOjE2ODc2ODEwNTcsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.KUihR15SxZZ9PQe_6NFHds3VN-H53bF1C9EeHePyqX0E8osGUVkuloskrDFl_ITkWngxYDuK00xIatSB0_xudYigj4F-OhHgfyHwEwnWwGtkt1Zu6pQKJjrBdpbgYm5U8qql4EaO5bowU8ZSjzUSqG2yao70nCTj8o8bRVWD1xJArtvMtyjG5rXNiiVkLH_7hq2zeTah2rP4f-m3wSIuZB9qdlW24gmnyE34HR4TFc3XAQ7JcAl53M4ZytahiKPN0OoJ2mJOnDM-MXLaNSw8FUalOwHwWXCct74ZYOrVz_QjB4g21Tnwiz5hnHhpa8JnQjVaLcynWKkt7hwAb7FgMw
+Content-Type: application/json
+Content-Length: 47
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "approved": true,
+  "message": "Approved"
+}
+
+<> 2023-06-25T111744.201.json
+
+###
+
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+Content-Length: 57
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "secretary",
+  "password": "9326Kalewi"
+}
+
+<> 2023-06-25T111737.200.json
+
+###
+
+POST http://localhost:8080/loans/applications/1/approve
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidHJlYXN1cmVyIiwiZXhwIjoxNjg3Njg4MjM5LCJpYXQiOjE2ODc2ODEwMzksInJvbGVzIjpbIlRSRUFTVVJFUiJdfQ.CGhdN8h98fryhVdbSDTnnZsheBSJdu0Gj-WwQjjwMltiVvUjWWa3txUsV26oh5xchiPzV7W0mdHamaX4z8SHjDt9peJ6w5V4_ZJl47AHSVM6zpL65XIlTMEknO2mMafinR5IlaE0TR9ATMledktwfJZ-25JqPdoV3qcQFiXbeAUaqfoyIlzQw_a3wv6RTudwXw-_PHrTN_FQWPEI81k1rn3SmS0qqAqMilrG_23qM4hbedx7MIMaEyl6D1vx-DTcLe5eFyBkS5O1ubnqFlzHuu-9N-HXOUZBBDi0-ccSZSBbkqtT1BXkbpnm0krGLUaLfmEbN8FDFfzDzgvdlqCWZQ
+Content-Type: application/json
+Content-Length: 47
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "approved": true,
+  "message": "Approved"
+}
+
+<> 2023-06-25T111729.201.json
+
+###
+
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+Content-Length: 57
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "treasurer",
+  "password": "9326Kalewi"
+}
+
+<> 2023-06-25T111719.200.json
+
+###
+
+GET http://localhost:8080/loans/applications/1
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2ODgxNDksImlhdCI6MTY4NzY4MDk0OSwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.PA5fArN2GXCVqLQBGm5VjBaV9QerSPX2Ql8rzseyaFHhHwwHkvcCuqd0HALOs3x710VcB1Yjebh_fApAT3a97mkwMJ1tv6Ewx16SsGeel6D2AGTMc2uI1HKnAgXgd8YgJUS9f8DyKj5lhWJcRfeeROWk2SJqAoBYQv1dbo-PencUhlkJTa8HfvihN9fhXurpvN-QrQ6rPoZXTv3scuovyus5dVrTpRKjiCCXLmyFpEHRm84X19rdYAJYtXdet5mX6peKhR1L7Q48mGY5oQ_zz4k1ouGC0LFpeFkKc7qIRDksoiv6D5s661B-1e9GP-_jNtJpdKcec3w4-uX3ENjfEg
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-06-25T111707.200.json
+
+###
+
+POST http://localhost:8080/loans/applications/1/approve
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2ODgxNDksImlhdCI6MTY4NzY4MDk0OSwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.PA5fArN2GXCVqLQBGm5VjBaV9QerSPX2Ql8rzseyaFHhHwwHkvcCuqd0HALOs3x710VcB1Yjebh_fApAT3a97mkwMJ1tv6Ewx16SsGeel6D2AGTMc2uI1HKnAgXgd8YgJUS9f8DyKj5lhWJcRfeeROWk2SJqAoBYQv1dbo-PencUhlkJTa8HfvihN9fhXurpvN-QrQ6rPoZXTv3scuovyus5dVrTpRKjiCCXLmyFpEHRm84X19rdYAJYtXdet5mX6peKhR1L7Q48mGY5oQ_zz4k1ouGC0LFpeFkKc7qIRDksoiv6D5s661B-1e9GP-_jNtJpdKcec3w4-uX3ENjfEg
+Content-Type: application/json
+Content-Length: 47
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "approved": true,
+  "message": "Approved"
+}
+
+<> 2023-06-25T111702.201.json
+
+###
+
+POST http://localhost:8080/loans/applications/1/approve
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2ODgxNDksImlhdCI6MTY4NzY4MDk0OSwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.PA5fArN2GXCVqLQBGm5VjBaV9QerSPX2Ql8rzseyaFHhHwwHkvcCuqd0HALOs3x710VcB1Yjebh_fApAT3a97mkwMJ1tv6Ewx16SsGeel6D2AGTMc2uI1HKnAgXgd8YgJUS9f8DyKj5lhWJcRfeeROWk2SJqAoBYQv1dbo-PencUhlkJTa8HfvihN9fhXurpvN-QrQ6rPoZXTv3scuovyus5dVrTpRKjiCCXLmyFpEHRm84X19rdYAJYtXdet5mX6peKhR1L7Q48mGY5oQ_zz4k1ouGC0LFpeFkKc7qIRDksoiv6D5s661B-1e9GP-_jNtJpdKcec3w4-uX3ENjfEg
+Content-Type: application/json
+Content-Length: 48
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "approved": false,
+  "message": "Approved"
+}
+
+<> 2023-06-25T111625.201.json
+
+###
+
+POST http://localhost:8080/loans/applications/apply
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2ODgxNDksImlhdCI6MTY4NzY4MDk0OSwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.PA5fArN2GXCVqLQBGm5VjBaV9QerSPX2Ql8rzseyaFHhHwwHkvcCuqd0HALOs3x710VcB1Yjebh_fApAT3a97mkwMJ1tv6Ewx16SsGeel6D2AGTMc2uI1HKnAgXgd8YgJUS9f8DyKj5lhWJcRfeeROWk2SJqAoBYQv1dbo-PencUhlkJTa8HfvihN9fhXurpvN-QrQ6rPoZXTv3scuovyus5dVrTpRKjiCCXLmyFpEHRm84X19rdYAJYtXdet5mX6peKhR1L7Q48mGY5oQ_zz4k1ouGC0LFpeFkKc7qIRDksoiv6D5s661B-1e9GP-_jNtJpdKcec3w4-uX3ENjfEg
+Content-Length: 60
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+    "amount": 10000,
+    "reasonForLoan": "To buy a car"
+}
+
+<> 2023-06-25T111621.201.json
+
+###
+
+POST http://localhost:8080/loans/applications/1/approve
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2ODgxNDksImlhdCI6MTY4NzY4MDk0OSwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.PA5fArN2GXCVqLQBGm5VjBaV9QerSPX2Ql8rzseyaFHhHwwHkvcCuqd0HALOs3x710VcB1Yjebh_fApAT3a97mkwMJ1tv6Ewx16SsGeel6D2AGTMc2uI1HKnAgXgd8YgJUS9f8DyKj5lhWJcRfeeROWk2SJqAoBYQv1dbo-PencUhlkJTa8HfvihN9fhXurpvN-QrQ6rPoZXTv3scuovyus5dVrTpRKjiCCXLmyFpEHRm84X19rdYAJYtXdet5mX6peKhR1L7Q48mGY5oQ_zz4k1ouGC0LFpeFkKc7qIRDksoiv6D5s661B-1e9GP-_jNtJpdKcec3w4-uX3ENjfEg
+Content-Type: application/json
+Content-Length: 48
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "approved": false,
+  "message": "Approved"
+}
+
+<> 2023-06-25T111616.500.json
+
+###
+
+GET http://localhost:8080/loans/my-loans
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2ODgxNDksImlhdCI6MTY4NzY4MDk0OSwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.PA5fArN2GXCVqLQBGm5VjBaV9QerSPX2Ql8rzseyaFHhHwwHkvcCuqd0HALOs3x710VcB1Yjebh_fApAT3a97mkwMJ1tv6Ewx16SsGeel6D2AGTMc2uI1HKnAgXgd8YgJUS9f8DyKj5lhWJcRfeeROWk2SJqAoBYQv1dbo-PencUhlkJTa8HfvihN9fhXurpvN-QrQ6rPoZXTv3scuovyus5dVrTpRKjiCCXLmyFpEHRm84X19rdYAJYtXdet5mX6peKhR1L7Q48mGY5oQ_zz4k1ouGC0LFpeFkKc7qIRDksoiv6D5s661B-1e9GP-_jNtJpdKcec3w4-uX3ENjfEg
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-06-25T111555.200.json
+
+###
+
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+Content-Length: 56
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "chairman",
+  "password": "9326Kalewi"
+}
+
+<> 2023-06-25T111549.200.json
+
+###
+
+GET http://localhost:8080/loans/my-loans
+Authorization: Bearer
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+###
+
+POST http://localhost:8080/loans/applications/1/approve
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidHJlYXN1cmVyIiwiZXhwIjoxNjg3Njg0MzY3LCJpYXQiOjE2ODc2NzcxNjcsInJvbGVzIjpbIlRSRUFTVVJFUiJdfQ.fUAOLyoaghcNEt9Zaj_ESnzZlbLgK4vhH_FeYc7ruwA7-Cfp0l6wLHJHaOXpOWpnCKfZWzmci8dnIZl9uG4iwE2HN5ssVGkZOy1TXEb4O6srrRKwDsXWFB2B8ZEv6kpJSMvphvxxIQJmlmgv6AlGEYeMsoXdV8JpRAmX7nO1S-ab6z964P27tXpxOl5hhQjggY6tiEfQDd9TSTy-8MHtX0YCiLuMtxLMADODYyOKNq3YLP5ACCxplS3ePHzyXBJpfyRtWRyQnBaYqyDz1CtrqlHuliy8gT2vRvwwex4wdWZwHNA7yhsjYIgxKoU4mFKZwYmorxUp7zcqvvtg27vSLA
+Content-Type: application/json
+Content-Length: 48
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "approved": false,
+  "message": "Approved"
+}
+
+<> 2023-06-25T101320.201.json
+
+###
+
+GET http://localhost:8080/auth/me
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidHJlYXN1cmVyIiwiZXhwIjoxNjg3Njg0MzY3LCJpYXQiOjE2ODc2NzcxNjcsInJvbGVzIjpbIlRSRUFTVVJFUiJdfQ.fUAOLyoaghcNEt9Zaj_ESnzZlbLgK4vhH_FeYc7ruwA7-Cfp0l6wLHJHaOXpOWpnCKfZWzmci8dnIZl9uG4iwE2HN5ssVGkZOy1TXEb4O6srrRKwDsXWFB2B8ZEv6kpJSMvphvxxIQJmlmgv6AlGEYeMsoXdV8JpRAmX7nO1S-ab6z964P27tXpxOl5hhQjggY6tiEfQDd9TSTy-8MHtX0YCiLuMtxLMADODYyOKNq3YLP5ACCxplS3ePHzyXBJpfyRtWRyQnBaYqyDz1CtrqlHuliy8gT2vRvwwex4wdWZwHNA7yhsjYIgxKoU4mFKZwYmorxUp7zcqvvtg27vSLA
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-06-25T101257.200.json
+
+###
+
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+Content-Length: 57
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "treasurer",
+  "password": "9326Kalewi"
+}
+
+<> 2023-06-25T101247.200.json
+
+###
+
+GET http://localhost:8080/auth/me
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3Njg0MTI1LCJpYXQiOjE2ODc2NzY5MjUsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.NuHWuzq8ddSkIOGr9jNCB_T8jk-uU3KhrXklMybkci9NBfwv7hqdlJYzP5iPdXMYoOmARlFIh4D02EXrrXgoXgyqlOmKK5Aocvwza9nI4CH1YYzOxNmxWlv5P-KRr92iC3sFS4TuswOaHvS740aKGMKQh4S2AGEf6h6LoB_VVfHJ8tW5i5g5wq_Fr47i6MhZoSKz0CIwbGu98Uhzoxc7lnFIY71j2beKfs91bU-MrlSEkCGP5xms7MjZICtmMJpuywkPBx4CyxWYoyPen1AvVEXNNAQ8E2z7wLHA-BtGly4OD6UNMUaWClvX7wKWOpWB_kFbv2ZIh0nZJop4DymXnA
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-06-25T101208.200.json
+
+###
+
+GET http://localhost:8080/loans/applications/1
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3Njg0MTI1LCJpYXQiOjE2ODc2NzY5MjUsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.NuHWuzq8ddSkIOGr9jNCB_T8jk-uU3KhrXklMybkci9NBfwv7hqdlJYzP5iPdXMYoOmARlFIh4D02EXrrXgoXgyqlOmKK5Aocvwza9nI4CH1YYzOxNmxWlv5P-KRr92iC3sFS4TuswOaHvS740aKGMKQh4S2AGEf6h6LoB_VVfHJ8tW5i5g5wq_Fr47i6MhZoSKz0CIwbGu98Uhzoxc7lnFIY71j2beKfs91bU-MrlSEkCGP5xms7MjZICtmMJpuywkPBx4CyxWYoyPen1AvVEXNNAQ8E2z7wLHA-BtGly4OD6UNMUaWClvX7wKWOpWB_kFbv2ZIh0nZJop4DymXnA
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-06-25T101142.200.json
+
+###
+
+GET http://localhost:8080/loans/applications/1
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3Njg0MTI1LCJpYXQiOjE2ODc2NzY5MjUsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.NuHWuzq8ddSkIOGr9jNCB_T8jk-uU3KhrXklMybkci9NBfwv7hqdlJYzP5iPdXMYoOmARlFIh4D02EXrrXgoXgyqlOmKK5Aocvwza9nI4CH1YYzOxNmxWlv5P-KRr92iC3sFS4TuswOaHvS740aKGMKQh4S2AGEf6h6LoB_VVfHJ8tW5i5g5wq_Fr47i6MhZoSKz0CIwbGu98Uhzoxc7lnFIY71j2beKfs91bU-MrlSEkCGP5xms7MjZICtmMJpuywkPBx4CyxWYoyPen1AvVEXNNAQ8E2z7wLHA-BtGly4OD6UNMUaWClvX7wKWOpWB_kFbv2ZIh0nZJop4DymXnA
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-06-25T101007.200.json
+
+###
+
+POST http://localhost:8080/loans/applications/1/approve
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3Njg0MTI1LCJpYXQiOjE2ODc2NzY5MjUsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.NuHWuzq8ddSkIOGr9jNCB_T8jk-uU3KhrXklMybkci9NBfwv7hqdlJYzP5iPdXMYoOmARlFIh4D02EXrrXgoXgyqlOmKK5Aocvwza9nI4CH1YYzOxNmxWlv5P-KRr92iC3sFS4TuswOaHvS740aKGMKQh4S2AGEf6h6LoB_VVfHJ8tW5i5g5wq_Fr47i6MhZoSKz0CIwbGu98Uhzoxc7lnFIY71j2beKfs91bU-MrlSEkCGP5xms7MjZICtmMJpuywkPBx4CyxWYoyPen1AvVEXNNAQ8E2z7wLHA-BtGly4OD6UNMUaWClvX7wKWOpWB_kFbv2ZIh0nZJop4DymXnA
+Content-Type: application/json
+Content-Length: 47
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "approved": true,
+  "message": "Approved"
+}
+
+<> 2023-06-25T100955.201.json
+
+###
+
+GET http://localhost:8080/loans/applications/active
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3Njg0MTI1LCJpYXQiOjE2ODc2NzY5MjUsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.NuHWuzq8ddSkIOGr9jNCB_T8jk-uU3KhrXklMybkci9NBfwv7hqdlJYzP5iPdXMYoOmARlFIh4D02EXrrXgoXgyqlOmKK5Aocvwza9nI4CH1YYzOxNmxWlv5P-KRr92iC3sFS4TuswOaHvS740aKGMKQh4S2AGEf6h6LoB_VVfHJ8tW5i5g5wq_Fr47i6MhZoSKz0CIwbGu98Uhzoxc7lnFIY71j2beKfs91bU-MrlSEkCGP5xms7MjZICtmMJpuywkPBx4CyxWYoyPen1AvVEXNNAQ8E2z7wLHA-BtGly4OD6UNMUaWClvX7wKWOpWB_kFbv2ZIh0nZJop4DymXnA
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-06-25T100928.200.json
+
+###
+
+GET http://localhost:8080/loans/applications/active-application
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3Njg0MTI1LCJpYXQiOjE2ODc2NzY5MjUsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.NuHWuzq8ddSkIOGr9jNCB_T8jk-uU3KhrXklMybkci9NBfwv7hqdlJYzP5iPdXMYoOmARlFIh4D02EXrrXgoXgyqlOmKK5Aocvwza9nI4CH1YYzOxNmxWlv5P-KRr92iC3sFS4TuswOaHvS740aKGMKQh4S2AGEf6h6LoB_VVfHJ8tW5i5g5wq_Fr47i6MhZoSKz0CIwbGu98Uhzoxc7lnFIY71j2beKfs91bU-MrlSEkCGP5xms7MjZICtmMJpuywkPBx4CyxWYoyPen1AvVEXNNAQ8E2z7wLHA-BtGly4OD6UNMUaWClvX7wKWOpWB_kFbv2ZIh0nZJop4DymXnA
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-06-25T100910.400.json
+
+###
+
+POST http://localhost:8080/loans/applications/1/approve
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3Njg0MTI1LCJpYXQiOjE2ODc2NzY5MjUsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.NuHWuzq8ddSkIOGr9jNCB_T8jk-uU3KhrXklMybkci9NBfwv7hqdlJYzP5iPdXMYoOmARlFIh4D02EXrrXgoXgyqlOmKK5Aocvwza9nI4CH1YYzOxNmxWlv5P-KRr92iC3sFS4TuswOaHvS740aKGMKQh4S2AGEf6h6LoB_VVfHJ8tW5i5g5wq_Fr47i6MhZoSKz0CIwbGu98Uhzoxc7lnFIY71j2beKfs91bU-MrlSEkCGP5xms7MjZICtmMJpuywkPBx4CyxWYoyPen1AvVEXNNAQ8E2z7wLHA-BtGly4OD6UNMUaWClvX7wKWOpWB_kFbv2ZIh0nZJop4DymXnA
+Content-Type: application/json
+Content-Length: 47
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "approved": true,
+  "message": "Approved"
+}
+
+<> 2023-06-25T100901.201.json
+
+###
+
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+Content-Length: 57
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "secretary",
+  "password": "9326Kalewi"
+}
+
+<> 2023-06-25T100845.200.json
+
+###
+
+GET http://localhost:8080/loans/applications/1
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3Njg0MDczLCJpYXQiOjE2ODc2NzY4NzMsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.mn9qedkLneN5CKK_eXFE9zrKgFwvLUTbUOYVNRNvDpCa4LaMQHbQXHBncwZiMpGZMShmYe6IC051xQfJGZBnCs4-gxqWtlmTEXmfYhQD_EP1awKMUFIv23hC5E0uayjMpEawjjerxAlc_c7oh0OTlFw8fhNIAQ6XakhwLMY8qFrBi9BNcMdQhTDg9XkxasbtXsZhzYdRNwoQ8WuKzdywv-Pesbto07Eo5BbpbkxhP5zz59PWXUK9kZCqzdI4O-MhxnE3uvEFe-WkDnFUcjFW0EfkRfUxAPsqpbl2OpkrPQz4mA_R_8Ucd8u56CA0Vpn4vfTUZrtJ7EuIw1dSc2QJFQ
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-06-25T100825.200.json
+
+###
+
+POST http://localhost:8080/loans/applications/1/approve
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3Njg0MDczLCJpYXQiOjE2ODc2NzY4NzMsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.mn9qedkLneN5CKK_eXFE9zrKgFwvLUTbUOYVNRNvDpCa4LaMQHbQXHBncwZiMpGZMShmYe6IC051xQfJGZBnCs4-gxqWtlmTEXmfYhQD_EP1awKMUFIv23hC5E0uayjMpEawjjerxAlc_c7oh0OTlFw8fhNIAQ6XakhwLMY8qFrBi9BNcMdQhTDg9XkxasbtXsZhzYdRNwoQ8WuKzdywv-Pesbto07Eo5BbpbkxhP5zz59PWXUK9kZCqzdI4O-MhxnE3uvEFe-WkDnFUcjFW0EfkRfUxAPsqpbl2OpkrPQz4mA_R_8Ucd8u56CA0Vpn4vfTUZrtJ7EuIw1dSc2QJFQ
+Content-Type: application/json
+Content-Length: 48
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "approved": false,
+  "message": "Approved"
+}
+
+<> 2023-06-25T100812.201.json
+
+###
+
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+Content-Length: 57
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "secretary",
+  "password": "9326Kalewi"
+}
+
+<> 2023-06-25T100753.200.json
+
+###
+
+POST http://localhost:8080/loans/applications/1/approve
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2ODQwNTQsImlhdCI6MTY4NzY3Njg1NCwicm9sZXMiOlsiTUVNQkVSIiwiQ0hBSVJNQU4iXX0.Yl9EKzdQy_-puWU1mj6jFQScAUiAewlv943LSnceuPCCm6J6FgSgr9RHqXKuqvpI4NTJqUwG3cUlv9SFdBHPBgbx9zzOQpNXkfwib_cDU2rLBDCSmi0U6kkKG3ksTzYr5H8AbGfEHGZEuLBjhaq4WXpNGMlHFVG6XZS78C9wBgfCqJ24WJmaS6Fhu3RkpaSvG8KOtHewKtovHnItVayn_rPiI5gZFJYrhPPBzsCzwzr1RPZ3g1atTKQAB8l2P5wbqGepVggaSCtbCZfAD-L2xrZ5YdBMQCslS8udVXJyn33m_ZS-RlyJXZbnr7UlKigSDpoDQRlre7xnt9tnHNtrVg
+Content-Type: application/json
+Content-Length: 47
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "approved": true,
+  "message": "Approved"
+}
+
+<> 2023-06-25T100748.201.json
+
+###
+
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+Content-Length: 56
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "chairman",
+  "password": "9326Kalewi"
+}
+
+<> 2023-06-25T100734.200.json
+
+###
+
+POST http://localhost:8080/loans/applications/1/approve
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3NjgzODYwLCJpYXQiOjE2ODc2NzY2NjAsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.dIibXESuO3N7IYvjuV6TBftsCP2HCxaFm9fBAbF8FOSiXrZfjB73QldIjLpo0ABxPG-0MrYuFJncoMrzcf7UTehklCmZ6MTgWmPo8xWFl1vmbvG0Q4Q0peuJgRrD1oUHUdmnFEczuaP2Inix6P36xIwXH3X1QqcNVNUbqUi5_fe0ysDZUdcchYGgHhJY9EBbJ_xLGGGdGVvguAU6boiYu-uPkazQV5Djw7DsAxngY8gnvql27Irh1G7ALJT0WhJFcuI0rXKWGoXT-8Tnvjc77vIpTVWDEiXLOli-64KVNlWG2TF33ggrVePL_mg_HHqjaeHg-bZC3kM0q403y1YdrA
+Content-Type: application/json
+Content-Length: 47
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "approved": true,
+  "message": "Approved"
+}
+
+<> 2023-06-25T100727.201.json
+
+###
+
+POST http://localhost:8080/loans/applications/apply
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3NjgzODYwLCJpYXQiOjE2ODc2NzY2NjAsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.dIibXESuO3N7IYvjuV6TBftsCP2HCxaFm9fBAbF8FOSiXrZfjB73QldIjLpo0ABxPG-0MrYuFJncoMrzcf7UTehklCmZ6MTgWmPo8xWFl1vmbvG0Q4Q0peuJgRrD1oUHUdmnFEczuaP2Inix6P36xIwXH3X1QqcNVNUbqUi5_fe0ysDZUdcchYGgHhJY9EBbJ_xLGGGdGVvguAU6boiYu-uPkazQV5Djw7DsAxngY8gnvql27Irh1G7ALJT0WhJFcuI0rXKWGoXT-8Tnvjc77vIpTVWDEiXLOli-64KVNlWG2TF33ggrVePL_mg_HHqjaeHg-bZC3kM0q403y1YdrA
+Content-Length: 60
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+    "amount": 10000,
+    "reasonForLoan": "To buy a car"
+}
+
+<> 2023-06-25T100724.201.json
+
+###
+
+GET http://localhost:8080/auth/me
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3NjgzODYwLCJpYXQiOjE2ODc2NzY2NjAsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.dIibXESuO3N7IYvjuV6TBftsCP2HCxaFm9fBAbF8FOSiXrZfjB73QldIjLpo0ABxPG-0MrYuFJncoMrzcf7UTehklCmZ6MTgWmPo8xWFl1vmbvG0Q4Q0peuJgRrD1oUHUdmnFEczuaP2Inix6P36xIwXH3X1QqcNVNUbqUi5_fe0ysDZUdcchYGgHhJY9EBbJ_xLGGGdGVvguAU6boiYu-uPkazQV5Djw7DsAxngY8gnvql27Irh1G7ALJT0WhJFcuI0rXKWGoXT-8Tnvjc77vIpTVWDEiXLOli-64KVNlWG2TF33ggrVePL_mg_HHqjaeHg-bZC3kM0q403y1YdrA
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-06-25T100702.200.json
+
+###
+
+POST http://localhost:8080/loans/applications/apply
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3NjgzODYwLCJpYXQiOjE2ODc2NzY2NjAsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.dIibXESuO3N7IYvjuV6TBftsCP2HCxaFm9fBAbF8FOSiXrZfjB73QldIjLpo0ABxPG-0MrYuFJncoMrzcf7UTehklCmZ6MTgWmPo8xWFl1vmbvG0Q4Q0peuJgRrD1oUHUdmnFEczuaP2Inix6P36xIwXH3X1QqcNVNUbqUi5_fe0ysDZUdcchYGgHhJY9EBbJ_xLGGGdGVvguAU6boiYu-uPkazQV5Djw7DsAxngY8gnvql27Irh1G7ALJT0WhJFcuI0rXKWGoXT-8Tnvjc77vIpTVWDEiXLOli-64KVNlWG2TF33ggrVePL_mg_HHqjaeHg-bZC3kM0q403y1YdrA
+Content-Length: 60
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+    "amount": 10000,
+    "reasonForLoan": "To buy a car"
+}
+
+<> 2023-06-25T100611.201.json
+
+###
+
 GET http://localhost:8080/loans/1
 Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3NjgzODYwLCJpYXQiOjE2ODc2NzY2NjAsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.dIibXESuO3N7IYvjuV6TBftsCP2HCxaFm9fBAbF8FOSiXrZfjB73QldIjLpo0ABxPG-0MrYuFJncoMrzcf7UTehklCmZ6MTgWmPo8xWFl1vmbvG0Q4Q0peuJgRrD1oUHUdmnFEczuaP2Inix6P36xIwXH3X1QqcNVNUbqUi5_fe0ysDZUdcchYGgHhJY9EBbJ_xLGGGdGVvguAU6boiYu-uPkazQV5Djw7DsAxngY8gnvql27Irh1G7ALJT0WhJFcuI0rXKWGoXT-8Tnvjc77vIpTVWDEiXLOli-64KVNlWG2TF33ggrVePL_mg_HHqjaeHg-bZC3kM0q403y1YdrA
 Connection: Keep-Alive
@@ -229,469 +713,6 @@ Accept-Encoding: br,deflate,gzip,x-gzip
 }
 
 <> 2023-06-24T170659.201.json
-
-###
-
-GET http://localhost:8080/loans/applications/active
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2MjIwNDEsImlhdCI6MTY4NzYxNDg0MSwicm9sZXMiOlsiTUVNQkVSIiwiQ0hBSVJNQU4iXX0.K-9UJfUotgO9FgOJHpHPDNR7mAr_id69yoiPV0yzODbirQmkfFNaiJJWVZBdnX_xXEP_0ZSLWeZlfXKGvQxhcEVcCWVoz1CbtX2cNz67vIT0iESd7-CFNVmiJe79-rePUgXptumvSktqVpEE9FqPqnLtaeZDO3vXferrZGDBv1-0ZYbPMD1MCbfuP_iHnC2BTbYrsz_x6h92JtC6HMtHAKut1Pe3K2iMbZgD_buigcL-ZlrPluuogIs3kBjcHCgPPH4ryZXiicYg51wOFVdFDuuJlPwSPXj3IqRpEntCmMu1eQZyJGYuqjeaUDtWDGIZRpKLgsaLmGE4SKJAumCkXg
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2023-06-24T170631.500.json
-
-###
-
-GET http://localhost:8080/loans/applications/active
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2MjIwNDEsImlhdCI6MTY4NzYxNDg0MSwicm9sZXMiOlsiTUVNQkVSIiwiQ0hBSVJNQU4iXX0.K-9UJfUotgO9FgOJHpHPDNR7mAr_id69yoiPV0yzODbirQmkfFNaiJJWVZBdnX_xXEP_0ZSLWeZlfXKGvQxhcEVcCWVoz1CbtX2cNz67vIT0iESd7-CFNVmiJe79-rePUgXptumvSktqVpEE9FqPqnLtaeZDO3vXferrZGDBv1-0ZYbPMD1MCbfuP_iHnC2BTbYrsz_x6h92JtC6HMtHAKut1Pe3K2iMbZgD_buigcL-ZlrPluuogIs3kBjcHCgPPH4ryZXiicYg51wOFVdFDuuJlPwSPXj3IqRpEntCmMu1eQZyJGYuqjeaUDtWDGIZRpKLgsaLmGE4SKJAumCkXg
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2023-06-24T170251.200.json
-
-###
-
-POST http://localhost:8080/loans/applications/apply
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2MjIwNDEsImlhdCI6MTY4NzYxNDg0MSwicm9sZXMiOlsiTUVNQkVSIiwiQ0hBSVJNQU4iXX0.K-9UJfUotgO9FgOJHpHPDNR7mAr_id69yoiPV0yzODbirQmkfFNaiJJWVZBdnX_xXEP_0ZSLWeZlfXKGvQxhcEVcCWVoz1CbtX2cNz67vIT0iESd7-CFNVmiJe79-rePUgXptumvSktqVpEE9FqPqnLtaeZDO3vXferrZGDBv1-0ZYbPMD1MCbfuP_iHnC2BTbYrsz_x6h92JtC6HMtHAKut1Pe3K2iMbZgD_buigcL-ZlrPluuogIs3kBjcHCgPPH4ryZXiicYg51wOFVdFDuuJlPwSPXj3IqRpEntCmMu1eQZyJGYuqjeaUDtWDGIZRpKLgsaLmGE4SKJAumCkXg
-Content-Length: 60
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-    "amount": 10000,
-    "reasonForLoan": "To buy a car"
-}
-
-<> 2023-06-24T170246.201.json
-
-###
-
-GET http://localhost:8080/loans/applications/active
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2MjIwNDEsImlhdCI6MTY4NzYxNDg0MSwicm9sZXMiOlsiTUVNQkVSIiwiQ0hBSVJNQU4iXX0.K-9UJfUotgO9FgOJHpHPDNR7mAr_id69yoiPV0yzODbirQmkfFNaiJJWVZBdnX_xXEP_0ZSLWeZlfXKGvQxhcEVcCWVoz1CbtX2cNz67vIT0iESd7-CFNVmiJe79-rePUgXptumvSktqVpEE9FqPqnLtaeZDO3vXferrZGDBv1-0ZYbPMD1MCbfuP_iHnC2BTbYrsz_x6h92JtC6HMtHAKut1Pe3K2iMbZgD_buigcL-ZlrPluuogIs3kBjcHCgPPH4ryZXiicYg51wOFVdFDuuJlPwSPXj3IqRpEntCmMu1eQZyJGYuqjeaUDtWDGIZRpKLgsaLmGE4SKJAumCkXg
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-###
-
-POST http://localhost:8080/loans/applications/apply
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2MjIwNDEsImlhdCI6MTY4NzYxNDg0MSwicm9sZXMiOlsiTUVNQkVSIiwiQ0hBSVJNQU4iXX0.K-9UJfUotgO9FgOJHpHPDNR7mAr_id69yoiPV0yzODbirQmkfFNaiJJWVZBdnX_xXEP_0ZSLWeZlfXKGvQxhcEVcCWVoz1CbtX2cNz67vIT0iESd7-CFNVmiJe79-rePUgXptumvSktqVpEE9FqPqnLtaeZDO3vXferrZGDBv1-0ZYbPMD1MCbfuP_iHnC2BTbYrsz_x6h92JtC6HMtHAKut1Pe3K2iMbZgD_buigcL-ZlrPluuogIs3kBjcHCgPPH4ryZXiicYg51wOFVdFDuuJlPwSPXj3IqRpEntCmMu1eQZyJGYuqjeaUDtWDGIZRpKLgsaLmGE4SKJAumCkXg
-Content-Length: 60
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-    "amount": 10000,
-    "reasonForLoan": "To buy a car"
-}
-
-<> 2023-06-24T165636.201.json
-
-###
-
-GET http://localhost:8080/loans/applications/active
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2MjIwNDEsImlhdCI6MTY4NzYxNDg0MSwicm9sZXMiOlsiTUVNQkVSIiwiQ0hBSVJNQU4iXX0.K-9UJfUotgO9FgOJHpHPDNR7mAr_id69yoiPV0yzODbirQmkfFNaiJJWVZBdnX_xXEP_0ZSLWeZlfXKGvQxhcEVcCWVoz1CbtX2cNz67vIT0iESd7-CFNVmiJe79-rePUgXptumvSktqVpEE9FqPqnLtaeZDO3vXferrZGDBv1-0ZYbPMD1MCbfuP_iHnC2BTbYrsz_x6h92JtC6HMtHAKut1Pe3K2iMbZgD_buigcL-ZlrPluuogIs3kBjcHCgPPH4ryZXiicYg51wOFVdFDuuJlPwSPXj3IqRpEntCmMu1eQZyJGYuqjeaUDtWDGIZRpKLgsaLmGE4SKJAumCkXg
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-###
-
-GET http://localhost:8080/loans/applications/active
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc2MjIwNDEsImlhdCI6MTY4NzYxNDg0MSwicm9sZXMiOlsiTUVNQkVSIiwiQ0hBSVJNQU4iXX0.K-9UJfUotgO9FgOJHpHPDNR7mAr_id69yoiPV0yzODbirQmkfFNaiJJWVZBdnX_xXEP_0ZSLWeZlfXKGvQxhcEVcCWVoz1CbtX2cNz67vIT0iESd7-CFNVmiJe79-rePUgXptumvSktqVpEE9FqPqnLtaeZDO3vXferrZGDBv1-0ZYbPMD1MCbfuP_iHnC2BTbYrsz_x6h92JtC6HMtHAKut1Pe3K2iMbZgD_buigcL-ZlrPluuogIs3kBjcHCgPPH4ryZXiicYg51wOFVdFDuuJlPwSPXj3IqRpEntCmMu1eQZyJGYuqjeaUDtWDGIZRpKLgsaLmGE4SKJAumCkXg
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2023-06-24T165424.400.json
-
-###
-
-GET http://localhost:8080/loans/applications/active
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-###
-
-POST http://localhost:8080/auth/login
-Content-Type: application/json
-Content-Length: 56
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "username": "chairman",
-  "password": "9326Kalewi"
-}
-
-<> 2023-06-24T165402.200.json
-
-###
-
-GET http://localhost:8080/loans/1
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3NTE0NDUxLCJpYXQiOjE2ODc1MDcyNTEsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.MPrhFvPF-1pAg9ispzp5ggkttEldBgVEwirK27px6NpLy_j7NVjTiKHav_75Pw9p8tDco-ebpyzpogeykPg-wCMClzxbbsAjNMl_wj3D07xSuIUzHmlxWOA6b5h-BNKTKrEnj52UAQIDCRIV9JtWYawHEQwRj5ICnPnqtBQINTLofGKMWbJ46Sz8t9H1Y85sDHR7_V2uNeCaPp7IwuOLehSU6Qol-DBNMH2cf-rhFIEQAeQ0fFcEFD87fHXy6NoQE8h0qbF6Uh6CnVa9OMupu3QXh2QVIGLKuvZs9xs6Ks_Br5B7qkI0fnx-nXRdNHIFN3bBe55ib8crkKeeNGxnrw
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2023-06-23T110108.200.json
-
-###
-
-POST http://localhost:8080/loans/applications/1/approve
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg3NTE0NDUxLCJpYXQiOjE2ODc1MDcyNTEsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.MPrhFvPF-1pAg9ispzp5ggkttEldBgVEwirK27px6NpLy_j7NVjTiKHav_75Pw9p8tDco-ebpyzpogeykPg-wCMClzxbbsAjNMl_wj3D07xSuIUzHmlxWOA6b5h-BNKTKrEnj52UAQIDCRIV9JtWYawHEQwRj5ICnPnqtBQINTLofGKMWbJ46Sz8t9H1Y85sDHR7_V2uNeCaPp7IwuOLehSU6Qol-DBNMH2cf-rhFIEQAeQ0fFcEFD87fHXy6NoQE8h0qbF6Uh6CnVa9OMupu3QXh2QVIGLKuvZs9xs6Ks_Br5B7qkI0fnx-nXRdNHIFN3bBe55ib8crkKeeNGxnrw
-Content-Type: application/json
-Content-Length: 47
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "approved": true,
-  "message": "Approved"
-}
-
-<> 2023-06-23T110101.201.json
-
-###
-
-POST http://localhost:8080/auth/login
-Content-Type: application/json
-Content-Length: 57
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "username": "secretary",
-  "password": "9326Kalewi"
-}
-
-<> 2023-06-23T110051.200.json
-
-###
-
-GET http://localhost:8080/loans/applications/1
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidHJlYXN1cmVyIiwiZXhwIjoxNjg3NTE0MzU5LCJpYXQiOjE2ODc1MDcxNTksInJvbGVzIjpbIlRSRUFTVVJFUiJdfQ.PCQIMtymVH_op_7yLlEI9w0DyU3GH1iZ2s2XWEHukvVUHj-aAXk4dz2Z9SOPhk5pA4rpgO9DhJTZym3ZMJMeA9sf4Kl8zCbpnXY7kukGhSm74LOlmQjQCtbzo3-vvKBcut-qJVpnyVTJBaH6HbML9k_iMR5B5LE4Rs04zy5m_BenoEfENHMLah50Vh0Rh2Ta8gG8qxkPQSn5D_1h1zREjMllaubQve496OgyqsRmueqAzCyHq9hSwCukZATyhqlDPv9Zby86MK_98pMNwyLL_48MmJbJwm1Y4ihHfElB546WfVaioMTU7gMve0WjVe4D_ISTbb3rJ-v2Bo9eCx59MA
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2023-06-23T110039.200.json
-
-###
-
-GET http://localhost:8080/loans/1
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidHJlYXN1cmVyIiwiZXhwIjoxNjg3NTE0MzU5LCJpYXQiOjE2ODc1MDcxNTksInJvbGVzIjpbIlRSRUFTVVJFUiJdfQ.PCQIMtymVH_op_7yLlEI9w0DyU3GH1iZ2s2XWEHukvVUHj-aAXk4dz2Z9SOPhk5pA4rpgO9DhJTZym3ZMJMeA9sf4Kl8zCbpnXY7kukGhSm74LOlmQjQCtbzo3-vvKBcut-qJVpnyVTJBaH6HbML9k_iMR5B5LE4Rs04zy5m_BenoEfENHMLah50Vh0Rh2Ta8gG8qxkPQSn5D_1h1zREjMllaubQve496OgyqsRmueqAzCyHq9hSwCukZATyhqlDPv9Zby86MK_98pMNwyLL_48MmJbJwm1Y4ihHfElB546WfVaioMTU7gMve0WjVe4D_ISTbb3rJ-v2Bo9eCx59MA
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2023-06-23T110024.500.json
-
-###
-
-POST http://localhost:8080/loans/applications/1/approve
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidHJlYXN1cmVyIiwiZXhwIjoxNjg3NTE0MzU5LCJpYXQiOjE2ODc1MDcxNTksInJvbGVzIjpbIlRSRUFTVVJFUiJdfQ.PCQIMtymVH_op_7yLlEI9w0DyU3GH1iZ2s2XWEHukvVUHj-aAXk4dz2Z9SOPhk5pA4rpgO9DhJTZym3ZMJMeA9sf4Kl8zCbpnXY7kukGhSm74LOlmQjQCtbzo3-vvKBcut-qJVpnyVTJBaH6HbML9k_iMR5B5LE4Rs04zy5m_BenoEfENHMLah50Vh0Rh2Ta8gG8qxkPQSn5D_1h1zREjMllaubQve496OgyqsRmueqAzCyHq9hSwCukZATyhqlDPv9Zby86MK_98pMNwyLL_48MmJbJwm1Y4ihHfElB546WfVaioMTU7gMve0WjVe4D_ISTbb3rJ-v2Bo9eCx59MA
-Content-Type: application/json
-Content-Length: 47
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "approved": true,
-  "message": "Approved"
-}
-
-<> 2023-06-23T105948.500.json
-
-###
-
-POST http://localhost:8080/auth/login
-Content-Type: application/json
-Content-Length: 57
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "username": "treasurer",
-  "password": "9326Kalewi"
-}
-
-<> 2023-06-23T105919.200.json
-
-###
-
-GET http://localhost:8080/loans/applications/1
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidHJlYXN1cmVyIiwiZXhwIjoxNjg3NTE0MzIzLCJpYXQiOjE2ODc1MDcxMjMsInJvbGVzIjpbIlRSRUFTVVJFUiJdfQ.jnzFGpkEQ3a1ZYXOiVSt2UVpMYXlnan0DNJo27SvgJ9kafTvYKXSFSco4d7HO4XryXAHlXvGCAOjCzqN1MgA8Xsxm9jXNUgh2TBJP7qSFjxhWgS0C1khZmgBTMTZo60GL5_eJnBdpzE56_jGeo9OMbvWCLVm_F3mhuQ849dSIGwGW2ZRnvNL72CXohwjJAAih0oQX3tovRU8CYds6GUnpLq8HPQscCZ1X28C7pnSIcETuOfq6sMp_wAvGq368IOSmavOal6wU_MLOBtlH48ue9RHXO1D5p2maMijQ84xoLcEinr3t9hHLfB_QVjBLfmfM7KTnd0u5r3EXSEnQg2SRw
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2023-06-23T105906.200.json
-
-###
-
-POST http://localhost:8080/loans/applications/1/approve
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidHJlYXN1cmVyIiwiZXhwIjoxNjg3NTE0MzIzLCJpYXQiOjE2ODc1MDcxMjMsInJvbGVzIjpbIlRSRUFTVVJFUiJdfQ.jnzFGpkEQ3a1ZYXOiVSt2UVpMYXlnan0DNJo27SvgJ9kafTvYKXSFSco4d7HO4XryXAHlXvGCAOjCzqN1MgA8Xsxm9jXNUgh2TBJP7qSFjxhWgS0C1khZmgBTMTZo60GL5_eJnBdpzE56_jGeo9OMbvWCLVm_F3mhuQ849dSIGwGW2ZRnvNL72CXohwjJAAih0oQX3tovRU8CYds6GUnpLq8HPQscCZ1X28C7pnSIcETuOfq6sMp_wAvGq368IOSmavOal6wU_MLOBtlH48ue9RHXO1D5p2maMijQ84xoLcEinr3t9hHLfB_QVjBLfmfM7KTnd0u5r3EXSEnQg2SRw
-Content-Type: application/json
-Content-Length: 47
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "approved": true,
-  "message": "Approved"
-}
-
-<> 2023-06-23T105854.201.json
-
-###
-
-POST http://localhost:8080/auth/login
-Content-Type: application/json
-Content-Length: 57
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "username": "treasurer",
-  "password": "9326Kalewi"
-}
-
-<> 2023-06-23T105843.200.json
-
-###
-
-POST http://localhost:8080/loans/applications/1/approve
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc1MTQyNzIsImlhdCI6MTY4NzUwNzA3Miwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.MYWzzijECOdlNb8AW2ngeQB7cgo64dHXYaY2DbrwMNGrGykwn5mZLlp5eIHTY7-k19HqTd0GRA6dRhNgw60iqC-WrzCCSWLg0OCoY1VapsGCV7JfoiC7-fvKlkG2yzkKLf7qjAae-243QTKivWAia0HmxfptmBhVqrU2woBy5GmPeYdGQeiXTGI0W1P4X2Ga0NZYFF0KIr8iDlJ5sHNeA7eVxjnCGcSRLes9_Uxtv92sKcVhaWm4M6oOI5oshVPGyrpSbV_GXFpfH49E7xZ72uNnExRBDj8fq1TVLbCksfRHGKtXru4j-9chHsvFPDI73mQDIX3OmWr2ndFCyvt7wA
-Content-Type: application/json
-Content-Length: 47
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "approved": true,
-  "message": "Approved"
-}
-
-<> 2023-06-23T105822.201.json
-
-###
-
-POST http://localhost:8080/loans/applications/apply
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc1MTQyNzIsImlhdCI6MTY4NzUwNzA3Miwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.MYWzzijECOdlNb8AW2ngeQB7cgo64dHXYaY2DbrwMNGrGykwn5mZLlp5eIHTY7-k19HqTd0GRA6dRhNgw60iqC-WrzCCSWLg0OCoY1VapsGCV7JfoiC7-fvKlkG2yzkKLf7qjAae-243QTKivWAia0HmxfptmBhVqrU2woBy5GmPeYdGQeiXTGI0W1P4X2Ga0NZYFF0KIr8iDlJ5sHNeA7eVxjnCGcSRLes9_Uxtv92sKcVhaWm4M6oOI5oshVPGyrpSbV_GXFpfH49E7xZ72uNnExRBDj8fq1TVLbCksfRHGKtXru4j-9chHsvFPDI73mQDIX3OmWr2ndFCyvt7wA
-Content-Length: 60
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-    "amount": 10000,
-    "reasonForLoan": "To buy a car"
-}
-
-<> 2023-06-23T105811.201.json
-
-###
-
-POST http://localhost:8080/auth/login
-Content-Type: application/json
-Content-Length: 56
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "username": "chairman",
-  "password": "9326Kalewi"
-}
-
-<> 2023-06-23T105752.200.json
-
-###
-
-GET http://localhost:8080/loans/1/application
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc1MDkxNTIsImlhdCI6MTY4NzUwMTk1Miwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.SBQovovL-VW8Fifc8KpktsJZh_2mO_HJ-TGq-tQZ5v1Q1ahxjOaBRtQlZNgo1klI06t2AK_74OqJJ2EBRFQgJPKDG8dMEFwNKJSktkqF3xJCckhkNKoQupmMsmbFzBf83mV87LD_hDba4H0UA9n-P1BWbFNzqOZs0XzTBqf3Hf-H1bLuKklaNFFcygll85wBt9EZSKbqUsYCXE-8AMIv4Mp_mrAohD28DHqXbKgfDyvQx7uYYHRHxJTV69s6JMsR1zqjSRZJFCobWzcNELZTNW3vghPWAYO9pcnuSMPDxGZmQHPtNKDoMGISSfJSbPdPP_YTr-LLj5_c4paED30kiA
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2023-06-23T104140.200.json
-
-###
-
-POST http://localhost:8080/loans/1/approve
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc1MDkxNTIsImlhdCI6MTY4NzUwMTk1Miwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.SBQovovL-VW8Fifc8KpktsJZh_2mO_HJ-TGq-tQZ5v1Q1ahxjOaBRtQlZNgo1klI06t2AK_74OqJJ2EBRFQgJPKDG8dMEFwNKJSktkqF3xJCckhkNKoQupmMsmbFzBf83mV87LD_hDba4H0UA9n-P1BWbFNzqOZs0XzTBqf3Hf-H1bLuKklaNFFcygll85wBt9EZSKbqUsYCXE-8AMIv4Mp_mrAohD28DHqXbKgfDyvQx7uYYHRHxJTV69s6JMsR1zqjSRZJFCobWzcNELZTNW3vghPWAYO9pcnuSMPDxGZmQHPtNKDoMGISSfJSbPdPP_YTr-LLj5_c4paED30kiA
-Content-Type: application/json
-Content-Length: 47
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "approved": true,
-  "message": "Approved"
-}
-
-<> 2023-06-23T104131.201.json
-
-###
-
-POST http://localhost:8080/loans/apply
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc1MDkxNTIsImlhdCI6MTY4NzUwMTk1Miwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.SBQovovL-VW8Fifc8KpktsJZh_2mO_HJ-TGq-tQZ5v1Q1ahxjOaBRtQlZNgo1klI06t2AK_74OqJJ2EBRFQgJPKDG8dMEFwNKJSktkqF3xJCckhkNKoQupmMsmbFzBf83mV87LD_hDba4H0UA9n-P1BWbFNzqOZs0XzTBqf3Hf-H1bLuKklaNFFcygll85wBt9EZSKbqUsYCXE-8AMIv4Mp_mrAohD28DHqXbKgfDyvQx7uYYHRHxJTV69s6JMsR1zqjSRZJFCobWzcNELZTNW3vghPWAYO9pcnuSMPDxGZmQHPtNKDoMGISSfJSbPdPP_YTr-LLj5_c4paED30kiA
-Content-Length: 60
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-    "amount": 10000,
-    "reasonForLoan": "To buy a car"
-}
-
-<> 2023-06-23T104115.201.json
-
-###
-
-POST http://localhost:8080/loans/apply
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc1MDkxNTIsImlhdCI6MTY4NzUwMTk1Miwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.SBQovovL-VW8Fifc8KpktsJZh_2mO_HJ-TGq-tQZ5v1Q1ahxjOaBRtQlZNgo1klI06t2AK_74OqJJ2EBRFQgJPKDG8dMEFwNKJSktkqF3xJCckhkNKoQupmMsmbFzBf83mV87LD_hDba4H0UA9n-P1BWbFNzqOZs0XzTBqf3Hf-H1bLuKklaNFFcygll85wBt9EZSKbqUsYCXE-8AMIv4Mp_mrAohD28DHqXbKgfDyvQx7uYYHRHxJTV69s6JMsR1zqjSRZJFCobWzcNELZTNW3vghPWAYO9pcnuSMPDxGZmQHPtNKDoMGISSfJSbPdPP_YTr-LLj5_c4paED30kiA
-Content-Length: 60
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-    "amount": 10000,
-    "reasonForLoan": "To buy a car"
-}
-
-<> 2023-06-23T094604.201.json
-
-###
-
-GET http://localhost:8080/loans/1/application
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc1MDkxNTIsImlhdCI6MTY4NzUwMTk1Miwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.SBQovovL-VW8Fifc8KpktsJZh_2mO_HJ-TGq-tQZ5v1Q1ahxjOaBRtQlZNgo1klI06t2AK_74OqJJ2EBRFQgJPKDG8dMEFwNKJSktkqF3xJCckhkNKoQupmMsmbFzBf83mV87LD_hDba4H0UA9n-P1BWbFNzqOZs0XzTBqf3Hf-H1bLuKklaNFFcygll85wBt9EZSKbqUsYCXE-8AMIv4Mp_mrAohD28DHqXbKgfDyvQx7uYYHRHxJTV69s6JMsR1zqjSRZJFCobWzcNELZTNW3vghPWAYO9pcnuSMPDxGZmQHPtNKDoMGISSfJSbPdPP_YTr-LLj5_c4paED30kiA
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2023-06-23T094301.200.json
-
-###
-
-GET http://localhost:8080/loans/1
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc1MDkxNTIsImlhdCI6MTY4NzUwMTk1Miwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.SBQovovL-VW8Fifc8KpktsJZh_2mO_HJ-TGq-tQZ5v1Q1ahxjOaBRtQlZNgo1klI06t2AK_74OqJJ2EBRFQgJPKDG8dMEFwNKJSktkqF3xJCckhkNKoQupmMsmbFzBf83mV87LD_hDba4H0UA9n-P1BWbFNzqOZs0XzTBqf3Hf-H1bLuKklaNFFcygll85wBt9EZSKbqUsYCXE-8AMIv4Mp_mrAohD28DHqXbKgfDyvQx7uYYHRHxJTV69s6JMsR1zqjSRZJFCobWzcNELZTNW3vghPWAYO9pcnuSMPDxGZmQHPtNKDoMGISSfJSbPdPP_YTr-LLj5_c4paED30kiA
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2023-06-23T094247.200.json
-
-###
-
-POST http://localhost:8080/loans/1/approve
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc1MDkxNTIsImlhdCI6MTY4NzUwMTk1Miwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.SBQovovL-VW8Fifc8KpktsJZh_2mO_HJ-TGq-tQZ5v1Q1ahxjOaBRtQlZNgo1klI06t2AK_74OqJJ2EBRFQgJPKDG8dMEFwNKJSktkqF3xJCckhkNKoQupmMsmbFzBf83mV87LD_hDba4H0UA9n-P1BWbFNzqOZs0XzTBqf3Hf-H1bLuKklaNFFcygll85wBt9EZSKbqUsYCXE-8AMIv4Mp_mrAohD28DHqXbKgfDyvQx7uYYHRHxJTV69s6JMsR1zqjSRZJFCobWzcNELZTNW3vghPWAYO9pcnuSMPDxGZmQHPtNKDoMGISSfJSbPdPP_YTr-LLj5_c4paED30kiA
-Content-Type: application/json
-Content-Length: 47
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "approved": true,
-  "message": "Approved"
-}
-
-<> 2023-06-23T094233.201.json
-
-###
-
-POST http://localhost:8080/loans/apply
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc1MDkxNTIsImlhdCI6MTY4NzUwMTk1Miwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.SBQovovL-VW8Fifc8KpktsJZh_2mO_HJ-TGq-tQZ5v1Q1ahxjOaBRtQlZNgo1klI06t2AK_74OqJJ2EBRFQgJPKDG8dMEFwNKJSktkqF3xJCckhkNKoQupmMsmbFzBf83mV87LD_hDba4H0UA9n-P1BWbFNzqOZs0XzTBqf3Hf-H1bLuKklaNFFcygll85wBt9EZSKbqUsYCXE-8AMIv4Mp_mrAohD28DHqXbKgfDyvQx7uYYHRHxJTV69s6JMsR1zqjSRZJFCobWzcNELZTNW3vghPWAYO9pcnuSMPDxGZmQHPtNKDoMGISSfJSbPdPP_YTr-LLj5_c4paED30kiA
-Content-Length: 60
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-    "amount": 10000,
-    "reasonForLoan": "To buy a car"
-}
-
-<> 2023-06-23T094213.201.json
-
-###
-
-GET http://localhost:8080/members
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2023-06-23T094156.200.json
-
-###
-
-POST http://localhost:8080/loans/apply
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODc1MDkxNTIsImlhdCI6MTY4NzUwMTk1Miwicm9sZXMiOlsiQ0hBSVJNQU4iLCJNRU1CRVIiXX0.SBQovovL-VW8Fifc8KpktsJZh_2mO_HJ-TGq-tQZ5v1Q1ahxjOaBRtQlZNgo1klI06t2AK_74OqJJ2EBRFQgJPKDG8dMEFwNKJSktkqF3xJCckhkNKoQupmMsmbFzBf83mV87LD_hDba4H0UA9n-P1BWbFNzqOZs0XzTBqf3Hf-H1bLuKklaNFFcygll85wBt9EZSKbqUsYCXE-8AMIv4Mp_mrAohD28DHqXbKgfDyvQx7uYYHRHxJTV69s6JMsR1zqjSRZJFCobWzcNELZTNW3vghPWAYO9pcnuSMPDxGZmQHPtNKDoMGISSfJSbPdPP_YTr-LLj5_c4paED30kiA
-Content-Length: 60
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-    "amount": 10000,
-    "reasonForLoan": "To buy a car"
-}
-
-<> 2023-06-23T093245.500.json
-
-###
-
-POST http://localhost:8080/auth/login
-Content-Type: application/json
-Content-Length: 56
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "username": "chairman",
-  "password": "9326Kalewi"
-}
-
-<> 2023-06-23T093232.200.json
-
-###
-
-POST http://localhost:8080/auth/login
-Content-Type: application/json
-Content-Length: 50
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "username": "chairman",
-  "password": "9326"
-}
 
 ###
 

@@ -3,6 +3,7 @@ package chamapool.application.loans;
 import chamapool.application.loans.responses.LoanEligibilityResponse;
 import chamapool.domain.loans.VO.LoanVO;
 import chamapool.domain.member.models.Member;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,4 +23,9 @@ public class LoansController {
   public LoanEligibilityResponse checkLoanEligibility(Member member) {
     return this.applicationsService.checkLoanEligibility(member);
   }
+
+    @GetMapping("/my-loans")
+    public List<LoanVO> retrieveMemberLoans(Member member) {
+        return this.loansService.retrieveMemberLoans(member);
+    }
 }
