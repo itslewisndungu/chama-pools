@@ -15,34 +15,34 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/loans/applications")
 @RequiredArgsConstructor
 public class LoanApplicationsController {
-  private final LoansService loansService;
+  private final LoanApplicationsService applicationsService;
 
   @GetMapping()
   public List<LoanApplicationVO> retrieveLoanApplications() {
-    return this.loansService.retrieveLoanApplications();
+    return this.applicationsService.retrieveAllApplications();
   }
 
   @GetMapping("/active")
-  public LoanApplicationVO retrieveActiveLoanApplication(Member member) {
-    return this.loansService.getMemberActiveLoanApplication(member);
+  public LoanApplicationVO retrieveMemberActiveLoanApplication(Member member) {
+    return this.applicationsService.retrieveMemberActiveApplication(member);
   }
 
   @GetMapping("/{applicationId}")
   public LoanApplicationVO retrieveLoanApplication(@PathVariable Integer applicationId) {
-    return this.loansService.retrieveLoanApplication(applicationId);
+    return this.applicationsService.retrieveApplication(applicationId);
   }
 
   @PostMapping("/apply")
   @ResponseStatus(HttpStatus.CREATED)
   public LoanApplicationVO applyForLoan(Member member, @RequestBody LoanApplicationRequest req) {
-    return this.loansService.applyForLoan(member, req);
+    return this.applicationsService.applyForLoan(member, req);
   }
 
   @PostMapping("/{applicationId}/approve")
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasAnyRole('CHAIRMAN', 'TREASURER', 'SECRETARY')")
-  public LoanApprovalVO approveLoan(
+  public LoanApprovalVO approveLoanApplication(
       Member member, @PathVariable Integer applicationId, @RequestBody LoanApprovalRequest req) {
-    return this.loansService.approveLoan(member, applicationId, req);
+    return this.applicationsService.approveApplication(member, applicationId, req);
   }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class LoansController {
   private final LoansService loansService;
+  private final LoanApplicationsService applicationsService;
 
   @GetMapping("/{loanId}")
   public LoanVO retrieveLoan(@PathVariable Integer loanId) {
@@ -19,6 +20,6 @@ public class LoansController {
 
   @GetMapping("/eligibility")
   public LoanEligibilityResponse checkLoanEligibility(Member member) {
-    return this.loansService.checkLoanEligibility(member);
+    return this.applicationsService.checkLoanEligibility(member);
   }
 }
