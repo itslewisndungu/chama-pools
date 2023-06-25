@@ -32,6 +32,16 @@ public class LoansService {
   private final LoanApplicationRepository loanApplicationRepository;
   private final MemberRepository memberRepository;
 
+  public List<LoanApplicationVO> retrieveLoanApplications() {
+    return this.loanApplicationRepository.findAll().stream()
+        .map(
+            application -> {
+              var approvals = this.retrieveLoanApprovals(application);
+              return new LoanApplicationVO(application, approvals);
+            })
+        .toList();
+  }
+
   @Transactional
   public LoanApplicationVO applyForLoan(Member applicant, LoanApplicationRequest req) {
     log.info(
@@ -64,17 +74,15 @@ public class LoansService {
         "{} approving {}", stakeholder.firstName() + ' ' + stakeholder.lastName(), loanApplication);
 
     var approval =
-        new LoanApproval()
-            .id(new LoanApprovalId())
-            .stakeholder(stakeholder)
-            .loanApplication(loanApplication)
+        loanApprovalRepository
+            .getLoanApprovalsByStakeholderAndLoanApplication(stakeholder, loanApplication)
+            .orElse(
+                new LoanApproval()
+                    .id(new LoanApprovalId())
+                    .stakeholder(stakeholder)
+                    .loanApplication(loanApplication))
+            .status(req.approved() ? LoanApprovalStatus.APPROVED : LoanApprovalStatus.REJECTED)
             .message(req.message());
-
-    if (req.approved()) {
-      approval.status(LoanApprovalStatus.APPROVED);
-    } else {
-      approval.status(LoanApprovalStatus.REJECTED);
-    }
 
     loanApprovalRepository.save(approval);
 
@@ -150,12 +158,25 @@ public class LoansService {
   private void generateLoanOnSuccessfulApproval(LoanApplication application) {
     var loanApprovals = this.retrieveLoanApprovals(application);
 
+    var awaitingApproval =
+        loanApprovals.chairman().status() == LoanApprovalStatus.AWAITING_APPROVAL
+            || loanApprovals.secretary().status() == LoanApprovalStatus.AWAITING_APPROVAL
+            || loanApprovals.treasurer().status() == LoanApprovalStatus.AWAITING_APPROVAL;
+
     var approved =
         loanApprovals.chairman().status() == LoanApprovalStatus.APPROVED
             && loanApprovals.secretary().status() == LoanApprovalStatus.APPROVED
             && loanApprovals.treasurer().status() == LoanApprovalStatus.APPROVED;
 
-    if (approved) {
+    var rejected =
+        loanApprovals.chairman().status() == LoanApprovalStatus.REJECTED
+            || loanApprovals.secretary().status() == LoanApprovalStatus.REJECTED
+            || loanApprovals.treasurer().status() == LoanApprovalStatus.REJECTED;
+
+    if (!awaitingApproval && approved) {
+      application.approvalStatus(LoanApprovalStatus.APPROVED);
+      loanApplicationRepository.save(application);
+
       var loan =
           new Loan()
               .member(application.member())
@@ -164,21 +185,14 @@ public class LoansService {
               .status(LoanStatus.AWAITING_DISBURSEMENT);
 
       loanRepository.save(loan);
+    } else if (!awaitingApproval && rejected) {
+      application.approvalStatus(LoanApprovalStatus.REJECTED);
+      loanApplicationRepository.save(application);
     }
   }
 
   private Optional<LoanApplication> retrieveActiveLoanApplication(Member member) {
     return this.loanApplicationRepository.getLoanApplicationByMemberAndApprovalStatus(
         member, LoanApprovalStatus.AWAITING_APPROVAL);
-  }
-
-  public List<LoanApplicationVO> retrieveLoanApplications() {
-    return this.loanApplicationRepository.findAll().stream()
-        .map(
-            application -> {
-              var approvals = this.retrieveLoanApprovals(application);
-              return new LoanApplicationVO(application, approvals);
-            })
-        .toList();
   }
 }
