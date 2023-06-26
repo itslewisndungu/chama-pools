@@ -2,11 +2,15 @@ package chamapool;
 
 import chamapool.domain.chama.Chama;
 import chamapool.domain.chama.ChamaRepository;
+import chamapool.domain.loans.Loan;
+import chamapool.domain.loans.enums.LoanStatus;
+import chamapool.domain.loans.repositories.LoanRepository;
 import chamapool.domain.member.enums.MemberRole;
 import chamapool.domain.member.enums.Status;
 import chamapool.domain.member.models.*;
 import chamapool.domain.member.repositories.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +29,7 @@ public class AppRunner implements CommandLineRunner {
   private final OccupationRepository occupationRepository;
   private final RoleRepository roleRepository;
   private final ChamaRepository chamaRepository;
+  private final LoanRepository loanRepository;
 
   @Override
   public void run(String... args) {
@@ -131,6 +136,22 @@ public class AppRunner implements CommandLineRunner {
     secretary.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
     memberRepository.save(secretary);
 
-    log.info("Done");
+    log.info("Generating a new loans ..");
+    Loan loan =
+        new Loan()
+            .reasonForLoan("To buy a car")
+            .amount(100000.0)
+            .member(chairman)
+            .status(LoanStatus.AWAITING_DISBURSEMENT);
+
+    Loan loan2 =
+        new Loan()
+            .reasonForLoan("To buy a car")
+            .amount(100000.0)
+            .member(member)
+            .startDate(LocalDate.now())
+            .status(LoanStatus.ACTIVE);
+
+    loanRepository.saveAll(List.of(loan, loan2));
   }
 }
