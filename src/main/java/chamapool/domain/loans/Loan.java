@@ -25,11 +25,9 @@ public class Loan {
   private Double amount;
   private String reasonForLoan;
 
-  @CreatedDate private
-  LocalDate approvedDate;
+  @CreatedDate private LocalDate approvedDate;
 
   private LocalDate startDate;
-  private LocalDate expectedEndDate = LocalDate.now().plusMonths(3);
   private LocalDate endDate;
 
   @ManyToOne
@@ -37,13 +35,21 @@ public class Loan {
   private Member member;
 
   @Enumerated(EnumType.STRING)
-  private LoanStatus status = LoanStatus.PENDING;
+  private LoanStatus status = LoanStatus.AWAITING_DISBURSEMENT;
 
   @OneToMany(mappedBy = "loan")
   private List<LoanRepayment> repayments = new ArrayList<>();
 
   public Double interestRate() {
     return 10.0;
+  }
+
+  public LocalDate dueDate() {
+    if (this.startDate != null) {
+      return this.startDate.plusMonths(3);
+    } else {
+      return null;
+    }
   }
 
   public Double interestEarned() {
