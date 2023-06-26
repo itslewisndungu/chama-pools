@@ -1,7 +1,7 @@
 package chamapool.domain.loans.enums;
 
 public enum LoanStatus {
-  PENDING,
+  OVERDUE,
   ACTIVE,
   REPAID,
   AWAITING_DISBURSEMENT
