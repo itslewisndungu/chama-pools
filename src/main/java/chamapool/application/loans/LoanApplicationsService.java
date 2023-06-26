@@ -105,12 +105,26 @@ public class LoanApplicationsService {
 
   public LoanEligibilityResponse checkLoanEligibility(Member member) {
     var application = this.retrieveActiveApplication(member);
+    var activeLoan = this.getActiveMemberLoan(member);
 
     if (application.isPresent()) {
       return new LoanEligibilityResponse(false, null, "You have an active loan application");
+    } else if (activeLoan.isPresent()) {
+      return new LoanEligibilityResponse(
+          false, null, "You have an active loan. Please pay up first");
     }
 
     return new LoanEligibilityResponse(true, 100000, null);
+  }
+
+  private Optional<Loan> getActiveMemberLoan(Member member) {
+    return this.loanRepository.getLoansByMember(member).stream()
+        .filter(
+            loan ->
+                loan.status() == LoanStatus.ACTIVE
+                    || loan.status() == LoanStatus.OVERDUE
+                    || loan.status() == LoanStatus.AWAITING_DISBURSEMENT)
+        .findFirst();
   }
 
   private Approvals retrieveLoanApprovals(LoanApplication loanApplication) {
