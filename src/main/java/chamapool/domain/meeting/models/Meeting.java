@@ -8,6 +8,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -21,10 +22,12 @@ public class Meeting {
   @Column(name = "meeting_id")
   private Integer meetingId;
 
+  private String title;
   private String agenda;
 
-  @Column(name = "date")
-  private LocalDate date;
+  @CreatedDate private LocalDate dateOfScheduling;
+
+  private LocalDate meetingDate;
 
   @Enumerated(EnumType.STRING)
   private MeetingKind kind;

@@ -4,12 +4,13 @@ import chamapool.application.meetings.requests.CreateMeetingRequest;
 import chamapool.application.meetings.requests.MeetingAttendanceRequest;
 import chamapool.domain.meeting.MeetingVO;
 import chamapool.domain.meeting.enums.MeetingKind;
-import chamapool.domain.meeting.enums.MeetingPresence;
 import chamapool.domain.meeting.models.Meeting;
 import chamapool.domain.meeting.models.MeetingAttendance;
 import chamapool.domain.meeting.repositories.MeetingAttendanceRepository;
 import chamapool.domain.meeting.repositories.MeetingRepository;
+import chamapool.domain.member.models.Member;
 import chamapool.domain.member.repositories.MemberRepository;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,55 +25,33 @@ public class MeetingsService {
   public MeetingVO createMeeting(CreateMeetingRequest request) {
     Meeting meeting =
         new Meeting()
-            .date(request.date())
+            .meetingDate(request.date())
+            .title(request.title())
             .agenda(request.agenda())
-            .kind(request.kind().orElse(MeetingKind.REGULAR));
+            .kind(request.kind().orElse(MeetingKind.MONTHLY_MEETING));
 
     meetingRepository.save(meeting);
-
     return new MeetingVO(meeting);
   }
 
   public MeetingVO registerMeetingAttendance(Integer meetingId, MeetingAttendanceRequest request) {
-    var meeting = meetingRepository.getReferenceById(meetingId);
+    Meeting meeting = meetingRepository.getReferenceById(meetingId);
+    List<MeetingAttendance> meetingAttendance = new ArrayList<>();
 
-    var membersPresent =
-        request.membersPresent().stream().map(memberRepository::getReferenceById).toList();
+    for (var a : request.attendances()) {
+      Member member = memberRepository.getReferenceById(a.memberId());
 
-    membersPresent.forEach(
-        member ->
-            meetingAttendanceRepository.save(
-                new MeetingAttendance()
-                    .meeting(meeting)
-                    .member(member)
-                    .presence(MeetingPresence.PRESENT)));
+      var attendance =
+          new MeetingAttendance()
+              .meeting(meeting)
+              .member(member)
+              .isPresent(a.isPresent())
+              .apology(a.isPresent() ? null : "No apology");
 
-    var membersAbsentWithApology =
-        request.membersAbsentWithApology().stream()
-            .map(memberRepository::getReferenceById)
-            .toList();
+      meetingAttendance.add(attendance);
+    }
 
-    membersAbsentWithApology.forEach(
-        member ->
-            meetingAttendanceRepository.save(
-                new MeetingAttendance()
-                    .meeting(meeting)
-                    .member(member)
-                    .presence(MeetingPresence.ABSENT_WITH_APOLOGY)));
-
-    var membersAbsentWithoutApology =
-        request.membersAbsentWithoutApology().stream()
-            .map(memberRepository::getReferenceById)
-            .toList();
-
-    membersAbsentWithoutApology.forEach(
-        member ->
-            meetingAttendanceRepository.save(
-                new MeetingAttendance()
-                    .meeting(meeting)
-                    .member(member)
-                    .presence(MeetingPresence.ABSENT_WITHOUT_APOLOGY)));
-
+    meetingAttendanceRepository.saveAll(meetingAttendance);
     return new MeetingVO(meeting);
   }
 
