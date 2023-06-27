@@ -14,20 +14,21 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @Accessors(chain = true, fluent = true)
 public class LoanApproval {
-  @EmbeddedId private LoanApprovalId id = new LoanApprovalId();
+  @EmbeddedId
+  private LoanApprovalId id = new LoanApprovalId();
 
   @Enumerated(EnumType.STRING)
   private LoanApprovalStatus status;
 
   private String message;
 
-  @ManyToOne
   @MapsId("loanApplicationId")
+  @ManyToOne
   @JoinColumn(name = "loan_application_id")
   private LoanApplication loanApplication;
 
-  @ManyToOne
   @MapsId("stakeholderId")
+  @ManyToOne
   @JoinColumn(name = "stakeholder_id")
   private Member stakeholder;
 }

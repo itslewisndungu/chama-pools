@@ -24,8 +24,8 @@ public class LoansController {
     return this.applicationsService.checkLoanEligibility(member);
   }
 
-    @GetMapping("/my-loans")
-    public List<LoanVO> retrieveMemberLoans(Member member) {
-        return this.loansService.retrieveMemberLoans(member);
-    }
+  @GetMapping("/my-loans")
+  public List<LoanVO> retrieveMemberLoans(Member member) {
+    return this.loansService.retrieveMemberLoans(member);
+  }
 }
