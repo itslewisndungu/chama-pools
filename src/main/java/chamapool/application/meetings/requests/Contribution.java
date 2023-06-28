@@ -1,3 +1,3 @@
 package chamapool.application.meetings.requests;
 
-public record Contribution(Integer memberId, Integer amount) {}
+public record Contribution(Integer memberId, Double amount) {}
