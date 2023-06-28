@@ -3,7 +3,9 @@ package chamapool.domain.meeting.models;
 import jakarta.persistence.Embeddable;
 import java.io.Serial;
 import java.io.Serializable;
+import lombok.Data;
 
+@Data
 @Embeddable
 public class MeetingContributionId implements Serializable {
     @Serial
