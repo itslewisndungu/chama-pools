@@ -1,6 +1,6 @@
 package chamapool.domain.meeting.enums;
 
-public enum MeetingKind {
+public enum MeetingCategory {
   MONTHLY_MEETING,
   WELFARE,
   EMERGENCY

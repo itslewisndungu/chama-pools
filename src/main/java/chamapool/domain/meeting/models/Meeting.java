@@ -1,6 +1,6 @@
 package chamapool.domain.meeting.models;
 
-import chamapool.domain.meeting.enums.MeetingKind;
+import chamapool.domain.meeting.enums.MeetingCategory;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class Meeting {
   private LocalDate meetingDate;
 
   @Enumerated(EnumType.STRING)
-  private MeetingKind kind;
+  private MeetingCategory kind;
 
   @OneToMany(mappedBy = "meeting")
   private List<MeetingAttendance> meetingAttendanceList = new ArrayList<>();
