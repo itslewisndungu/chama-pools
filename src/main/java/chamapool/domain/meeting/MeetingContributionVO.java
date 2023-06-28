@@ -1,16 +1,9 @@
 package chamapool.domain.meeting;
 
+import chamapool.domain.meeting.models.MeetingContribution;
 
-//  {
-//          memberId: 3,
-//          amount: 1500,
-//          memberName: " Lewis Ndungu",
-//          },
-public record MeetingContributionVO(
-        Integer memberId,
-        Integer amount,
-        String memberName
-) {
-    public MeetingContributionVO(Meet) {
-    }
+public record MeetingContributionVO(Integer memberId, Double amount, String memberName) {
+  public MeetingContributionVO(MeetingContribution contribution) {
+    this(contribution.member().id(), contribution.amount(), contribution.member().fullName());
+  }
 }

@@ -2,11 +2,16 @@ package chamapool.application.meetings;
 
 import chamapool.application.meetings.requests.CreateMeetingRequest;
 import chamapool.application.meetings.requests.MeetingAttendanceRequest;
+import chamapool.application.meetings.requests.MeetingContributionsRequest;
+import chamapool.domain.meeting.MeetingAttendanceVO;
+import chamapool.domain.meeting.MeetingContributionVO;
 import chamapool.domain.meeting.MeetingVO;
-import chamapool.domain.meeting.enums.MeetingKind;
+import chamapool.domain.meeting.enums.MeetingCategory;
 import chamapool.domain.meeting.models.Meeting;
 import chamapool.domain.meeting.models.MeetingAttendance;
+import chamapool.domain.meeting.models.MeetingContribution;
 import chamapool.domain.meeting.repositories.MeetingAttendanceRepository;
+import chamapool.domain.meeting.repositories.MeetingContributionRepository;
 import chamapool.domain.meeting.repositories.MeetingRepository;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.member.repositories.MemberRepository;
@@ -20,6 +25,7 @@ import org.springframework.stereotype.Service;
 public class MeetingsService {
   private final MeetingRepository meetingRepository;
   private final MeetingAttendanceRepository meetingAttendanceRepository;
+  private final MeetingContributionRepository contributionRepository;
   private final MemberRepository memberRepository;
 
   public MeetingVO createMeeting(CreateMeetingRequest request) {
@@ -28,13 +34,14 @@ public class MeetingsService {
             .meetingDate(request.date())
             .title(request.title())
             .agenda(request.agenda())
-            .kind(request.kind().orElse(MeetingKind.MONTHLY_MEETING));
+            .kind(request.category().orElse(MeetingCategory.MONTHLY_MEETING));
 
     meetingRepository.save(meeting);
     return new MeetingVO(meeting);
   }
 
-  public MeetingVO registerMeetingAttendance(Integer meetingId, MeetingAttendanceRequest request) {
+  public List<MeetingAttendanceVO> registerMeetingAttendance(
+      Integer meetingId, MeetingAttendanceRequest request) {
     Meeting meeting = meetingRepository.getReferenceById(meetingId);
     List<MeetingAttendance> meetingAttendance = new ArrayList<>();
 
@@ -52,7 +59,7 @@ public class MeetingsService {
     }
 
     meetingAttendanceRepository.saveAll(meetingAttendance);
-    return new MeetingVO(meeting);
+    return meetingAttendance.stream().map(MeetingAttendanceVO::new).toList();
   }
 
   public List<MeetingVO> getAllMeetings() {
@@ -61,5 +68,29 @@ public class MeetingsService {
 
   public MeetingVO getMeetingById(Integer id) {
     return new MeetingVO(this.meetingRepository.getReferenceById(id));
+  }
+
+  public List<MeetingAttendanceVO> getMeetingAttendance(Integer meetingId) {
+    return this.meetingRepository.getReferenceById(meetingId).meetingAttendanceList().stream()
+        .map(MeetingAttendanceVO::new)
+        .toList();
+  }
+
+  public List<MeetingContributionVO> registerMeetingContributions(
+      Integer id, MeetingContributionsRequest request) {
+    Meeting meeting = meetingRepository.getReferenceById(id);
+    List<MeetingContribution> contributions = new ArrayList<>();
+
+    for (var c : request.contributions()) {
+      Member member = memberRepository.getReferenceById(c.memberId());
+      var contribution =
+          new MeetingContribution().member(member).meeting(meeting).amount(c.amount());
+
+      contributions.add(contribution);
+    }
+
+    this.contributionRepository.saveAll(contributions);
+
+    return contributions.stream().map(MeetingContributionVO::new).toList();
   }
 }
