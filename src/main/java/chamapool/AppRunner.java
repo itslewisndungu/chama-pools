@@ -5,13 +5,22 @@ import chamapool.domain.chama.ChamaRepository;
 import chamapool.domain.loans.Loan;
 import chamapool.domain.loans.enums.LoanStatus;
 import chamapool.domain.loans.repositories.LoanRepository;
+import chamapool.domain.meeting.enums.MeetingCategory;
+import chamapool.domain.meeting.models.Meeting;
+import chamapool.domain.meeting.models.MeetingAttendance;
+import chamapool.domain.meeting.models.MeetingContribution;
+import chamapool.domain.meeting.repositories.MeetingAttendanceRepository;
+import chamapool.domain.meeting.repositories.MeetingContributionRepository;
+import chamapool.domain.meeting.repositories.MeetingRepository;
 import chamapool.domain.member.enums.MemberRole;
 import chamapool.domain.member.enums.Status;
 import chamapool.domain.member.models.*;
 import chamapool.domain.member.repositories.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -22,6 +31,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class AppRunner implements CommandLineRunner {
+  private final MeetingRepository meetingRepository;
   private final MemberRepository memberRepository;
   private final PasswordEncoder passwordEncoder;
   private final NextOfKinRepository nextOfKinRepository;
@@ -30,6 +40,10 @@ public class AppRunner implements CommandLineRunner {
   private final RoleRepository roleRepository;
   private final ChamaRepository chamaRepository;
   private final LoanRepository loanRepository;
+  private final MeetingAttendanceRepository attendanceRepository;
+  private final MeetingContributionRepository contributionRepository;
+
+  Random random = new Random();
 
   @Override
   public void run(String... args) {
@@ -83,10 +97,8 @@ public class AppRunner implements CommandLineRunner {
             .addRoles(chairmanRole, memberRole);
 
     chairman.nextOfKin(kin).homeAddress(homeAddress).occupation(occupation);
-    memberRepository.save(chairman);
 
     log.info("Generating a new member...");
-
     Member member =
         new Member()
             .status(Status.ACTIVE)
@@ -103,7 +115,6 @@ public class AppRunner implements CommandLineRunner {
     this.occupationRepository.save(position);
 
     member.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
-    memberRepository.save(member);
 
     log.info("Generating a new treasurer...");
     var treasurer =
@@ -118,10 +129,8 @@ public class AppRunner implements CommandLineRunner {
             .addRoles(treasurerRole);
 
     treasurer.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
-    memberRepository.save(treasurer);
 
     log.info("Generating a new secretary...");
-
     var secretary =
         new Member()
             .status(Status.ACTIVE)
@@ -134,7 +143,9 @@ public class AppRunner implements CommandLineRunner {
             .addRoles(secretaryRole);
 
     secretary.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
-    memberRepository.save(secretary);
+
+    var members = List.of(chairman, member, treasurer, secretary);
+    memberRepository.saveAll(members);
 
     log.info("Generating a new loans ..");
     Loan loan =
@@ -153,5 +164,71 @@ public class AppRunner implements CommandLineRunner {
             .status(LoanStatus.ACTIVE);
 
     loanRepository.saveAll(List.of(loan, loan2));
+
+    log.info("Generating a test meeting");
+
+    var meeting1 =
+        new Meeting()
+            .meetingDate(LocalDate.now().minusMonths(2))
+            .agenda("What is going on")
+            .title("July meeting")
+            .category(MeetingCategory.MONTHLY_MEETING);
+
+    var meeting2 =
+        new Meeting()
+            .meetingDate(LocalDate.now().minusMonths(3))
+            .agenda("What is going on")
+            .title("May meeting")
+            .category(MeetingCategory.MONTHLY_MEETING);
+
+    var meeting3 =
+        new Meeting()
+            .meetingDate(LocalDate.now().minusMonths(1))
+            .agenda("What is going on")
+            .title("June meeting")
+            .category(MeetingCategory.MONTHLY_MEETING);
+
+    var emergencyMeeting =
+        new Meeting()
+            .meetingDate(LocalDate.now().minusDays(1))
+            .agenda("Mama nani is sick af, we want to contribute at least 5000 each")
+            .title("Emergency meeting")
+            .category(MeetingCategory.EMERGENCY);
+
+    var meetings = List.of(meeting1, meeting2, meeting3, emergencyMeeting);
+    meetingRepository.saveAll(meetings);
+
+    for (Meeting meeting : meetings) {
+      var meetingAttendances = new ArrayList<MeetingAttendance>();
+      var meetingContributions = new ArrayList<MeetingContribution>();
+
+      members.forEach(
+          m -> {
+            var contribution = new MeetingContribution().member(m).meeting(meeting);
+            var attendance = new MeetingAttendance().member(m).meeting(meeting);
+
+            var rand = random.nextInt(3);
+            switch (rand) {
+              case 0 -> {
+                contribution.amount(1500.0);
+                attendance.isPresent(true);
+              }
+              case 1 -> {
+                attendance.isPresent(false);
+                contribution.amount(0.0);
+              }
+              case 2 -> {
+                attendance.isPresent(false).apology("Feeling sick");
+                contribution.amount(1500.0);
+              }
+            }
+
+            meetingContributions.add(contribution);
+            meetingAttendances.add(attendance);
+          });
+
+      contributionRepository.saveAll(meetingContributions);
+      attendanceRepository.saveAll(meetingAttendances);
+    }
   }
 }
