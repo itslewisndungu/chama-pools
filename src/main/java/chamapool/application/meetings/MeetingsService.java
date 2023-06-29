@@ -34,10 +34,30 @@ public class MeetingsService {
             .meetingDate(request.date())
             .title(request.title())
             .agenda(request.agenda())
-            .kind(request.category().orElse(MeetingCategory.MONTHLY_MEETING));
+            .category(request.category().orElse(MeetingCategory.MONTHLY_MEETING));
 
     meetingRepository.save(meeting);
     return new MeetingVO(meeting);
+  }
+
+  public List<MeetingVO> getAllMeetings() {
+    return this.meetingRepository.findAll().stream().map(MeetingVO::new).toList();
+  }
+
+  public MeetingVO getMeetingById(Integer id) {
+    return new MeetingVO(this.meetingRepository.getReferenceById(id));
+  }
+
+  public List<MeetingAttendanceVO> getMeetingAttendance(Integer meetingId) {
+    return this.meetingRepository.getReferenceById(meetingId).attendances().stream()
+        .map(MeetingAttendanceVO::new)
+        .toList();
+  }
+
+  public List<MeetingContributionVO> getMeetingContributions(Integer meetingId) {
+    return this.meetingRepository.getReferenceById(meetingId).contributions().stream()
+        .map(MeetingContributionVO::new)
+        .toList();
   }
 
   public List<MeetingAttendanceVO> registerMeetingAttendance(
@@ -60,20 +80,6 @@ public class MeetingsService {
 
     meetingAttendanceRepository.saveAll(meetingAttendance);
     return meetingAttendance.stream().map(MeetingAttendanceVO::new).toList();
-  }
-
-  public List<MeetingVO> getAllMeetings() {
-    return this.meetingRepository.findAll().stream().map(MeetingVO::new).toList();
-  }
-
-  public MeetingVO getMeetingById(Integer id) {
-    return new MeetingVO(this.meetingRepository.getReferenceById(id));
-  }
-
-  public List<MeetingAttendanceVO> getMeetingAttendance(Integer meetingId) {
-    return this.meetingRepository.getReferenceById(meetingId).meetingAttendanceList().stream()
-        .map(MeetingAttendanceVO::new)
-        .toList();
   }
 
   public List<MeetingContributionVO> registerMeetingContributions(

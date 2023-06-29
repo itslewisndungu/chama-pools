@@ -22,33 +22,40 @@ public class MeetingsController {
     return meetingsService.getAllMeetings();
   }
 
-  @PostMapping("/create")
+  @PostMapping("/schedule")
   @ResponseStatus(HttpStatus.CREATED)
   public MeetingVO createMeeting(@RequestBody CreateMeetingRequest request) {
     return meetingsService.createMeeting(request);
   }
 
-  @GetMapping("/{id}")
-  public MeetingVO getMeetingById(@PathVariable Integer id) {
-    return meetingsService.getMeetingById(id);
+  @GetMapping("/{meetingId}")
+  public MeetingVO getMeetingById(@PathVariable Integer meetingId) {
+    return meetingsService.getMeetingById(meetingId);
   }
 
-  @GetMapping("/{id}/attendance")
-  public List<MeetingAttendanceVO> getMeetingAttendanceById(@PathVariable Integer id) {
-    return this.meetingsService.getMeetingAttendance(id);
+  @GetMapping("/{meetingId}/attendance")
+  public List<MeetingAttendanceVO> getMeetingAttendanceByMeetingId(
+      @PathVariable Integer meetingId) {
+    return this.meetingsService.getMeetingAttendance(meetingId);
   }
 
-  @PostMapping("/{id}/attendance")
+  @PostMapping("/{meetingId}/attendance")
   @ResponseStatus(HttpStatus.CREATED)
   public List<MeetingAttendanceVO> registerMeetingAttendance(
-      @PathVariable Integer id, @RequestBody MeetingAttendanceRequest request) {
-    return meetingsService.registerMeetingAttendance(id, request);
+      @PathVariable Integer meetingId, @RequestBody MeetingAttendanceRequest request) {
+    return meetingsService.registerMeetingAttendance(meetingId, request);
   }
 
-  @PostMapping("/{id}/contributions")
+  @GetMapping("/{meetingId}/contributions")
+  public List<MeetingContributionVO> getMeetingContributionsByMeetingId(
+      @PathVariable Integer meetingId) {
+    return this.meetingsService.getMeetingContributions(meetingId);
+  }
+
+  @PostMapping("/{meetingId}/contributions")
   @ResponseStatus(HttpStatus.CREATED)
   public List<MeetingContributionVO> registerMeetingContributions(
-      @PathVariable Integer id, @RequestBody MeetingContributionsRequest request) {
-    return meetingsService.registerMeetingContributions(id, request);
+      @PathVariable Integer meetingId, @RequestBody MeetingContributionsRequest request) {
+    return meetingsService.registerMeetingContributions(meetingId, request);
   }
 }
