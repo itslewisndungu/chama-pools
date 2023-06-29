@@ -6,16 +6,19 @@ import chamapool.domain.meeting.models.MeetingAttendance;
 import java.time.LocalDate;
 
 public record MeetingVO(
-        Integer id, LocalDate date, MeetingCategory kind, String agenda, Integer membersPresent) {
+    Integer id,
+    LocalDate date,
+    String title,
+    MeetingCategory category,
+    String agenda,
+    Integer membersPresent) {
   public MeetingVO(Meeting meeting) {
     this(
         meeting.meetingId(),
         meeting.meetingDate(),
-        meeting.kind(),
+        meeting.title(),
+        meeting.category(),
         meeting.agenda(),
-        meeting.meetingAttendanceList().stream()
-            .filter(MeetingAttendance::isPresent)
-            .toList()
-            .size());
+        meeting.attendances().stream().filter(MeetingAttendance::isPresent).toList().size());
   }
 }
