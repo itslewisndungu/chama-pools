@@ -30,8 +30,11 @@ public class Meeting {
   private LocalDate meetingDate;
 
   @Enumerated(EnumType.STRING)
-  private MeetingCategory kind;
+  private MeetingCategory category;
 
   @OneToMany(mappedBy = "meeting")
-  private List<MeetingAttendance> meetingAttendanceList = new ArrayList<>();
+  private List<MeetingAttendance> attendances = new ArrayList<>();
+
+  @OneToMany(mappedBy = "meeting")
+  private List<MeetingContribution> contributions = new ArrayList<>();
 }
