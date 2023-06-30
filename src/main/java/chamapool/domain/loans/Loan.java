@@ -60,4 +60,8 @@ public class Loan {
   public Double amountPayable() {
     return this.amount + this.interestEarned();
   }
+
+  public Double balance() {
+    return this.amountPayable() - this.amountPaid();
+  }
 }
