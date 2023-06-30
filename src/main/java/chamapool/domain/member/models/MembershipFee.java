@@ -8,6 +8,12 @@ import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+enum MembershipFeeStatus {
+  PAID,
+  UNPAID,
+  PARTIALLY_PAID,
+}
+
 @Entity
 @Setter
 @Getter
@@ -24,14 +30,17 @@ public class MembershipFee {
   @CreatedDate private Instant createdAt;
 
   private Double feeAmount;
-
-  @Enumerated(EnumType.STRING)
-  private MembershipFeeStatus paymentStatus = MembershipFeeStatus.UNPAID;
+  private Double amountPaid;
 
   private String paymentDate;
-}
 
-enum MembershipFeeStatus {
-  PAID,
-  UNPAID
+  public MembershipFeeStatus status() {
+    if (amountPaid == 0) {
+      return MembershipFeeStatus.UNPAID;
+    } else if (amountPaid < feeAmount) {
+      return MembershipFeeStatus.PARTIALLY_PAID;
+    } else {
+      return MembershipFeeStatus.PAID;
+    }
+  }
 }
