@@ -65,6 +65,10 @@ public class Member {
   @JoinColumn(name = "address_id")
   private Address homeAddress;
 
+  @OneToOne
+  @JoinColumn(name = "membership_fee_id")
+  private MembershipFee membershipFee;
+
   public Set<MemberRole> getRoles() {
     return this.roles().stream().map(Role::name).collect(Collectors.toSet());
   }
