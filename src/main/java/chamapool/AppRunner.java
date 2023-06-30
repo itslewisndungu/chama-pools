@@ -42,6 +42,7 @@ public class AppRunner implements CommandLineRunner {
   private final LoanRepository loanRepository;
   private final MeetingAttendanceRepository attendanceRepository;
   private final MeetingContributionRepository contributionRepository;
+  private final MembershipFeeRepository membershipFeeRepository;
 
   Random random = new Random();
 
@@ -83,7 +84,7 @@ public class AppRunner implements CommandLineRunner {
         new Occupation().organization("Equity Bank").salary(40000.0).position("Operations Manager");
     this.occupationRepository.save(occupation);
 
-    log.info("Generating a new Chairman...");
+    log.info("Generating a new Chairman and membership fee...");
 
     Member chairman =
         new Member()
@@ -97,8 +98,15 @@ public class AppRunner implements CommandLineRunner {
             .addRoles(chairmanRole, memberRole);
 
     chairman.nextOfKin(kin).homeAddress(homeAddress).occupation(occupation);
+    memberRepository.save(chairman);
 
-    log.info("Generating a new member...");
+    var chairmanMemFee =
+        new MembershipFee().feeAmount(10000.0).member(chairman).amountPaid(10000.0);
+    this.membershipFeeRepository.save(chairmanMemFee);
+    chairman.membershipFee(chairmanMemFee);
+    memberRepository.save(chairman);
+
+    log.info("Generating a new Member and joining fee...");
     Member member =
         new Member()
             .status(Status.ACTIVE)
@@ -115,6 +123,12 @@ public class AppRunner implements CommandLineRunner {
     this.occupationRepository.save(position);
 
     member.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
+    this.memberRepository.save(member);
+
+    var memberMemFee = new MembershipFee().feeAmount(10000.0).member(member).amountPaid(9000.0);
+    this.membershipFeeRepository.save(memberMemFee);
+    member.membershipFee(memberMemFee);
+    this.memberRepository.save(member);
 
     log.info("Generating a new treasurer...");
     var treasurer =
@@ -129,6 +143,13 @@ public class AppRunner implements CommandLineRunner {
             .addRoles(treasurerRole);
 
     treasurer.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
+    this.memberRepository.save(treasurer);
+
+    var treasurerMemFee =
+        new MembershipFee().feeAmount(10000.0).member(treasurer).amountPaid(10000.0);
+    this.membershipFeeRepository.save(treasurerMemFee);
+    treasurer.membershipFee(treasurerMemFee);
+    this.memberRepository.save(treasurer);
 
     log.info("Generating a new secretary...");
     var secretary =
@@ -143,9 +164,15 @@ public class AppRunner implements CommandLineRunner {
             .addRoles(secretaryRole);
 
     secretary.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
+    this.memberRepository.save(secretary);
+
+    var secretaryMemFee =
+        new MembershipFee().feeAmount(10000.0).member(secretary).amountPaid(10000.0);
+    this.membershipFeeRepository.save(secretaryMemFee);
+    secretary.membershipFee(secretaryMemFee);
+    this.memberRepository.save(secretary);
 
     var members = List.of(chairman, member, treasurer, secretary);
-    members = memberRepository.saveAll(members);
 
     log.info("Generating a new loans ..");
     Loan loan =
