@@ -1,8 +1,11 @@
 package chamapool.application.members.controllers;
 
+import chamapool.application.loans.LoansService;
+import chamapool.application.loans.responses.LoanEligibilityResponse;
 import chamapool.application.members.MembersService;
 import chamapool.application.members.responses.MemberProfileResponse;
 import chamapool.application.members.responses.MultipleMemberResponse;
+import chamapool.domain.member.models.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MemberController {
   private final MembersService membersService;
+  private final LoansService loansService;
 
   @GetMapping()
   public MultipleMemberResponse retrieveMembers() {
