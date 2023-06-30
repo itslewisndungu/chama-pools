@@ -32,10 +32,17 @@ public class LoansService {
     return this.loanRepository.getLoansByMember(member).stream().map(LoanVO::new).toList();
   }
 
-  public void disburseLoan(Integer loanId) {
+  @Transactional
+  public LoanVO disburseLoan(Integer loanId) {
     var loan = this.loanRepository.getReferenceById(loanId);
+    log.info("Disbursing loan with ID {} and worth {}", loanId, loan.amount());
+
     loan.startDate(LocalDate.now()).status(LoanStatus.ACTIVE);
-    this.loanRepository.save(loan);
+    loan = this.loanRepository.save(loan);
+
+    this.transactionsService.createTransaction(TransactionType.LOAN_DISBURSEMENT, loan.amount());
+
+    return new LoanVO(loan);
   }
 
   @Transactional

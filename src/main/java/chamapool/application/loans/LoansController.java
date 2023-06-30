@@ -1,5 +1,6 @@
 package chamapool.application.loans;
 
+import chamapool.application.loans.requests.LoanInstallmentRequest;
 import chamapool.application.loans.responses.LoanEligibilityResponse;
 import chamapool.domain.loans.VO.LoanVO;
 import chamapool.domain.member.models.Member;
@@ -27,5 +28,16 @@ public class LoansController {
   @GetMapping("/my-loans")
   public List<LoanVO> retrieveMemberLoans(Member member) {
     return this.loansService.retrieveMemberLoans(member);
+  }
+
+  @PostMapping("/{loanId}/disburse")
+  public LoanVO disburseLoan(@PathVariable Integer loanId) {
+    return this.loansService.disburseLoan(loanId);
+  }
+
+  @PostMapping("/{loanId}/pay-installment")
+  public LoanVO recordLoanInstallment(
+      @PathVariable Integer loanId, @RequestBody LoanInstallmentRequest request) {
+    return this.loansService.payLoanInstallment(loanId, request.amount());
   }
 }
