@@ -14,8 +14,10 @@ import chamapool.domain.loans.repositories.LoanApplicationRepository;
 import chamapool.domain.loans.repositories.LoanApprovalRepository;
 import chamapool.domain.loans.repositories.LoanRepository;
 import chamapool.domain.member.enums.MemberRole;
+import chamapool.domain.member.enums.MembershipFeeStatus;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.member.repositories.MemberRepository;
+import chamapool.domain.member.repositories.MembershipFeeRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +33,7 @@ public class LoanApplicationsService {
   private final LoanApprovalRepository loanApprovalRepository;
   private final LoanApplicationRepository loanApplicationRepository;
   private final MemberRepository memberRepository;
+  private final MembershipFeeRepository membershipFeeRepository;
 
   public List<LoanApplicationVO> retrieveAllApplications() {
     return this.loanApplicationRepository.findAll().stream()
@@ -106,10 +109,22 @@ public class LoanApplicationsService {
   public LoanEligibilityResponse checkLoanEligibility(Member member) {
     var application = this.retrieveActiveApplication(member);
     var activeLoan = this.getActiveMemberLoan(member);
+    var membershipFee = this.membershipFeeRepository.getByMember(member);
+
+    if (membershipFee.status() != MembershipFeeStatus.PAID) {
+      return new LoanEligibilityResponse(
+          false,
+          null,
+          "You have not paid your membership fee fully. You have an outstanding balance of KES "
+              + membershipFee.balance()
+              + ".");
+    }
 
     if (application.isPresent()) {
       return new LoanEligibilityResponse(false, null, "You have an active loan application");
-    } else if (activeLoan.isPresent()) {
+    }
+
+    if (activeLoan.isPresent()) {
       return new LoanEligibilityResponse(
           false, null, "You have an active loan. Please pay up first");
     }

@@ -1,5 +1,6 @@
 package chamapool.domain.member.models;
 
+import chamapool.domain.member.enums.MembershipFeeStatus;
 import jakarta.persistence.*;
 import java.time.Instant;
 import lombok.Getter;
@@ -7,12 +8,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-enum MembershipFeeStatus {
-  PAID,
-  UNPAID,
-  PARTIALLY_PAID,
-}
 
 @Entity
 @Setter
@@ -34,10 +29,14 @@ public class MembershipFee {
 
   private String paymentDate;
 
+  public Double balance() {
+    return this.feeAmount - this.amountPaid;
+  }
+
   public MembershipFeeStatus status() {
-    if (amountPaid == 0) {
+    if (this.amountPaid == 0) {
       return MembershipFeeStatus.UNPAID;
-    } else if (amountPaid < feeAmount) {
+    } else if (this.amountPaid < this.feeAmount) {
       return MembershipFeeStatus.PARTIALLY_PAID;
     } else {
       return MembershipFeeStatus.PAID;
