@@ -16,7 +16,6 @@ import chamapool.domain.member.enums.MemberRole;
 import chamapool.domain.member.enums.Status;
 import chamapool.domain.member.models.*;
 import chamapool.domain.member.repositories.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +53,7 @@ public class AppRunner implements CommandLineRunner {
 
   private void generateChamaDetails() {
     Chama visionAhead =
-        new Chama().name("Vision Ahead").accountBalance(BigDecimal.valueOf(200_000));
+        new Chama().name("Vision Ahead").accountBalance(200_000.0);
 
     this.chamaRepository.save(visionAhead);
   }
@@ -100,8 +99,7 @@ public class AppRunner implements CommandLineRunner {
     chairman.nextOfKin(kin).homeAddress(homeAddress).occupation(occupation);
     memberRepository.save(chairman);
 
-    var chairmanMemFee =
-        new MembershipFee().feeAmount(10000.0).member(chairman).amountPaid(10000.0);
+    var chairmanMemFee = new MembershipFee().amount(10000.0).member(chairman).amountPaid(10000.0);
     this.membershipFeeRepository.save(chairmanMemFee);
     chairman.membershipFee(chairmanMemFee);
     memberRepository.save(chairman);
@@ -125,7 +123,7 @@ public class AppRunner implements CommandLineRunner {
     member.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
     this.memberRepository.save(member);
 
-    var memberMemFee = new MembershipFee().feeAmount(10000.0).member(member).amountPaid(9000.0);
+    var memberMemFee = new MembershipFee().amount(10000.0).member(member).amountPaid(9000.0);
     this.membershipFeeRepository.save(memberMemFee);
     member.membershipFee(memberMemFee);
     this.memberRepository.save(member);
@@ -145,8 +143,7 @@ public class AppRunner implements CommandLineRunner {
     treasurer.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
     this.memberRepository.save(treasurer);
 
-    var treasurerMemFee =
-        new MembershipFee().feeAmount(10000.0).member(treasurer).amountPaid(10000.0);
+    var treasurerMemFee = new MembershipFee().amount(10000.0).member(treasurer).amountPaid(10000.0);
     this.membershipFeeRepository.save(treasurerMemFee);
     treasurer.membershipFee(treasurerMemFee);
     this.memberRepository.save(treasurer);
@@ -166,8 +163,7 @@ public class AppRunner implements CommandLineRunner {
     secretary.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
     this.memberRepository.save(secretary);
 
-    var secretaryMemFee =
-        new MembershipFee().feeAmount(10000.0).member(secretary).amountPaid(10000.0);
+    var secretaryMemFee = new MembershipFee().amount(10000.0).member(secretary).amountPaid(10000.0);
     this.membershipFeeRepository.save(secretaryMemFee);
     secretary.membershipFee(secretaryMemFee);
     this.memberRepository.save(secretary);

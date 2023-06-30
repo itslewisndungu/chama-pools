@@ -1,7 +1,6 @@
 package chamapool.domain.chama;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,5 +27,5 @@ public class Chama {
   private LocalDate createdAt;
 
   @Column(name = "account_balance", nullable = false)
-  private BigDecimal accountBalance;
+  private Double accountBalance;
 }
