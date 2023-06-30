@@ -145,7 +145,7 @@ public class AppRunner implements CommandLineRunner {
     secretary.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
 
     var members = List.of(chairman, member, treasurer, secretary);
-    memberRepository.saveAll(members);
+    members = memberRepository.saveAll(members);
 
     log.info("Generating a new loans ..");
     Loan loan =
@@ -169,23 +169,34 @@ public class AppRunner implements CommandLineRunner {
 
     var meeting1 =
         new Meeting()
-            .meetingDate(LocalDate.now().minusMonths(2))
+            .meetingDate(LocalDate.now().plusMonths(1))
             .agenda("What is going on")
             .title("July meeting")
+            .initiated(false)
             .category(MeetingCategory.MONTHLY_MEETING);
 
     var meeting2 =
         new Meeting()
             .meetingDate(LocalDate.now().minusMonths(3))
             .agenda("What is going on")
-            .title("May meeting")
+            .title("April meeting")
+            .initiated(true)
             .category(MeetingCategory.MONTHLY_MEETING);
 
     var meeting3 =
         new Meeting()
             .meetingDate(LocalDate.now().minusMonths(1))
             .agenda("What is going on")
+            .title("May meeting")
+            .initiated(true)
+            .category(MeetingCategory.MONTHLY_MEETING);
+
+    var meeting4 =
+        new Meeting()
+            .meetingDate(LocalDate.now())
+            .agenda("What is going on")
             .title("June meeting")
+            .initiated(true)
             .category(MeetingCategory.MONTHLY_MEETING);
 
     var emergencyMeeting =
@@ -193,17 +204,21 @@ public class AppRunner implements CommandLineRunner {
             .meetingDate(LocalDate.now().minusDays(1))
             .agenda("Mama nani is sick af, we want to contribute at least 5000 each")
             .title("Emergency meeting")
+            .initiated(true)
             .category(MeetingCategory.EMERGENCY);
 
-    var meetings = List.of(meeting1, meeting2, meeting3, emergencyMeeting);
-    meetingRepository.saveAll(meetings);
+    var meetings = List.of(meeting1, meeting2, meeting3, emergencyMeeting, meeting4);
+    meetings = meetingRepository.saveAll(meetings);
 
     for (Meeting meeting : meetings) {
+      if (!meeting.initiated()) continue;
+
       var meetingAttendances = new ArrayList<MeetingAttendance>();
       var meetingContributions = new ArrayList<MeetingContribution>();
 
       members.forEach(
           m -> {
+            System.out.println(m.getRoles());
             var contribution = new MeetingContribution().member(m).meeting(meeting);
             var attendance = new MeetingAttendance().member(m).meeting(meeting);
 

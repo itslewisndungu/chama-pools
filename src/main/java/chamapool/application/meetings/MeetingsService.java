@@ -15,6 +15,7 @@ import chamapool.domain.meeting.repositories.MeetingContributionRepository;
 import chamapool.domain.meeting.repositories.MeetingRepository;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.member.repositories.MemberRepository;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +56,7 @@ public class MeetingsService {
   }
 
   public List<MeetingContributionVO> getMeetingContributions(Integer meetingId) {
+    this.meetingRepository.getReferenceById(meetingId).contributions().forEach(System.out::println);
     return this.meetingRepository.getReferenceById(meetingId).contributions().stream()
         .map(MeetingContributionVO::new)
         .toList();
@@ -69,9 +71,9 @@ public class MeetingsService {
       Member member = memberRepository.getReferenceById(a.memberId());
 
       var attendance =
-          new MeetingAttendance()
-              .meeting(meeting)
-              .member(member)
+          this.meetingAttendanceRepository
+              .getMeetingAttendanceByMemberAndMeeting(member, meeting)
+              .orElse(new MeetingAttendance().member(member).meeting(meeting))
               .isPresent(a.isPresent())
               .apology(a.isPresent() ? null : "No apology");
 
@@ -89,8 +91,12 @@ public class MeetingsService {
 
     for (var c : request.contributions()) {
       Member member = memberRepository.getReferenceById(c.memberId());
+
       var contribution =
-          new MeetingContribution().member(member).meeting(meeting).amount(c.amount());
+          this.contributionRepository
+              .getMeetingContributionByMemberAndMeeting(member, meeting)
+              .orElse(new MeetingContribution().member(member).meeting(meeting))
+              .amount(c.amount());
 
       contributions.add(contribution);
     }
@@ -98,5 +104,33 @@ public class MeetingsService {
     this.contributionRepository.saveAll(contributions);
 
     return contributions.stream().map(MeetingContributionVO::new).toList();
+  }
+
+  @Transactional
+  public MeetingVO initiateMeeting(Integer meetingId) {
+    Meeting meeting = meetingRepository.getReferenceById(meetingId);
+    meeting.initiated(true);
+    meetingRepository.save(meeting);
+    this.generateMemberMeetingAttendanceAndContributions(meeting);
+
+    return new MeetingVO(meeting);
+  }
+
+
+  private void generateMemberMeetingAttendanceAndContributions(Meeting meeting) {
+    var members = this.memberRepository.findAll();
+    var attendances = new ArrayList<MeetingAttendance>();
+    var contributions = new ArrayList<MeetingContribution>();
+
+    for (var m : members) {
+      var attendance = new MeetingAttendance().member(m).meeting(meeting).isPresent(false);
+      attendances.add(attendance);
+
+      var contribution = new MeetingContribution().member(m).meeting(meeting).amount(0.0);
+      contributions.add(contribution);
+    }
+
+    this.meetingAttendanceRepository.saveAll(attendances);
+    this.contributionRepository.saveAll(contributions);
   }
 }

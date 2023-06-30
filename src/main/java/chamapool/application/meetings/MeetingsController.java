@@ -58,4 +58,10 @@ public class MeetingsController {
       @PathVariable Integer meetingId, @RequestBody MeetingContributionsRequest request) {
     return meetingsService.registerMeetingContributions(meetingId, request);
   }
+
+  @PostMapping("/{meetingId}/initiate")
+  @ResponseStatus(HttpStatus.CREATED)
+  public MeetingVO initiateMeeting(@PathVariable Integer meetingId) {
+    return meetingsService.initiateMeeting(meetingId);
+  }
 }

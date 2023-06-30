@@ -11,7 +11,8 @@ public record MeetingVO(
     String title,
     MeetingCategory category,
     String agenda,
-    Integer membersPresent) {
+    Integer membersPresent,
+    Boolean initiated) {
   public MeetingVO(Meeting meeting) {
     this(
         meeting.meetingId(),
@@ -19,6 +20,7 @@ public record MeetingVO(
         meeting.title(),
         meeting.category(),
         meeting.agenda(),
-        meeting.attendances().stream().filter(MeetingAttendance::isPresent).toList().size());
+        meeting.attendances().stream().filter(MeetingAttendance::isPresent).toList().size(),
+        meeting.initiated());
   }
 }

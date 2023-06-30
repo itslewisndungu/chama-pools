@@ -3,8 +3,8 @@ package chamapool.domain.meeting.models;
 import chamapool.domain.meeting.enums.MeetingCategory;
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -29,12 +29,14 @@ public class Meeting {
 
   private LocalDate meetingDate;
 
+  private boolean initiated = false;
+
   @Enumerated(EnumType.STRING)
   private MeetingCategory category;
 
   @OneToMany(mappedBy = "meeting")
-  private List<MeetingAttendance> attendances = new ArrayList<>();
+  private Set<MeetingAttendance> attendances = new HashSet<>();
 
   @OneToMany(mappedBy = "meeting")
-  private List<MeetingContribution> contributions = new ArrayList<>();
+  private Set<MeetingContribution> contributions = new HashSet<>();
 }
