@@ -23,6 +23,7 @@ public class Loan {
   private Integer id;
 
   private Double amount;
+  private Double amountPaid = 0.0;
   private String reasonForLoan;
 
   @CreatedDate private LocalDate approvedDate;

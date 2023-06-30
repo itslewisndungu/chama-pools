@@ -9,8 +9,10 @@ public record LoanVO(
     Integer memberId,
     String memberName,
     Double amount,
+
     Double interestEarned,
     Double amountPayable,
+    Double balance,
     String reasonForLoan,
     Double interestRate,
     LocalDate startDate,
@@ -25,6 +27,7 @@ public record LoanVO(
         loan.amount(),
         loan.interestEarned(),
         loan.amountPayable(),
+        loan.balance(),
         loan.reasonForLoan(),
         loan.interestRate(),
         loan.startDate(),
