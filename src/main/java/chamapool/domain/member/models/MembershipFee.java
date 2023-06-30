@@ -3,6 +3,7 @@ package chamapool.domain.member.models;
 import chamapool.domain.member.enums.MembershipFeeStatus;
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -24,19 +25,19 @@ public class MembershipFee {
 
   @CreatedDate private Instant createdAt;
 
-  private Double feeAmount;
+  private Double amount;
   private Double amountPaid;
 
-  private String paymentDate;
+  private LocalDate paymentDate;
 
   public Double balance() {
-    return this.feeAmount - this.amountPaid;
+    return this.amount - this.amountPaid;
   }
 
   public MembershipFeeStatus status() {
     if (this.amountPaid == 0) {
       return MembershipFeeStatus.UNPAID;
-    } else if (this.amountPaid < this.feeAmount) {
+    } else if (this.amountPaid < this.amount) {
       return MembershipFeeStatus.PARTIALLY_PAID;
     } else {
       return MembershipFeeStatus.PAID;
