@@ -18,38 +18,37 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @RequiredArgsConstructor
 public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
-    private final MemberRepository memberRepository;
+  private final MemberRepository memberRepository;
 
-    @Override
-    public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType() == Member.class;
+  @Override
+  public boolean supportsParameter(MethodParameter parameter) {
+    return parameter.getParameterType() == Member.class;
+  }
+
+  @Override
+  public Object resolveArgument(
+      @NonNull MethodParameter parameter,
+      ModelAndViewContainer mavContainer,
+      @NonNull NativeWebRequest webRequest,
+      WebDataBinderFactory binderFactory) {
+    SecurityContext securityContext = SecurityContextHolder.getContext();
+    Authentication authentication = securityContext.getAuthentication();
+
+    if (authentication instanceof AnonymousAuthenticationToken) {
+      return null;
     }
 
-    @Override
-    public Object resolveArgument(
-            @NonNull MethodParameter parameter,
-            ModelAndViewContainer mavContainer,
-            @NonNull NativeWebRequest webRequest,
-            WebDataBinderFactory binderFactory) {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
+    JwtAuthenticationToken jwt = (JwtAuthenticationToken) authentication;
+    String username = jwt.getName();
+    String token = jwt.getToken().getTokenValue();
 
-        if (authentication instanceof AnonymousAuthenticationToken) {
-            return null;
-        }
-
-        JwtAuthenticationToken jwt = (JwtAuthenticationToken) authentication;
-        String username = jwt.getName();
-        String token = jwt.getToken().getTokenValue();
-
-        System.out.println(username);
-
-        return memberRepository
-                .getMemberByUsername(username)
-                .map(member -> {
-                    member.token(token);
-                    return member;
-                })
-                .orElseThrow(() -> new BadCredentialsException("Invalid token"));
-    }
+    return memberRepository
+        .getMemberByUsername(username)
+        .map(
+            member -> {
+              member.token(token);
+              return member;
+            })
+        .orElseThrow(() -> new BadCredentialsException("Invalid token"));
+  }
 }
