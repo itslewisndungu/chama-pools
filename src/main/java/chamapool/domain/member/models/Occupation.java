@@ -13,11 +13,11 @@ import lombok.experimental.Accessors;
 @Getter
 @Accessors(chain = true, fluent = true)
 public class Occupation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private Integer id;
 
-    private String organization;
-    private String position;
-    private Double salary;
+  private String organization;
+  private String position;
+  private Double salary;
 }

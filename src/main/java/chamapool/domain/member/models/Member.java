@@ -21,7 +21,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Accessors(chain = true, fluent = true)
 public class Member {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Integer id;
 
   private String firstName;
@@ -73,7 +73,6 @@ public class Member {
     this.roles.addAll(Arrays.asList(roles));
     return this;
   }
-
 
   public String fullName() {
     return this.firstName() + " " + this.lastName();

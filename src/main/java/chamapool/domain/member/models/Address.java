@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Setter
@@ -12,7 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Accessors(chain = true, fluent = true)
 public class Address {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
     private String county;
