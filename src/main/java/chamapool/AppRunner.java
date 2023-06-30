@@ -218,7 +218,6 @@ public class AppRunner implements CommandLineRunner {
 
       members.forEach(
           m -> {
-            System.out.println(m.getRoles());
             var contribution = new MeetingContribution().member(m).meeting(meeting);
             var attendance = new MeetingAttendance().member(m).meeting(meeting);
 
