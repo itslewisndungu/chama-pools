@@ -29,18 +29,18 @@ public class TransactionsService {
 
   private void syncGroupAccount(TransactionType type, Double amount) {
     log.info("Syncing group account ...");
-    
+
     var chama =
-            this.chamaRepository
-                    .getChama()
-                    .orElseThrow(() -> new RuntimeException("Chama not initialized"));
+        this.chamaRepository
+            .getChama()
+            .orElseThrow(() -> new RuntimeException("Chama not initialized"));
 
     switch (type) {
       case WITHDRAWAL, LOAN_DISBURSEMENT -> {
-        chama.accountBalance(chama.accountBalance() -  amount);
+        chama.accountBalance(chama.accountBalance() - amount);
       }
       case DEPOSIT, LOAN_REPAYMENT, MEMBERSHIP_FEE, CONTRIBUTION, LOAN_INTEREST -> {
-        chama.accountBalance(chama.accountBalance() +  amount);
+        chama.accountBalance(chama.accountBalance() + amount);
       }
     }
 

@@ -3,6 +3,7 @@ package chamapool.application.meetings;
 import chamapool.application.meetings.requests.CreateMeetingRequest;
 import chamapool.application.meetings.requests.MeetingAttendanceRequest;
 import chamapool.application.meetings.requests.MeetingContributionsRequest;
+import chamapool.application.transactions.TransactionsService;
 import chamapool.domain.meeting.MeetingAttendanceVO;
 import chamapool.domain.meeting.MeetingContributionVO;
 import chamapool.domain.meeting.MeetingVO;
@@ -15,6 +16,7 @@ import chamapool.domain.meeting.repositories.MeetingContributionRepository;
 import chamapool.domain.meeting.repositories.MeetingRepository;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.member.repositories.MemberRepository;
+import chamapool.domain.transaction.TransactionType;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ public class MeetingsService {
   private final MeetingAttendanceRepository meetingAttendanceRepository;
   private final MeetingContributionRepository contributionRepository;
   private final MemberRepository memberRepository;
+  private final TransactionsService transactionsService;
 
   public MeetingVO createMeeting(CreateMeetingRequest request) {
     Meeting meeting =
@@ -56,7 +59,6 @@ public class MeetingsService {
   }
 
   public List<MeetingContributionVO> getMeetingContributions(Integer meetingId) {
-    this.meetingRepository.getReferenceById(meetingId).contributions().forEach(System.out::println);
     return this.meetingRepository.getReferenceById(meetingId).contributions().stream()
         .map(MeetingContributionVO::new)
         .toList();
@@ -84,6 +86,7 @@ public class MeetingsService {
     return meetingAttendance.stream().map(MeetingAttendanceVO::new).toList();
   }
 
+  @Transactional
   public List<MeetingContributionVO> registerMeetingContributions(
       Integer id, MeetingContributionsRequest request) {
     Meeting meeting = meetingRepository.getReferenceById(id);
@@ -95,14 +98,18 @@ public class MeetingsService {
       var contribution =
           this.contributionRepository
               .getMeetingContributionByMemberAndMeeting(member, meeting)
-              .orElse(new MeetingContribution().member(member).meeting(meeting))
-              .amount(c.amount());
+              .orElse(new MeetingContribution().member(member).meeting(meeting));
+
+      contribution.amount(
+          contribution.amount() == null ? c.amount() : contribution.amount() + c.amount());
+
+      this.contributionRepository.save(contribution);
+      this.transactionsService.createTransaction(TransactionType.CONTRIBUTION, c.amount());
 
       contributions.add(contribution);
     }
 
-    this.contributionRepository.saveAll(contributions);
-
+    // TODO: Fix bug
     return contributions.stream().map(MeetingContributionVO::new).toList();
   }
 
@@ -115,7 +122,6 @@ public class MeetingsService {
 
     return new MeetingVO(meeting);
   }
-
 
   private void generateMemberMeetingAttendanceAndContributions(Meeting meeting) {
     var members = this.memberRepository.findAll();
