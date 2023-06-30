@@ -2,13 +2,18 @@ package chamapool.application.members;
 
 import chamapool.application.members.requests.AcceptInvitationRequest;
 import chamapool.application.members.requests.NewMemberRequest;
+import chamapool.application.members.requests.PayMembershipFeeRequest;
+import chamapool.application.transactions.TransactionsService;
 import chamapool.domain.member.VOs.InvitedMemberVO;
 import chamapool.domain.member.VOs.MemberProfileVO;
 import chamapool.domain.member.VOs.MemberVO;
+import chamapool.domain.member.VOs.MembershipFeeVO;
 import chamapool.domain.member.enums.Status;
 import chamapool.domain.member.models.*;
 import chamapool.domain.member.repositories.*;
+import chamapool.domain.transaction.TransactionType;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +29,8 @@ public class MembersService {
   private final NextOfKinRepository nextOfKinRepository;
   private final OccupationRepository occupationRepository;
   private final AddressRepository addressRepository;
+  private final MembershipFeeRepository membershipFeeRepository;
+  private final TransactionsService transactionsService;
 
   public InvitedMemberVO inviteMember(NewMemberRequest request) {
     InvitedMember member =
@@ -59,7 +66,78 @@ public class MembersService {
   public MemberProfileVO acceptInvitation(Integer inviteId, AcceptInvitationRequest request) {
     var invitedMember = this.invitedMemberRepository.getReferenceById(inviteId);
     invitedMember.updateCredentials(request.username(), passwordEncoder.encode(request.password()));
-    return new MemberProfileVO(this.registerMemberFromInvitation(invitedMember));
+    var member = this.registerMemberFromInvitation(invitedMember);
+
+    var fee = new MembershipFee().amount(this.calculateMembershipFee()).member(member);
+    this.membershipFeeRepository.save(fee);
+    this.memberRepository.save(member);
+
+    return new MemberProfileVO(member);
+  }
+
+  public MemberProfileVO retrieveMemberProfile(String username) {
+    return this.memberRepository
+        .getMemberByUsername(username)
+        .map(MemberProfileVO::new)
+        .orElseThrow(
+            () ->
+                new NoSuchElementException(
+                    "Member with username %s not found".formatted(username)));
+  }
+
+  public MemberVO retrieveMember(String username) {
+    return this.memberRepository
+        .getMemberByUsername(username)
+        .map(MemberVO::new)
+        .orElseThrow(
+            () ->
+                new NoSuchElementException(
+                    "Member with username %s not found".formatted(username)));
+  }
+
+  public List<MemberVO> retrieveMembers() {
+    return this.memberRepository.findAll().stream().map(MemberVO::new).toList();
+  }
+
+  public List<MemberProfileVO> retrieveMemberProfiles() {
+    return this.memberRepository.findAll().stream().map(MemberProfileVO::new).toList();
+  }
+
+  public InvitedMemberVO getInvitation(Integer inviteId) {
+    var invitedMember = this.invitedMemberRepository.getReferenceById(inviteId);
+    return new InvitedMemberVO(invitedMember);
+  }
+
+  public List<InvitedMemberVO> getAllInvitations() {
+    return this.invitedMemberRepository.findAll().stream().map(InvitedMemberVO::new).toList();
+  }
+
+  @Transactional
+  public MembershipFeeVO payMembershipFee(Integer memberId, PayMembershipFeeRequest request) {
+    var membershipFee = this.memberRepository.getReferenceById(memberId).membershipFee();
+    membershipFee.amountPaid(membershipFee.amountPaid() + request.amount());
+    this.membershipFeeRepository.save(membershipFee);
+
+    if (membershipFee.balance() == 0) membershipFee.paymentDate(LocalDate.now());
+    this.membershipFeeRepository.save(membershipFee);
+
+    this.transactionsService.createTransaction(TransactionType.MEMBERSHIP_FEE, request.amount());
+
+    return new MembershipFeeVO(membershipFee);
+  }
+
+  public MembershipFeeVO retrieveMemberMembershipFee(Integer memberId) {
+    var member = this.memberRepository.getReferenceById(memberId);
+    return this.retrieveMemberMembershipFee(member);
+  }
+
+  public MembershipFeeVO retrieveMemberMembershipFee(Member member) {
+    var membershipFee = member.membershipFee();
+    return new MembershipFeeVO(membershipFee);
+  }
+
+  private Double calculateMembershipFee() {
+    return 15000.0;
   }
 
   private Member registerMemberFromInvitation(InvitedMember invitedMember) {
@@ -98,42 +176,5 @@ public class MembersService {
     member.nextOfKin(kin).homeAddress(homeAddress).occupation(occupation);
 
     return this.memberRepository.save(member);
-  }
-
-  public MemberProfileVO retrieveMemberProfile(String username) {
-    return this.memberRepository
-        .getMemberByUsername(username)
-        .map(MemberProfileVO::new)
-        .orElseThrow(
-            () ->
-                new NoSuchElementException(
-                    "Member with username %s not found".formatted(username)));
-  }
-
-  public MemberVO retrieveMember(String username) {
-    return this.memberRepository
-        .getMemberByUsername(username)
-        .map(MemberVO::new)
-        .orElseThrow(
-            () ->
-                new NoSuchElementException(
-                    "Member with username %s not found".formatted(username)));
-  }
-
-  public List<MemberVO> retrieveMembers() {
-    return this.memberRepository.findAll().stream().map(MemberVO::new).toList();
-  }
-
-  public List<MemberProfileVO> retrieveMemberProfiles() {
-    return this.memberRepository.findAll().stream().map(MemberProfileVO::new).toList();
-  }
-
-  public InvitedMemberVO getInvitation(Integer inviteId) {
-    var invitedMember = this.invitedMemberRepository.getReferenceById(inviteId);
-    return new InvitedMemberVO(invitedMember);
-  }
-
-  public List<InvitedMemberVO> getAllInvitations() {
-    return this.invitedMemberRepository.findAll().stream().map(InvitedMemberVO::new).toList();
   }
 }
