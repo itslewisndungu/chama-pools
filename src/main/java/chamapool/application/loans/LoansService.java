@@ -64,7 +64,8 @@ public class LoansService {
     loan.repayments().add(loanRepayment);
     loan = this.loanRepository.save(loan);
 
-    this.transactionsService.createTransaction(TransactionType.LOAN_REPAYMENT, amount);
+    this.transactionsService.createTransaction(TransactionType.LOAN_REPAYMENT, amount * 0.9);
+    this.transactionsService.createTransaction(TransactionType.LOAN_INTEREST, amount * 0.1);
     return new LoanVO(loan);
   }
 }
