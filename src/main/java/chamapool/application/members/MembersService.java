@@ -4,10 +4,7 @@ import chamapool.application.members.requests.AcceptInvitationRequest;
 import chamapool.application.members.requests.NewMemberRequest;
 import chamapool.application.members.requests.PayMembershipFeeRequest;
 import chamapool.application.transactions.TransactionsService;
-import chamapool.domain.member.VOs.InvitedMemberVO;
-import chamapool.domain.member.VOs.MemberProfileVO;
-import chamapool.domain.member.VOs.MemberVO;
-import chamapool.domain.member.VOs.MembershipFeeVO;
+import chamapool.domain.member.VOs.*;
 import chamapool.domain.member.enums.Status;
 import chamapool.domain.member.models.*;
 import chamapool.domain.member.repositories.*;
@@ -35,30 +32,12 @@ public class MembersService {
   public InvitedMemberVO inviteMember(NewMemberRequest request) {
     InvitedMember member =
         new InvitedMember()
-            // Personal info
             .firstName(request.firstName())
             .lastName(request.lastName())
             .nationalId(request.nationalId())
-            .phoneNumber(request.phoneNumber())
-
-            // Next of kin
-            .nextOfKinFirstName(request.nextOfKinFirstName())
-            .nextOfKinLastName(request.nextOfKinLastName())
-            .nextOfKinMobileNumber(request.nextOfKinMobileNumber())
-            .nextOfKinNationalId(request.nextOfKinNationalId())
-
-            // Home location
-            .constituency(request.constituency())
-            .county(request.county())
-            .subCounty(request.subCounty())
-
-            // Occupation
-            .organization(request.organization())
-            .salary(request.salary())
-            .position(request.position());
+            .phoneNumber(request.phoneNumber());
 
     var savedMember = invitedMemberRepository.save(member);
-
     return new InvitedMemberVO(savedMember);
   }
 
@@ -76,23 +55,13 @@ public class MembersService {
   }
 
   public MemberProfileVO retrieveMemberProfile(String username) {
-    return this.memberRepository
-        .getMemberByUsername(username)
-        .map(MemberProfileVO::new)
-        .orElseThrow(
-            () ->
-                new NoSuchElementException(
-                    "Member with username %s not found".formatted(username)));
+    var member = this.getMemberByUsername(username);
+    return new MemberProfileVO(member);
   }
 
   public MemberVO retrieveMember(String username) {
-    return this.memberRepository
-        .getMemberByUsername(username)
-        .map(MemberVO::new)
-        .orElseThrow(
-            () ->
-                new NoSuchElementException(
-                    "Member with username %s not found".formatted(username)));
+    var member = this.getMemberByUsername(username);
+    return new MemberVO(member);
   }
 
   public List<MemberVO> retrieveMembers() {
@@ -179,5 +148,47 @@ public class MembersService {
     this.occupationRepository.save(occupation);
 
     return member;
+  }
+
+  public NextOfKinVO retrieveMemberNextOfKin(String username) {
+    var member = this.getMemberByUsername(username);
+
+    return this.nextOfKinRepository
+        .getNextOfKinByMember(member)
+        .map(NextOfKinVO::new)
+        .orElseThrow(
+            () -> new NoSuchElementException("Kins for member %s not found".formatted(username)));
+  }
+
+  public OccupationVO retrieveMemberOccupation(String username) {
+    var member = this.getMemberByUsername(username);
+
+    return this.occupationRepository
+        .getOccupationByMember(member)
+        .map(OccupationVO::new)
+        .orElseThrow(
+            () ->
+                new NoSuchElementException(
+                    "Occupation for member %s not found".formatted(username)));
+  }
+
+  public AddressVO retrieveMemberAddress(String username) {
+    var member = this.getMemberByUsername(username);
+
+    return this.addressRepository
+        .getAddressByMember(member)
+        .map(AddressVO::new)
+        .orElseThrow(
+            () ->
+                new NoSuchElementException("Address for member %s not found".formatted(username)));
+  }
+
+  private Member getMemberByUsername(String username) {
+    return this.memberRepository
+        .getMemberByUsername(username)
+        .orElseThrow(
+            () ->
+                new NoSuchElementException(
+                    "Member with username %s not found".formatted(username)));
   }
 }

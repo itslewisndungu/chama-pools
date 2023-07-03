@@ -1,8 +1,11 @@
 package chamapool.application.members.controllers;
 
 import chamapool.application.members.MembersService;
-import chamapool.application.members.responses.MemberProfileResponse;
 import chamapool.application.members.responses.MultipleMemberResponse;
+import chamapool.domain.member.VOs.AddressVO;
+import chamapool.domain.member.VOs.MemberProfileVO;
+import chamapool.domain.member.VOs.NextOfKinVO;
+import chamapool.domain.member.VOs.OccupationVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +21,23 @@ public class MemberController {
     return new MultipleMemberResponse(members);
   }
 
-  @GetMapping("/{username}")
-  public MemberProfileResponse retrieveMemberProfile(@PathVariable String username) {
-    var member = this.membersService.retrieveMemberProfile(username);
-    return new MemberProfileResponse(member);
+  @GetMapping("/{username}/profile")
+  public MemberProfileVO retrieveMemberProfile(@PathVariable String username) {
+    return this.membersService.retrieveMemberProfile(username);
+  }
+
+  @GetMapping("/{username}/kin")
+  public NextOfKinVO retrieveMemberKin(@PathVariable String username) {
+    return this.membersService.retrieveMemberNextOfKin(username);
+  }
+
+  @GetMapping("/{username}/occupation")
+  public OccupationVO retrieveMemberOccupation(@PathVariable String username) {
+    return this.membersService.retrieveMemberOccupation(username);
+  }
+
+  @GetMapping("/{username}/address")
+  public AddressVO retrieveMemberAddress(@PathVariable String username) {
+    return this.membersService.retrieveMemberAddress(username);
   }
 }
