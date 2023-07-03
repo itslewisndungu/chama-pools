@@ -17,10 +17,7 @@ public record MemberProfileVO(
     String phoneNumber,
     LocalDate joinedOn,
     Status status,
-    Set<MemberRole> roles,
-    NextOfKinVO nextOfKin,
-    OccupationVO occupation,
-    AddressVO homeAddress) {
+    Set<MemberRole> roles) {
   public MemberProfileVO(Member member) {
     this(
         member.id(),
@@ -31,9 +28,6 @@ public record MemberProfileVO(
         member.phoneNumber(),
         member.joinedOn(),
         member.status(),
-        member.roles().stream().map(Role::name).collect(Collectors.toSet()),
-        new NextOfKinVO(member.nextOfKin()),
-        new OccupationVO(member.occupation()),
-        new AddressVO(member.homeAddress()));
+        member.roles().stream().map(Role::name).collect(Collectors.toSet()));
   }
 }

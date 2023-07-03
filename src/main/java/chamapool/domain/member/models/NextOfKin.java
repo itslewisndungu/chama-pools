@@ -23,4 +23,8 @@ public class NextOfKin {
 
     @Column(name = "mobile_number", unique = true)
     private String mobileNumber;
+
+    @OneToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 }

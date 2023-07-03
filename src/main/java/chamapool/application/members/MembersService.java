@@ -151,8 +151,11 @@ public class MembersService {
             .nationalId(invitedMember.nationalId())
             .phoneNumber(invitedMember.phoneNumber());
 
+    member = this.memberRepository.save(member);
+
     NextOfKin kin =
         new NextOfKin()
+            .member(member)
             .firstName(invitedMember.nextOfKinFirstName())
             .lastName(invitedMember.nextOfKinLastName())
             .mobileNumber(invitedMember.nextOfKinMobileNumber())
@@ -161,6 +164,7 @@ public class MembersService {
 
     Address homeAddress =
         new Address()
+            .member(member)
             .constituency(invitedMember.constituency())
             .county(invitedMember.county())
             .subCounty(invitedMember.subCounty());
@@ -168,13 +172,12 @@ public class MembersService {
 
     Occupation occupation =
         new Occupation()
+            .member(member)
             .organization(invitedMember.organization())
             .salary(invitedMember.salary())
             .position(invitedMember.position());
     this.occupationRepository.save(occupation);
 
-    member.nextOfKin(kin).homeAddress(homeAddress).occupation(occupation);
-
-    return this.memberRepository.save(member);
+    return member;
   }
 }

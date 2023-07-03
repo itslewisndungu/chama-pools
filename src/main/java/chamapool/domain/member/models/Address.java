@@ -10,11 +10,16 @@ import lombok.experimental.Accessors;
 @Getter
 @Accessors(chain = true, fluent = true)
 public class Address {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private Integer id;
 
-    private String county;
-    private String subCounty;
-    private String constituency;
+  private String county;
+  private String subCounty;
+  private String constituency;
+  private String locationDescription;
+
+  @OneToOne
+  @JoinColumn(name = "member_id")
+  private Member member;
 }

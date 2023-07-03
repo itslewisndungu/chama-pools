@@ -52,8 +52,7 @@ public class AppRunner implements CommandLineRunner {
   }
 
   private void generateChamaDetails() {
-    Chama visionAhead =
-        new Chama().name("Vision Ahead").accountBalance(200_000.0);
+    Chama visionAhead = new Chama().name("Vision Ahead").accountBalance(200_000.0);
 
     this.chamaRepository.save(visionAhead);
   }
@@ -96,8 +95,10 @@ public class AppRunner implements CommandLineRunner {
             .phoneNumber("8430570482")
             .addRoles(chairmanRole, memberRole);
 
-    chairman.nextOfKin(kin).homeAddress(homeAddress).occupation(occupation);
     memberRepository.save(chairman);
+    kin.member(chairman);
+    homeAddress.member(chairman);
+    occupation.member(chairman);
 
     var chairmanMemFee = new MembershipFee().amount(10000.0).member(chairman).amountPaid(10000.0);
     this.membershipFeeRepository.save(chairmanMemFee);
@@ -120,7 +121,6 @@ public class AppRunner implements CommandLineRunner {
         new Occupation().organization("Equity Bank").salary(40000.0).position("Operations Manager");
     this.occupationRepository.save(position);
 
-    member.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
     this.memberRepository.save(member);
 
     var memberMemFee = new MembershipFee().amount(10000.0).member(member).amountPaid(9000.0);
@@ -140,7 +140,6 @@ public class AppRunner implements CommandLineRunner {
             .phoneNumber("147896358974")
             .addRoles(treasurerRole);
 
-    treasurer.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
     this.memberRepository.save(treasurer);
 
     var treasurerMemFee = new MembershipFee().amount(10000.0).member(treasurer).amountPaid(10000.0);
@@ -160,7 +159,6 @@ public class AppRunner implements CommandLineRunner {
             .phoneNumber("347896358974")
             .addRoles(secretaryRole);
 
-    secretary.nextOfKin(kin).homeAddress(homeAddress).occupation(position);
     this.memberRepository.save(secretary);
 
     var secretaryMemFee = new MembershipFee().amount(10000.0).member(secretary).amountPaid(10000.0);

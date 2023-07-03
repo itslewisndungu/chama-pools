@@ -54,18 +54,6 @@ public class Member {
   private Set<Role> roles = new HashSet<>();
 
   @OneToOne
-  @JoinColumn(name = "next_of_kin_id")
-  private NextOfKin nextOfKin;
-
-  @OneToOne
-  @JoinColumn(name = "occupation_id")
-  private Occupation occupation;
-
-  @OneToOne
-  @JoinColumn(name = "address_id")
-  private Address homeAddress;
-
-  @OneToOne
   @JoinColumn(name = "membership_fee_id")
   private MembershipFee membershipFee;
 
