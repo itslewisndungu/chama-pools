@@ -1,5 +1,7 @@
 package chamapool.application.auth;
 
+import chamapool.application.auth.requests.ChangePasswordRequest;
+import chamapool.application.auth.requests.LoginRequest;
 import chamapool.domain.member.models.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,20 @@ public class AuthController {
   @ResponseStatus(HttpStatus.CREATED)
   public String resetPassword(@PathVariable String username) {
     var token = this.authService.resetPassword(username);
-    return "{token: %s }".formatted(token);
+    return """
+    { "token": "%s" }
+        """.formatted(token);
+  }
+
+  @PostMapping("/change-password")
+  @ResponseStatus(HttpStatus.CREATED)
+  public void changePassword(@RequestParam String token, @RequestBody ChangePasswordRequest req) {
+    this.authService.changePassword(token, req);
+  }
+
+  @PostMapping("/update-password")
+  @ResponseStatus(HttpStatus.CREATED)
+  public void updatePassword(Member member, @RequestBody ChangePasswordRequest req) {
+    this.authService.updatePassword(member, req);
   }
 }
