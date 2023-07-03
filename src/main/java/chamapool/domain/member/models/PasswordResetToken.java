@@ -24,7 +24,7 @@ public class PasswordResetToken {
   private String token;
 
   @OneToOne(targetEntity = Member.class, fetch = FetchType.EAGER)
-  @JoinColumn(nullable = false, name = "user_id")
+  @JoinColumn(nullable = false, name = "member_id")
   private Member member;
 
   private Instant expiryDate = Instant.now().plusSeconds(EXPIRATION);
