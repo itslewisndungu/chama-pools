@@ -1,9 +1,12 @@
 package chamapool.application.auth;
 
+import chamapool.application.auth.requests.ChangePasswordRequest;
+import chamapool.application.auth.requests.LoginRequest;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.member.models.PasswordResetToken;
 import chamapool.domain.member.repositories.MemberRepository;
 import chamapool.domain.member.repositories.PasswordResetTokenRepository;
+import java.time.Instant;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -44,5 +47,26 @@ public class AuthService {
     this.resetTokenRepository.save(PasswordResetToken);
 
     return token;
+  }
+
+  public void changePassword(String token, ChangePasswordRequest req) {
+    var resetToken =
+        this.resetTokenRepository
+            .findByToken(token)
+            .filter(
+                t -> {
+                  var isExpired = t.expiryDate().compareTo(Instant.now());
+                  if (isExpired < 0) throw new RuntimeException("Token expired");
+
+                  return true;
+                })
+            .orElseThrow(() -> new UsernameNotFoundException("Invalid token"));
+
+    this.updatePassword(resetToken.member(), req);
+  }
+
+  public void updatePassword(Member member, ChangePasswordRequest req) {
+    member.password(passwordEncoder.encode(req.password()));
+    this.memberRepository.save(member);
   }
 }

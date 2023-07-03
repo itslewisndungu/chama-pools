@@ -1,4 +1,4 @@
-package chamapool.application.auth;
+package chamapool.application.auth.requests;
 
 public record LoginRequest(String username, String password) {
 }
