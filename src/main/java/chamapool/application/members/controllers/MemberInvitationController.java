@@ -3,9 +3,9 @@ package chamapool.application.members.controllers;
 import chamapool.application.members.MembersService;
 import chamapool.application.members.requests.AcceptInvitationRequest;
 import chamapool.application.members.requests.NewMemberRequest;
-import chamapool.application.members.responses.InviteMemberResponse;
-import chamapool.application.members.responses.MemberProfileResponse;
 import chamapool.application.members.responses.MultipleInvitationsResponse;
+import chamapool.domain.member.VOs.InvitedMemberVO;
+import chamapool.domain.member.VOs.MemberProfileVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,18 +18,15 @@ public class MemberInvitationController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  //  @PreAuthorize("hasAnyRole('ROLE_CHAIRMAN', 'ROLE_SECRETARY')")
-  public InviteMemberResponse inviteNewMember(@RequestBody NewMemberRequest request) {
-    var invitedMember = this.membersService.inviteMember(request);
-    return new InviteMemberResponse(invitedMember);
+  public InvitedMemberVO inviteNewMember(@RequestBody NewMemberRequest request) {
+      return  this.membersService.inviteMember(request);
   }
 
   @PostMapping("/{inviteId}/accept")
   @ResponseStatus(HttpStatus.CREATED)
-  public MemberProfileResponse acceptInvitation(
+  public MemberProfileVO acceptInvitation(
       @PathVariable Integer inviteId, @RequestBody AcceptInvitationRequest request) {
-    var invitedMember = this.membersService.acceptInvitation(inviteId, request);
-    return new MemberProfileResponse(invitedMember);
+    return this.membersService.acceptInvitation(inviteId, request);
   }
 
   @GetMapping
@@ -39,8 +36,7 @@ public class MemberInvitationController {
   }
 
   @GetMapping("/{inviteId}")
-  public InviteMemberResponse getInvitation(@PathVariable Integer inviteId) {
-    var invitedMember = this.membersService.getInvitation(inviteId);
-    return new InviteMemberResponse(invitedMember);
+  public InvitedMemberVO getInvitation(@PathVariable Integer inviteId) {
+    return this.membersService.getInvitation(inviteId);
   }
 }

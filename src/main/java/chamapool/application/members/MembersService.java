@@ -30,12 +30,15 @@ public class MembersService {
   private final TransactionsService transactionsService;
 
   public InvitedMemberVO inviteMember(NewMemberRequest request) {
+    var username = request.firstName() + "." + request.lastName();
+
     InvitedMember member =
         new InvitedMember()
             .firstName(request.firstName())
             .lastName(request.lastName())
             .nationalId(request.nationalId())
-            .phoneNumber(request.phoneNumber());
+            .phoneNumber(request.phoneNumber())
+            .username(username);
 
     var savedMember = invitedMemberRepository.save(member);
     return new InvitedMemberVO(savedMember);
