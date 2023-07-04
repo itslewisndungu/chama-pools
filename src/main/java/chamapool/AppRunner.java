@@ -68,20 +68,6 @@ public class AppRunner implements CommandLineRunner {
 
     roleRepository.saveAll(List.of(chairmanRole, memberRole, treasurerRole, secretaryRole));
 
-    log.info("Generating boilerplate next of kin, home address and occupation");
-
-    NextOfKin kin =
-        new NextOfKin().firstName("Kimani").lastName("Wanjiku").mobileNumber("075478963214");
-    this.nextOfKinRepository.save(kin);
-
-    Address homeAddress =
-        new Address().constituency("Kiambaa").county("Kiambu").subCounty("Kiambaa");
-    this.addressRepository.save(homeAddress);
-
-    Occupation occupation =
-        new Occupation().organization("Equity Bank").salary(40000.0).position("Operations Manager");
-    this.occupationRepository.save(occupation);
-
     log.info("Generating a new Chairman and membership fee...");
 
     Member chairman =
@@ -93,12 +79,25 @@ public class AppRunner implements CommandLineRunner {
             .lastName("Chairman")
             .nationalId("32454323")
             .phoneNumber("8430570482")
+            .dateOfBirth(LocalDate.now())
             .addRoles(chairmanRole, memberRole);
 
     memberRepository.save(chairman);
+
+    NextOfKin kin =
+        new NextOfKin().firstName("Kimani").lastName("Wanjiku").mobileNumber("075478963214");
     kin.member(chairman);
+    this.nextOfKinRepository.save(kin);
+
+    Address homeAddress =
+        new Address().constituency("Kiambaa").county("Kiambu").subCounty("Kiambaa");
     homeAddress.member(chairman);
-    occupation.member(chairman);
+    this.addressRepository.save(homeAddress);
+
+    Occupation position =
+        new Occupation().organization("Equity Bank").salary(40000.0).position("Operations Manager");
+    position.member(chairman);
+    this.occupationRepository.save(position);
 
     var chairmanMemFee = new MembershipFee().amount(10000.0).member(chairman).amountPaid(10000.0);
     this.membershipFeeRepository.save(chairmanMemFee);
@@ -113,13 +112,10 @@ public class AppRunner implements CommandLineRunner {
             .password(passwordEncoder.encode("9326Kalewi"))
             .firstName("SR")
             .lastName("Lewis")
+            .dateOfBirth(LocalDate.now())
             .nationalId("38259057")
             .phoneNumber("047896358974")
             .addRoles(memberRole);
-
-    Occupation position =
-        new Occupation().organization("Equity Bank").salary(40000.0).position("Operations Manager");
-    this.occupationRepository.save(position);
 
     this.memberRepository.save(member);
 
@@ -138,6 +134,7 @@ public class AppRunner implements CommandLineRunner {
             .lastName("Lewis")
             .nationalId("34259057")
             .phoneNumber("147896358974")
+            .dateOfBirth(LocalDate.now())
             .addRoles(treasurerRole);
 
     this.memberRepository.save(treasurer);
@@ -157,6 +154,7 @@ public class AppRunner implements CommandLineRunner {
             .lastName("Lewis")
             .nationalId("37259057")
             .phoneNumber("347896358974")
+            .dateOfBirth(LocalDate.now())
             .addRoles(secretaryRole);
 
     this.memberRepository.save(secretary);
