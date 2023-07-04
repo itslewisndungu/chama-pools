@@ -2,10 +2,7 @@ package chamapool.application.members.controllers;
 
 import chamapool.application.members.MembersService;
 import chamapool.application.members.responses.MultipleMemberResponse;
-import chamapool.domain.member.VOs.AddressVO;
-import chamapool.domain.member.VOs.MemberProfileVO;
-import chamapool.domain.member.VOs.NextOfKinVO;
-import chamapool.domain.member.VOs.OccupationVO;
+import chamapool.domain.member.VOs.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

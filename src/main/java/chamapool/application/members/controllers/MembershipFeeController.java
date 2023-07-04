@@ -4,19 +4,19 @@ import chamapool.application.members.MembersService;
 import chamapool.application.members.requests.PayMembershipFeeRequest;
 import chamapool.domain.member.VOs.MembershipFeeVO;
 import chamapool.domain.member.models.Member;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/membership-fees")
+@RequestMapping("/members/membership-fees")
 @RequiredArgsConstructor
-public class MembershipFeeControler {
+public class MembershipFeeController {
   private final MembersService membersService;
 
-  @PostMapping("/{memberId}/pay")
-  public MembershipFeeVO payMembershipFee(
-      @PathVariable Integer memberId, @RequestBody PayMembershipFeeRequest request) {
-    return this.membersService.payMembershipFee(memberId, request);
+  @GetMapping("/active-fees")
+  public List<MembershipFeeVO> retrieveActiveFees() {
+    return this.membersService.retrieveMembersWithOutstandingMembershipFees();
   }
 
   @GetMapping("/{memberId}")
@@ -27,5 +27,11 @@ public class MembershipFeeControler {
   @GetMapping("/me")
   public MembershipFeeVO retrieveMyMembershipFee(Member member) {
     return this.membersService.retrieveMemberMembershipFee(member);
+  }
+
+  @PostMapping("/{memberId}/pay-installment")
+  public MembershipFeeVO payMembershipFee(
+      @PathVariable Integer memberId, @RequestBody PayMembershipFeeRequest request) {
+    return this.membersService.payMembershipFee(memberId, request);
   }
 }

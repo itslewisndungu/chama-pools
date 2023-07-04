@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -90,7 +91,7 @@ public class MembersService {
     membershipFee.amountPaid(membershipFee.amountPaid() + request.amount());
     this.membershipFeeRepository.save(membershipFee);
 
-    if (membershipFee.balance() == 0) membershipFee.paymentDate(LocalDate.now());
+    if (membershipFee.balance() <= 0) membershipFee.paymentDate(LocalDate.now());
     this.membershipFeeRepository.save(membershipFee);
 
     this.transactionsService.createTransaction(TransactionType.MEMBERSHIP_FEE, request.amount());
@@ -106,6 +107,45 @@ public class MembersService {
   public MembershipFeeVO retrieveMemberMembershipFee(Member member) {
     var membershipFee = member.membershipFee();
     return new MembershipFeeVO(membershipFee);
+  }
+
+  public NextOfKinVO retrieveMemberNextOfKin(String username) {
+    var member = this.getMemberByUsername(username);
+
+    return this.nextOfKinRepository
+        .getNextOfKinByMember(member)
+        .map(NextOfKinVO::new)
+        .orElseThrow(
+            () -> new NoSuchElementException("Kins for member %s not found".formatted(username)));
+  }
+
+  public OccupationVO retrieveMemberOccupation(String username) {
+    var member = this.getMemberByUsername(username);
+
+    return this.occupationRepository
+        .getOccupationByMember(member)
+        .map(OccupationVO::new)
+        .orElseThrow(
+            () ->
+                new NoSuchElementException(
+                    "Occupation for member %s not found".formatted(username)));
+  }
+
+  public AddressVO retrieveMemberAddress(String username) {
+    var member = this.getMemberByUsername(username);
+
+    return this.addressRepository
+        .getAddressByMember(member)
+        .map(AddressVO::new)
+        .orElseThrow(
+            () ->
+                new NoSuchElementException("Address for member %s not found".formatted(username)));
+  }
+
+  public List<MembershipFeeVO> retrieveMembersWithOutstandingMembershipFees() {
+    return this.membershipFeeRepository.getOutstandingMembershipFees().stream()
+        .map(MembershipFeeVO::new)
+        .collect(Collectors.toList());
   }
 
   private Double calculateMembershipFee() {
@@ -151,39 +191,6 @@ public class MembersService {
     this.occupationRepository.save(occupation);
 
     return member;
-  }
-
-  public NextOfKinVO retrieveMemberNextOfKin(String username) {
-    var member = this.getMemberByUsername(username);
-
-    return this.nextOfKinRepository
-        .getNextOfKinByMember(member)
-        .map(NextOfKinVO::new)
-        .orElseThrow(
-            () -> new NoSuchElementException("Kins for member %s not found".formatted(username)));
-  }
-
-  public OccupationVO retrieveMemberOccupation(String username) {
-    var member = this.getMemberByUsername(username);
-
-    return this.occupationRepository
-        .getOccupationByMember(member)
-        .map(OccupationVO::new)
-        .orElseThrow(
-            () ->
-                new NoSuchElementException(
-                    "Occupation for member %s not found".formatted(username)));
-  }
-
-  public AddressVO retrieveMemberAddress(String username) {
-    var member = this.getMemberByUsername(username);
-
-    return this.addressRepository
-        .getAddressByMember(member)
-        .map(AddressVO::new)
-        .orElseThrow(
-            () ->
-                new NoSuchElementException("Address for member %s not found".formatted(username)));
   }
 
   private Member getMemberByUsername(String username) {

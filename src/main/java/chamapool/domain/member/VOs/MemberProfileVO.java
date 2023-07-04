@@ -16,6 +16,7 @@ public record MemberProfileVO(
     String nationalId,
     String phoneNumber,
     LocalDate joinedOn,
+    LocalDate dateOfBirth,
     Status status,
     Set<MemberRole> roles) {
   public MemberProfileVO(Member member) {
@@ -27,6 +28,7 @@ public record MemberProfileVO(
         member.nationalId(),
         member.phoneNumber(),
         member.joinedOn(),
+        member.dateOfBirth(),
         member.status(),
         member.roles().stream().map(Role::name).collect(Collectors.toSet()));
   }

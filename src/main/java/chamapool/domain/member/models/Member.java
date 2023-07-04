@@ -43,6 +43,7 @@ public class Member {
   private Status status;
 
   private String password;
+  private LocalDate dateOfBirth;
 
   @Transient private String token;
 
