@@ -3,6 +3,7 @@ package chamapool.application.notifications;
 import chamapool.domain.member.models.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("/notifications")
@@ -17,7 +18,8 @@ public class NotificationsController {
     return new MemberNotificationsResponse(notifications);
   }
 
-  @PostMapping("/member")
+  @PostMapping("/member/read-all")
+  @ResponseStatus(HttpStatus.CREATED)
   public void markAllMemberNotificationsAsRead(Member member) {
     this.notificationsService.markAllAsRead(member);
   }
