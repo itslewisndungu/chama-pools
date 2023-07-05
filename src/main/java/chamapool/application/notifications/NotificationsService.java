@@ -77,4 +77,14 @@ public class NotificationsService {
 
     this.memberNotificationRepository.save(memberNotification);
   }
+
+  public void markAllAsRead(Member member) {
+    var unreadNotifications =
+        this.memberNotificationRepository.getMemberNotifications(member, false);
+
+    for (MemberNotification notification : unreadNotifications) {
+      notification.read(true);
+      this.memberNotificationRepository.save(notification);
+    }
+  }
 }
