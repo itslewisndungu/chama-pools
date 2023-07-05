@@ -3,6 +3,7 @@ package chamapool.application.meetings;
 import chamapool.application.meetings.requests.CreateMeetingRequest;
 import chamapool.application.meetings.requests.MeetingAttendanceRequest;
 import chamapool.application.meetings.requests.MeetingContributionsRequest;
+import chamapool.application.notifications.NotificationsService;
 import chamapool.application.transactions.TransactionsService;
 import chamapool.domain.meeting.MeetingAttendanceVO;
 import chamapool.domain.meeting.MeetingContributionVO;
@@ -16,6 +17,8 @@ import chamapool.domain.meeting.repositories.MeetingContributionRepository;
 import chamapool.domain.meeting.repositories.MeetingRepository;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.member.repositories.MemberRepository;
+import chamapool.domain.notifications.models.Notification;
+import chamapool.domain.notifications.models.NotificationType;
 import chamapool.domain.transaction.TransactionType;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
@@ -30,8 +33,10 @@ public class MeetingsService {
   private final MeetingAttendanceRepository meetingAttendanceRepository;
   private final MeetingContributionRepository contributionRepository;
   private final MemberRepository memberRepository;
+  private final NotificationsService notificationsService;
   private final TransactionsService transactionsService;
 
+  @Transactional
   public MeetingVO createMeeting(CreateMeetingRequest request) {
     Meeting meeting =
         new Meeting()
@@ -41,6 +46,15 @@ public class MeetingsService {
             .category(request.category().orElse(MeetingCategory.MONTHLY_MEETING));
 
     meetingRepository.save(meeting);
+
+    Notification notification =
+        new Notification()
+            .title("New Meeting")
+            .message("A new meeting has been scheduled for " + meeting.meetingDate())
+            .type(NotificationType.ANNOUNCEMENT)
+            .relatedId(meeting.meetingId());
+    this.notificationsService.sendGroupNotification(notification);
+
     return new MeetingVO(meeting);
   }
 
