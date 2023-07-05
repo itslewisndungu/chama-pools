@@ -3,6 +3,7 @@ package chamapool.application.loans;
 import chamapool.application.loans.requests.LoanApplicationRequest;
 import chamapool.application.loans.requests.LoanApprovalRequest;
 import chamapool.application.loans.responses.LoanEligibilityResponse;
+import chamapool.application.notifications.NotificationsService;
 import chamapool.domain.loans.Loan;
 import chamapool.domain.loans.LoanApplication;
 import chamapool.domain.loans.LoanApproval;
@@ -13,9 +14,10 @@ import chamapool.domain.loans.enums.LoanStatus;
 import chamapool.domain.loans.repositories.LoanApplicationRepository;
 import chamapool.domain.loans.repositories.LoanApprovalRepository;
 import chamapool.domain.loans.repositories.LoanRepository;
-import chamapool.domain.member.enums.MemberRole;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.member.repositories.MemberRepository;
+import chamapool.domain.notifications.models.Notification;
+import chamapool.domain.notifications.models.NotificationType;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +33,7 @@ public class LoanApplicationsService {
   private final LoanApprovalRepository loanApprovalRepository;
   private final LoanApplicationRepository loanApplicationRepository;
   private final MemberRepository memberRepository;
+  private final NotificationsService notificationsService;
 
   public List<LoanApplicationVO> retrieveAllApplications() {
     return this.loanApplicationRepository.findAll().stream()
@@ -62,6 +65,25 @@ public class LoanApplicationsService {
     loanApplicationRepository.save(application);
 
     var approvals = this.retrieveLoanApprovals(application);
+
+    this.notificationsService.sendAdminNotification(
+        new Notification()
+            .type(NotificationType.LOAN_APPLICATION).relatedId(application.id())
+                .title("New Loan Application")
+            .message(
+                String.format(
+                    "Member %s has applied for a loan of amount %.2f. Please review the application",
+                    applicant.fullName(), req.amount())));
+
+    this.notificationsService.sendMemberNotification(applicant,
+        new Notification()
+            .type(NotificationType.LOAN_APPLICATION).relatedId(application.id())
+                .title("Loan Application Received")
+            .message(
+                String.format(
+                    "Your loan application of amount %.2f has been received. Please wait for approval",
+                    req.amount())));
+
     return new LoanApplicationVO(application, approvals);
   }
 
@@ -128,20 +150,9 @@ public class LoanApplicationsService {
   }
 
   private Approvals retrieveLoanApprovals(LoanApplication loanApplication) {
-    var chairman =
-        this.memberRepository.getMembersByRole(MemberRole.CHAIRMAN).stream()
-            .findFirst()
-            .orElseThrow();
-
-    var secretary =
-        this.memberRepository.getMembersByRole(MemberRole.SECRETARY).stream()
-            .findFirst()
-            .orElseThrow();
-
-    var treasurer =
-        this.memberRepository.getMembersByRole(MemberRole.TREASURER).stream()
-            .findFirst()
-            .orElseThrow();
+    var chairman = this.memberRepository.findChairman().orElseThrow();
+    var secretary = this.memberRepository.findSecretary().orElseThrow();
+    var treasurer = this.memberRepository.findTreasurer().orElseThrow();
 
     var chairmanApproval =
         loanApprovalRepository
