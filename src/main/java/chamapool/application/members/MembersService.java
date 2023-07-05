@@ -2,6 +2,7 @@ package chamapool.application.members;
 
 import chamapool.application.members.requests.AcceptInvitationRequest;
 import chamapool.application.members.requests.NewMemberRequest;
+import chamapool.application.members.requests.PayBulkMembershipFeesRequest;
 import chamapool.application.members.requests.PayMembershipFeeRequest;
 import chamapool.application.transactions.TransactionsService;
 import chamapool.domain.member.VOs.*;
@@ -83,20 +84,6 @@ public class MembersService {
 
   public List<InvitedMemberVO> getAllInvitations() {
     return this.invitedMemberRepository.findAll().stream().map(InvitedMemberVO::new).toList();
-  }
-
-  @Transactional
-  public MembershipFeeVO payMembershipFee(Integer memberId, PayMembershipFeeRequest request) {
-    var membershipFee = this.memberRepository.getReferenceById(memberId).membershipFee();
-    membershipFee.amountPaid(membershipFee.amountPaid() + request.amount());
-    this.membershipFeeRepository.save(membershipFee);
-
-    if (membershipFee.balance() <= 0) membershipFee.paymentDate(LocalDate.now());
-    this.membershipFeeRepository.save(membershipFee);
-
-    this.transactionsService.createTransaction(TransactionType.MEMBERSHIP_FEE, request.amount());
-
-    return new MembershipFeeVO(membershipFee);
   }
 
   public MembershipFeeVO retrieveMemberMembershipFee(Integer memberId) {
@@ -200,5 +187,33 @@ public class MembersService {
             () ->
                 new NoSuchElementException(
                     "Member with username %s not found".formatted(username)));
+  }
+
+  @Transactional
+  public MembershipFeeVO payMembershipFee(Integer memberId, PayMembershipFeeRequest request) {
+    var membershipFee = this.payMemberMembershipFee(memberId, request.amount());
+    return new MembershipFeeVO(membershipFee);
+  }
+
+  @Transactional
+  public void payBulkMembershipFees(PayBulkMembershipFeesRequest request) {
+    var repayments = request.feePayments().stream().filter(fee -> fee.amount() > 0).toList();
+
+    for (var repayment : repayments) {
+      this.payMemberMembershipFee(repayment.memberId(), repayment.amount());
+    }
+  }
+
+  private MembershipFee payMemberMembershipFee(Integer memberId, Double amount) {
+    var membershipFee = this.memberRepository.getReferenceById(memberId).membershipFee();
+    membershipFee.amountPaid(membershipFee.amountPaid() + amount);
+    this.membershipFeeRepository.save(membershipFee);
+
+    if (membershipFee.balance() <= 0) membershipFee.paymentDate(LocalDate.now());
+    this.membershipFeeRepository.save(membershipFee);
+
+    this.transactionsService.createTransaction(TransactionType.MEMBERSHIP_FEE, amount);
+
+    return membershipFee;
   }
 }
