@@ -51,7 +51,7 @@ public class MeetingsService {
         new Notification()
             .title("New Meeting")
             .message("A new meeting has been scheduled for " + meeting.meetingDate())
-            .type(NotificationType.ANNOUNCEMENT)
+            .type(NotificationType.MEETING_REMINDER)
             .relatedId(meeting.meetingId());
     this.notificationsService.sendGroupNotification(notification);
 
