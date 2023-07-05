@@ -20,6 +20,8 @@ import chamapool.domain.member.repositories.MemberRepository;
 import chamapool.domain.member.repositories.MembershipFeeRepository;
 import chamapool.domain.notifications.models.Notification;
 import chamapool.domain.notifications.models.NotificationType;
+import chamapool.domain.notifications.models.Notification;
+import chamapool.domain.notifications.models.NotificationType;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +37,7 @@ public class LoanApplicationsService {
   private final LoanApprovalRepository loanApprovalRepository;
   private final LoanApplicationRepository loanApplicationRepository;
   private final MemberRepository memberRepository;
+  private final NotificationsService notificationsService;
   private final NotificationsService notificationsService;
   private final MembershipFeeRepository membershipFeeRepository;
 
