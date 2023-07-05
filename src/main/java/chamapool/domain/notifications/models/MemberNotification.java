@@ -15,7 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class MemberNotification {
   @EmbeddedId private MemberNotificationId id = new MemberNotificationId();
 
-  private Boolean isRead = false;
+  private Boolean read = false;
 
   @ManyToOne
   @MapsId("notificationId")
