@@ -14,7 +14,6 @@ import chamapool.domain.loans.enums.LoanStatus;
 import chamapool.domain.loans.repositories.LoanApplicationRepository;
 import chamapool.domain.loans.repositories.LoanApprovalRepository;
 import chamapool.domain.loans.repositories.LoanRepository;
-import chamapool.domain.member.enums.MemberRole;
 import chamapool.domain.member.enums.MembershipFeeStatus;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.member.repositories.MemberRepository;
