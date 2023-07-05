@@ -6,11 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Setter
 @Getter
 @Accessors(chain = true, fluent = true)
+@EntityListeners(AuditingEntityListener.class)
 public class Notification {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
