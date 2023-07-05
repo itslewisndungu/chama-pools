@@ -13,7 +13,6 @@ import chamapool.domain.loans.enums.LoanStatus;
 import chamapool.domain.loans.repositories.LoanApplicationRepository;
 import chamapool.domain.loans.repositories.LoanApprovalRepository;
 import chamapool.domain.loans.repositories.LoanRepository;
-import chamapool.domain.member.enums.MemberRole;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.member.repositories.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -128,20 +127,9 @@ public class LoanApplicationsService {
   }
 
   private Approvals retrieveLoanApprovals(LoanApplication loanApplication) {
-    var chairman =
-        this.memberRepository.getMembersByRole(MemberRole.CHAIRMAN).stream()
-            .findFirst()
-            .orElseThrow();
-
-    var secretary =
-        this.memberRepository.getMembersByRole(MemberRole.SECRETARY).stream()
-            .findFirst()
-            .orElseThrow();
-
-    var treasurer =
-        this.memberRepository.getMembersByRole(MemberRole.TREASURER).stream()
-            .findFirst()
-            .orElseThrow();
+    var chairman = this.memberRepository.findChairman().orElseThrow();
+    var secretary = this.memberRepository.findSecretary().orElseThrow();
+    var treasurer = this.memberRepository.findTreasurer().orElseThrow();
 
     var chairmanApproval =
         loanApprovalRepository
