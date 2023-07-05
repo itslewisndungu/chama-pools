@@ -198,4 +198,5 @@ dependency-reduced-pom.xml
 README.html
 *.iml
 .idea
+.idea/httpRequests
 .exercism
