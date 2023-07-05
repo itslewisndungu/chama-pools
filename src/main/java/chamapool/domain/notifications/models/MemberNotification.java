@@ -1,7 +1,6 @@
 package chamapool.domain.notifications.models;
 
 import chamapool.domain.member.models.Member;
-import chamapool.domain.notifications.enums.NotificationStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class MemberNotification {
   @EmbeddedId private MemberNotificationId id = new MemberNotificationId();
 
-  private NotificationStatus status = NotificationStatus.UNREAD;
+  private Boolean isRead = false;
 
   @ManyToOne
   @MapsId("notificationId")

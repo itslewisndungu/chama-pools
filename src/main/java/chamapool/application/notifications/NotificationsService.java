@@ -20,25 +20,12 @@ public class NotificationsService {
   private final MemberRepository memberRepository;
   private final NotificationRepository notificationRepository;
 
-  public void sendNotification(Member member, Notification notification) {
-    log.info(
-        "Sending notification of type {} and message {} to member {}",
-        notification.type(),
-        notification.message(),
-        member.id());
-
-    var memberNotification = new MemberNotification().notification(notification).recipient(member);
-    this.memberNotificationRepository.save(memberNotification);
-    log.info("Notification sent");
-  }
-
   public void sendGroupNotification(Notification notification) {
     log.info(
         "Sending group notification of type {} and message {}",
         notification.type(),
         notification.message());
 
-    this.notificationRepository.save(notification);
     var members = this.memberRepository.findAll();
     for (Member member : members) {
       this.sendNotification(member, notification);
@@ -47,8 +34,47 @@ public class NotificationsService {
     log.info("Group notification sent");
   }
 
-  public List<NotificationVO> getMemberNotifications(Member member) {
-    return this.memberNotificationRepository.findMemberNotificationsByRecipient(member)
-            .stream().map(NotificationVO::new).toList();
+  public void sendMemberNotification(Member recipient, Notification notification) {
+    log.info(
+        "Sending member notification of type '{}' and message '{}' to member {}",
+        notification.type(),
+        notification.message(),
+        recipient.id());
+    this.sendNotification(recipient, notification);
+    log.info("Member notification sent");
+  }
+
+  public void sendAdminNotification(Notification notification) {
+    log.info(
+        "Sending admin notification of type {} and message {}",
+        notification.type(),
+        notification.message());
+
+    var chairman = this.memberRepository.findChairman().orElseThrow();
+    var secretary = this.memberRepository.findSecretary().orElseThrow();
+    var treasurer = this.memberRepository.findTreasurer().orElseThrow();
+
+    this.sendNotification(chairman, notification);
+    this.sendNotification(secretary, notification);
+    this.sendNotification(treasurer, notification);
+
+    log.info("Admin notification sent");
+  }
+
+  public List<NotificationVO> getMemberNotifications(Member member, boolean unread) {
+    var filterByUnread = unread ? Boolean.TRUE : null;
+
+    return this.memberNotificationRepository.getMemberNotifications(member, filterByUnread).stream()
+        .map(NotificationVO::new)
+        .toList();
+  }
+
+  private void sendNotification(Member recipient, Notification notification) {
+    this.notificationRepository.save(notification);
+
+    var memberNotification =
+        new MemberNotification().notification(notification).recipient(recipient);
+
+    this.memberNotificationRepository.save(memberNotification);
   }
 }
