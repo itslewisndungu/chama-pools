@@ -80,7 +80,7 @@ public class NotificationsService {
 
   public void markAllAsRead(Member member) {
     var unreadNotifications =
-        this.memberNotificationRepository.getMemberNotifications(member, false);
+        this.memberNotificationRepository.getMemberNotifications(member, true);
 
     for (MemberNotification notification : unreadNotifications) {
       notification.read(true);
