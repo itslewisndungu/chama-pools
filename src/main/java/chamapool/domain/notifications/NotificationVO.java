@@ -9,7 +9,7 @@ public record NotificationVO(
         notification.notification().title(),
         notification.notification().message(),
         notification.notification().type().name(),
-        notification.isRead(),
+        notification.read(),
         notification.notification().relatedId());
   }
 }
