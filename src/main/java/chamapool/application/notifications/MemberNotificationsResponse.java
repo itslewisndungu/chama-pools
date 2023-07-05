@@ -5,6 +5,6 @@ import java.util.List;
 
 public record MemberNotificationsResponse(List<NotificationVO> notifications, Integer unreadCount) {
   public MemberNotificationsResponse(List<NotificationVO> notifications) {
-    this(notifications, (int) notifications.stream().filter(n -> !n.isRead()).count());
+    this(notifications, (int) notifications.stream().filter(n -> !n.read()).count());
   }
 }
