@@ -107,6 +107,8 @@ public class MeetingsService {
     List<MeetingContribution> contributions = new ArrayList<>();
 
     for (var c : request.contributions()) {
+      if (c.amount() <= 0) continue;
+
       Member member = memberRepository.getReferenceById(c.memberId());
 
       var contribution =
@@ -118,9 +120,22 @@ public class MeetingsService {
           contribution.amount() == null ? c.amount() : contribution.amount() + c.amount());
 
       this.contributionRepository.save(contribution);
+      contributions.add(contribution);
+
+      // Record transaction
       this.transactionsService.createTransaction(TransactionType.CONTRIBUTION, c.amount());
 
-      contributions.add(contribution);
+      // Send notification
+      var contributionNotification =
+          new Notification()
+              .title("New Contribution")
+              .message(
+                  "We have received your contribution of %.2f for the %s"
+                      .formatted(c.amount(), meeting.title()))
+              .type(NotificationType.CONTRIBUTION)
+              .relatedId(meeting.meetingId());
+
+      this.notificationsService.sendMemberNotification(member, contributionNotification);
     }
 
     // TODO: Fix bug
