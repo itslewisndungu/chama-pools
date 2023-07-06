@@ -222,8 +222,7 @@ public class LoanApplicationsService {
           new Loan()
               .member(application.member())
               .amount(application.amount())
-              .reasonForLoan(application.reasonForLoan())
-              .status(LoanStatus.AWAITING_DISBURSEMENT);
+              .reasonForLoan(application.reasonForLoan());
 
       loanRepository.save(loan);
 
@@ -236,7 +235,12 @@ public class LoanApplicationsService {
     } else if (!awaitingApproval && rejected) {
       application.approvalStatus(LoanApprovalStatus.REJECTED);
       loanApplicationRepository.save(application);
-      loanNotification.title("Loan Rejected").message("Your loan of %.2f has been rejected. View loan application for more details".formatted(application.amount()));
+
+      loanNotification
+          .title("Loan Rejected")
+          .message(
+              "Your loan of %.2f has been rejected. View loan application for more details"
+                  .formatted(application.amount()));
     }
 
     this.notificationsService.sendMemberNotification(application.member(), loanNotification);

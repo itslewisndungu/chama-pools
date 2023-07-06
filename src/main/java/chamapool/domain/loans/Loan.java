@@ -35,11 +35,11 @@ public class Loan {
   @JoinColumn(name = "member_id")
   private Member member;
 
-  @Enumerated(EnumType.STRING)
-  private LoanStatus status = LoanStatus.AWAITING_DISBURSEMENT;
+  //  @Enumerated(EnumType.STRING)
+  //  private LoanStatus status = LoanStatus.AWAITING_DISBURSEMENT;
 
   @OneToMany(mappedBy = "loan")
-  private List<LoanRepayment> repayments = new ArrayList<>();
+  private List<LoanInstallment> repayments = new ArrayList<>();
 
   public Double interestRate() {
     return 10.0;
@@ -63,5 +63,17 @@ public class Loan {
 
   public Double balance() {
     return this.amountPayable() - this.amountPaid();
+  }
+
+  public LoanStatus status() {
+    if (this.startDate == null) {
+      return LoanStatus.AWAITING_DISBURSEMENT;
+    } else if (LocalDate.now().isAfter(this.dueDate())) {
+      return LoanStatus.OVERDUE;
+    } else if (this.balance() <= 0) {
+      return LoanStatus.REPAID;
+    } else {
+      return LoanStatus.ACTIVE;
+    }
   }
 }

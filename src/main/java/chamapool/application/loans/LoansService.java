@@ -2,7 +2,7 @@ package chamapool.application.loans;
 
 import chamapool.application.notifications.NotificationsService;
 import chamapool.application.transactions.TransactionsService;
-import chamapool.domain.loans.LoanRepayment;
+import chamapool.domain.loans.LoanInstallment;
 import chamapool.domain.loans.VO.*;
 import chamapool.domain.loans.enums.LoanStatus;
 import chamapool.domain.loans.repositories.LoanRepaymentRepository;
@@ -14,6 +14,7 @@ import chamapool.domain.transaction.TransactionType;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class LoansService {
     var loan = this.loanRepository.getReferenceById(loanId);
     log.info("Disbursing loan with ID {} and worth {}", loanId, loan.amount());
 
-    loan.startDate(LocalDate.now()).status(LoanStatus.ACTIVE);
+    loan.startDate(LocalDate.now());
     loan = this.loanRepository.save(loan);
 
     this.transactionsService.createTransaction(TransactionType.LOAN_DISBURSEMENT, loan.amount());
@@ -61,7 +62,7 @@ public class LoansService {
   }
 
   @Transactional
-  public LoanVO payLoanInstallment(Integer loanId, Double amount) {
+  public LoanInstallmentVO payLoanInstallment(Integer loanId, Double amount) {
     var loan = this.loanRepository.getReferenceById(loanId);
 
     if (loan.status() == LoanStatus.REPAID) {
@@ -72,7 +73,7 @@ public class LoansService {
 
     log.info("Paying installment for loan with ID {} and worth {}", loanId, amount);
 
-    var loanRepayment = new LoanRepayment().loan(loan).amount(amount);
+    var loanRepayment = new LoanInstallment().loan(loan).amount(amount);
     this.loanRepaymentRepository.save(loanRepayment);
 
     loan.amountPaid(loan.amountPaid() + amount);
@@ -92,7 +93,15 @@ public class LoansService {
                     .formatted(amount, loan.balance()));
 
     this.notificationsService.sendMemberNotification(loan.member(), loanRepaymentNotification);
+    return new LoanInstallmentVO(loanRepayment);
+  }
 
-    return new LoanVO(loan);
+  public List<LoanVO> retrieveAllLoans() {
+    return this.loanRepository.findAll().stream().map(LoanVO::new).collect(Collectors.toList());
+  }
+
+  public List<LoanInstallmentVO> retrieveLoanInstallments(Integer loanId) {
+    var loan = this.loanRepository.getReferenceById(loanId);
+    return loan.repayments().stream().map(LoanInstallmentVO::new).collect(Collectors.toList());
   }
 }
