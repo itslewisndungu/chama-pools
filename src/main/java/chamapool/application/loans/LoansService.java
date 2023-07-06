@@ -1,5 +1,6 @@
 package chamapool.application.loans;
 
+import chamapool.application.notifications.NotificationsService;
 import chamapool.application.transactions.TransactionsService;
 import chamapool.domain.loans.LoanRepayment;
 import chamapool.domain.loans.VO.*;
@@ -7,6 +8,8 @@ import chamapool.domain.loans.enums.LoanStatus;
 import chamapool.domain.loans.repositories.LoanRepaymentRepository;
 import chamapool.domain.loans.repositories.LoanRepository;
 import chamapool.domain.member.models.Member;
+import chamapool.domain.notifications.models.Notification;
+import chamapool.domain.notifications.models.NotificationType;
 import chamapool.domain.transaction.TransactionType;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
@@ -22,6 +25,8 @@ public class LoansService {
   private final LoanRepository loanRepository;
   private final TransactionsService transactionsService;
   private final LoanRepaymentRepository loanRepaymentRepository;
+
+  private final NotificationsService notificationsService;
 
   public LoanVO retrieveLoan(Integer loanId) {
     var loan = this.loanRepository.getReferenceById(loanId);
@@ -41,6 +46,16 @@ public class LoansService {
     loan = this.loanRepository.save(loan);
 
     this.transactionsService.createTransaction(TransactionType.LOAN_DISBURSEMENT, loan.amount());
+
+    var loanDisbursementNotification =
+        new Notification()
+            .title("Loan Disbursement")
+            .relatedId(loan.id())
+            .message("Your loan of amount %.2f has been disbursed".formatted(loan.amount()))
+            .type(NotificationType.LOAN_DISBURSEMENT);
+
+    // Can we do this on another thread?
+    this.notificationsService.sendMemberNotification(loan.member(), loanDisbursementNotification);
 
     return new LoanVO(loan);
   }
@@ -66,6 +81,18 @@ public class LoansService {
 
     this.transactionsService.createTransaction(TransactionType.LOAN_REPAYMENT, amount * 0.9);
     this.transactionsService.createTransaction(TransactionType.LOAN_INTEREST, amount * 0.1);
+
+    var loanRepaymentNotification =
+        new Notification()
+            .title("Loan Repayment")
+            .type(NotificationType.LOAN_REPAYMENT)
+            .relatedId(loan.id())
+            .message(
+                "An installment of %.2f has been received for your loan. Your new outstanding balance is %.2f"
+                    .formatted(amount, loan.balance()));
+
+    this.notificationsService.sendMemberNotification(loan.member(), loanRepaymentNotification);
+
     return new LoanVO(loan);
   }
 }
