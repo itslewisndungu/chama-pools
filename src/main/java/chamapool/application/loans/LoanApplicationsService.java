@@ -71,17 +71,20 @@ public class LoanApplicationsService {
 
     this.notificationsService.sendAdminNotification(
         new Notification()
-            .type(NotificationType.LOAN_APPLICATION).relatedId(application.id())
-                .title("New Loan Application")
+            .type(NotificationType.LOAN_APPLICATION)
+            .relatedId(application.id())
+            .title("New Loan Application")
             .message(
                 String.format(
                     "Member %s has applied for a loan of amount %.2f. Please review the application",
                     applicant.fullName(), req.amount())));
 
-    this.notificationsService.sendMemberNotification(applicant,
+    this.notificationsService.sendMemberNotification(
+        applicant,
         new Notification()
-            .type(NotificationType.LOAN_APPLICATION).relatedId(application.id())
-                .title("Loan Application Received")
+            .type(NotificationType.LOAN_APPLICATION)
+            .relatedId(application.id())
+            .title("Loan Application Received")
             .message(
                 String.format(
                     "Your loan application of amount %.2f has been received. Please wait for approval",
@@ -208,6 +211,9 @@ public class LoanApplicationsService {
             || loanApprovals.secretary().status() == LoanApprovalStatus.REJECTED
             || loanApprovals.treasurer().status() == LoanApprovalStatus.REJECTED;
 
+    var loanNotification =
+        new Notification().type(NotificationType.LOAN_APPLICATION).relatedId(application.id());
+
     if (!awaitingApproval && approved) {
       application.approvalStatus(LoanApprovalStatus.APPROVED);
       loanApplicationRepository.save(application);
@@ -220,10 +226,20 @@ public class LoanApplicationsService {
               .status(LoanStatus.AWAITING_DISBURSEMENT);
 
       loanRepository.save(loan);
+
+      loanNotification
+          .title("Loan Approved")
+          .message(
+              "Your loan request of %.2f has been approved. Please pick your cheque in the next meeting"
+                  .formatted(application.amount()));
+
     } else if (!awaitingApproval && rejected) {
       application.approvalStatus(LoanApprovalStatus.REJECTED);
       loanApplicationRepository.save(application);
+      loanNotification.title("Loan Rejected").message("Your loan of %.2f has been rejected. View loan application for more details".formatted(application.amount()));
     }
+
+    this.notificationsService.sendMemberNotification(application.member(), loanNotification);
   }
 
   private Optional<LoanApplication> retrieveActiveApplication(Member member) {
