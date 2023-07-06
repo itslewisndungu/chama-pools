@@ -11,4 +11,5 @@ public enum NotificationType {
   GENERAL_ANNOUNCEMENT,
     MEMBER_INVITATION,
   MEMBERSHIP_FEE,
+  PASSWORD_RESET,
 }

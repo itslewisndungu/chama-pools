@@ -2,10 +2,13 @@ package chamapool.application.auth;
 
 import chamapool.application.auth.requests.ChangePasswordRequest;
 import chamapool.application.auth.requests.LoginRequest;
+import chamapool.application.notifications.NotificationsService;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.member.models.PasswordResetToken;
 import chamapool.domain.member.repositories.MemberRepository;
 import chamapool.domain.member.repositories.PasswordResetTokenRepository;
+import chamapool.domain.notifications.models.Notification;
+import chamapool.domain.notifications.models.NotificationType;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,8 @@ public class AuthService {
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final PasswordResetTokenRepository resetTokenRepository;
+
+  private final NotificationsService notificationsService;
 
   public Member login(LoginRequest request) {
     return memberRepository
@@ -68,5 +73,12 @@ public class AuthService {
   public void updatePassword(Member member, ChangePasswordRequest req) {
     member.password(passwordEncoder.encode(req.password()));
     this.memberRepository.save(member);
+
+    var notification =
+        new Notification()
+            .title("Password changed")
+            .type(NotificationType.PASSWORD_RESET)
+            .message("Your password has been changed successfully");
+    this.notificationsService.sendMemberNotification(member, notification);
   }
 }
