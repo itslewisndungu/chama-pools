@@ -196,25 +196,25 @@ public class LoanApplicationsService {
   private void generateLoanOnSuccessfulApproval(LoanApplication application) {
     var loanApprovals = this.retrieveLoanApprovals(application);
 
+    var approvals =
+        List.of(loanApprovals.chairman(), loanApprovals.treasurer(), loanApprovals.secretary());
+
     var awaitingApproval =
-        loanApprovals.chairman().status() == LoanApprovalStatus.AWAITING_APPROVAL
-            || loanApprovals.secretary().status() == LoanApprovalStatus.AWAITING_APPROVAL
-            || loanApprovals.treasurer().status() == LoanApprovalStatus.AWAITING_APPROVAL;
+        approvals.stream()
+            .anyMatch(approval -> approval.status() == LoanApprovalStatus.AWAITING_APPROVAL);
 
     var approved =
-        loanApprovals.chairman().status() == LoanApprovalStatus.APPROVED
-            && loanApprovals.secretary().status() == LoanApprovalStatus.APPROVED
-            && loanApprovals.treasurer().status() == LoanApprovalStatus.APPROVED;
+        approvals.stream().allMatch(approval -> approval.status() == LoanApprovalStatus.APPROVED);
 
     var rejected =
-        loanApprovals.chairman().status() == LoanApprovalStatus.REJECTED
-            || loanApprovals.secretary().status() == LoanApprovalStatus.REJECTED
-            || loanApprovals.treasurer().status() == LoanApprovalStatus.REJECTED;
+        !awaitingApproval
+            && approvals.stream()
+                .anyMatch(approval -> approval.status() == LoanApprovalStatus.REJECTED);
 
     var loanNotification =
         new Notification().type(NotificationType.LOAN_APPLICATION).relatedId(application.id());
 
-    if (!awaitingApproval && approved) {
+    if (approved) {
       application.approvalStatus(LoanApprovalStatus.APPROVED);
       loanApplicationRepository.save(application);
 
@@ -232,7 +232,7 @@ public class LoanApplicationsService {
               "Your loan request of %.2f has been approved. Please pick your cheque in the next meeting"
                   .formatted(application.amount()));
 
-    } else if (!awaitingApproval && rejected) {
+    } else if (rejected) {
       application.approvalStatus(LoanApprovalStatus.REJECTED);
       loanApplicationRepository.save(application);
 
