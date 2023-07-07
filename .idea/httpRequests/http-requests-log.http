@@ -1,3 +1,76 @@
+GET http://localhost:8080/chama/loans-summary
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODg3NjA3NzgsImlhdCI6MTY4ODc1MzU3OCwicm9sZXMiOlsiTUVNQkVSIiwiQ0hBSVJNQU4iXX0.eIecVB2Xz9m0u0BX77Q6u9MNh64-w941J1RJuD-CPmEC6ghpNip9ALLDnCV7STfaQzhw8zjfj0Aahi_g96rBOqJM9Wfv2qO4qkCw_FdbFCF3YEe3Tdotyv4JnmCZ_Dbg3tIlXVqT5gs7dcs9uZNHoya8ElSXlCeXd5MVnIK_fuufND4o6ucGQlZ4vK5SWavrpRJ9V3GpgpPXp7SD5GsfepIgccGDcxJ6WJEgTn4bxXSLwD_OuOh8kVltHMoQ3dv_f4pPfH_TgZgLad1UGE6wAJWJPOXyzLHFGJRMezBdItv9nOVJ6u4a4S6whZ3keu-Nv4mEIfrFAcveyuK4bklt3Q
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-07-07T211659.200.json
+
+###
+
+POST http://localhost:8080/loans/1/pay-installment
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODg3NjA3NzgsImlhdCI6MTY4ODc1MzU3OCwicm9sZXMiOlsiTUVNQkVSIiwiQ0hBSVJNQU4iXX0.eIecVB2Xz9m0u0BX77Q6u9MNh64-w941J1RJuD-CPmEC6ghpNip9ALLDnCV7STfaQzhw8zjfj0Aahi_g96rBOqJM9Wfv2qO4qkCw_FdbFCF3YEe3Tdotyv4JnmCZ_Dbg3tIlXVqT5gs7dcs9uZNHoya8ElSXlCeXd5MVnIK_fuufND4o6ucGQlZ4vK5SWavrpRJ9V3GpgpPXp7SD5GsfepIgccGDcxJ6WJEgTn4bxXSLwD_OuOh8kVltHMoQ3dv_f4pPfH_TgZgLad1UGE6wAJWJPOXyzLHFGJRMezBdItv9nOVJ6u4a4S6whZ3keu-Nv4mEIfrFAcveyuK4bklt3Q
+Content-Type: application/json
+Content-Length: 24
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+    "amount": 110000
+}
+
+<> 2023-07-07T211637.200.json
+
+###
+
+POST http://localhost:8080/loans/1/disburse
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODg3NjA3NzgsImlhdCI6MTY4ODc1MzU3OCwicm9sZXMiOlsiTUVNQkVSIiwiQ0hBSVJNQU4iXX0.eIecVB2Xz9m0u0BX77Q6u9MNh64-w941J1RJuD-CPmEC6ghpNip9ALLDnCV7STfaQzhw8zjfj0Aahi_g96rBOqJM9Wfv2qO4qkCw_FdbFCF3YEe3Tdotyv4JnmCZ_Dbg3tIlXVqT5gs7dcs9uZNHoya8ElSXlCeXd5MVnIK_fuufND4o6ucGQlZ4vK5SWavrpRJ9V3GpgpPXp7SD5GsfepIgccGDcxJ6WJEgTn4bxXSLwD_OuOh8kVltHMoQ3dv_f4pPfH_TgZgLad1UGE6wAJWJPOXyzLHFGJRMezBdItv9nOVJ6u4a4S6whZ3keu-Nv4mEIfrFAcveyuK4bklt3Q
+Content-Length: 0
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-07-07T211607.200.json
+
+###
+
+GET http://localhost:8080/chama/loans-summary
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODg3NjA3NzgsImlhdCI6MTY4ODc1MzU3OCwicm9sZXMiOlsiTUVNQkVSIiwiQ0hBSVJNQU4iXX0.eIecVB2Xz9m0u0BX77Q6u9MNh64-w941J1RJuD-CPmEC6ghpNip9ALLDnCV7STfaQzhw8zjfj0Aahi_g96rBOqJM9Wfv2qO4qkCw_FdbFCF3YEe3Tdotyv4JnmCZ_Dbg3tIlXVqT5gs7dcs9uZNHoya8ElSXlCeXd5MVnIK_fuufND4o6ucGQlZ4vK5SWavrpRJ9V3GpgpPXp7SD5GsfepIgccGDcxJ6WJEgTn4bxXSLwD_OuOh8kVltHMoQ3dv_f4pPfH_TgZgLad1UGE6wAJWJPOXyzLHFGJRMezBdItv9nOVJ6u4a4S6whZ3keu-Nv4mEIfrFAcveyuK4bklt3Q
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-07-07T211551.200.json
+
+###
+
+GET http://localhost:8080/chama/members-summary
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2hhaXJtYW4iLCJleHAiOjE2ODg3NjA3NzgsImlhdCI6MTY4ODc1MzU3OCwicm9sZXMiOlsiTUVNQkVSIiwiQ0hBSVJNQU4iXX0.eIecVB2Xz9m0u0BX77Q6u9MNh64-w941J1RJuD-CPmEC6ghpNip9ALLDnCV7STfaQzhw8zjfj0Aahi_g96rBOqJM9Wfv2qO4qkCw_FdbFCF3YEe3Tdotyv4JnmCZ_Dbg3tIlXVqT5gs7dcs9uZNHoya8ElSXlCeXd5MVnIK_fuufND4o6ucGQlZ4vK5SWavrpRJ9V3GpgpPXp7SD5GsfepIgccGDcxJ6WJEgTn4bxXSLwD_OuOh8kVltHMoQ3dv_f4pPfH_TgZgLad1UGE6wAJWJPOXyzLHFGJRMezBdItv9nOVJ6u4a4S6whZ3keu-Nv4mEIfrFAcveyuK4bklt3Q
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-07-07T211303.200.json
+
+###
+
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+Content-Length: 56
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "chairman",
+  "password": "9326Kalewi"
+}
+
+<> 2023-07-07T211258.200.json
+
+###
+
 GET http://localhost:8080/notifications/member
 Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic2VjcmV0YXJ5IiwiZXhwIjoxNjg4NTM4NTMwLCJpYXQiOjE2ODg1MzEzMzAsInJvbGVzIjpbIlNFQ1JFVEFSWSJdfQ.Q3m0U-P-TtL8wIq_jTbH2bQGeSaWLLcvgxF1oA2U4x4prf5FU6WgVRVCyNTw22PyljmDyqqj6maN3w19ztWQ5J5S5ZrlPP51ol2uGkozSbKx6YqOQ5MCa0ur0cmzckKi6PEVA8LDWOzrS_3bBrqvyk2-_3VSpVUcsXMd0aSpb2pc24gani0h0oE4a6YXU65OjayMUk4REg4uBhpLCoQf2O5rDqP_0jEFANF8W95JtzLJQjN3caFtum-afxswcF35VF-5Xhe4V42TumvoTt_fIrcfEgJNl3JesrzlptE-KwftJSUjqkTdx2mUHyHeRxPOQX2CJke4K087SHyMPzaMPA
 Connection: Keep-Alive
@@ -568,79 +641,6 @@ Accept-Encoding: br,deflate,gzip,x-gzip
 }
 
 <> 2023-07-03T145332.404.json
-
-###
-
-POST http://localhost:8080/auth/login
-Content-Type: application/json
-Content-Length: 56
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "username": "chairman",
-  "password": "9326Kalewi"
-}
-
-<> 2023-07-03T145326.200.json
-
-###
-
-POST http://localhost:8080/auth/update-password
-Authorization: Bearer
-Content-Type: application/json
-Content-Length: 30
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "password": "9326Kalewi"
-}
-
-###
-
-POST http://localhost:8080/auth/change-password?token=02f7febc-c9c0-4a33-9dad-b263702dfb87
-Content-Type: application/json
-Content-Length: 32
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-    "password": "9326Kalewi"
-}
-
-###
-
-POST http://localhost:8080/auth/change-password?token=02f7febc-c9c0-4a33-9dad-b263702dfb87
-Content-Length: 0
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-###
-
-POST http://localhost:8080/auth/chairman/reset-password
-Content-Type: application/json
-Content-Length: 0
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2023-07-03T145052.201.txt
-
-###
-
-POST http://localhost:8080/auth/chairman/reset-password
-Content-Type: application/json
-Content-Length: 0
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2023-07-03T141259.201.txt
 
 ###
 

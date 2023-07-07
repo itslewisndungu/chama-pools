@@ -216,8 +216,7 @@ public class LoanApplicationsService {
           new Loan()
               .member(application.member())
               .amount(application.amount())
-              .reasonForLoan(application.reasonForLoan())
-              .status(LoanStatus.AWAITING_DISBURSEMENT);
+              .reasonForLoan(application.reasonForLoan());
 
       loanRepository.save(loan);
     } else if (!awaitingApproval && rejected) {
