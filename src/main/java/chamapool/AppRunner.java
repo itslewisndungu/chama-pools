@@ -3,7 +3,6 @@ package chamapool;
 import chamapool.domain.chama.Chama;
 import chamapool.domain.chama.ChamaRepository;
 import chamapool.domain.loans.Loan;
-import chamapool.domain.loans.enums.LoanStatus;
 import chamapool.domain.loans.repositories.LoanRepository;
 import chamapool.domain.meeting.enums.MeetingCategory;
 import chamapool.domain.meeting.models.Meeting;
@@ -171,16 +170,14 @@ public class AppRunner implements CommandLineRunner {
         new Loan()
             .reasonForLoan("To buy a car")
             .amount(100000.0)
-            .member(chairman)
-            .status(LoanStatus.AWAITING_DISBURSEMENT);
+            .member(chairman);
 
     Loan loan2 =
         new Loan()
             .reasonForLoan("To buy a car")
             .amount(100000.0)
             .member(member)
-            .startDate(LocalDate.now())
-            .status(LoanStatus.ACTIVE);
+            .startDate(LocalDate.now());
 
     loanRepository.saveAll(List.of(loan, loan2));
 
