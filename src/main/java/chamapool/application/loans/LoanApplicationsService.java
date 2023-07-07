@@ -71,17 +71,20 @@ public class LoanApplicationsService {
 
     this.notificationsService.sendAdminNotification(
         new Notification()
-            .type(NotificationType.LOAN_APPLICATION).relatedId(application.id())
-                .title("New Loan Application")
+            .type(NotificationType.LOAN_APPLICATION)
+            .relatedId(application.id())
+            .title("New Loan Application")
             .message(
                 String.format(
                     "Member %s has applied for a loan of amount %.2f. Please review the application",
                     applicant.fullName(), req.amount())));
 
-    this.notificationsService.sendMemberNotification(applicant,
+    this.notificationsService.sendMemberNotification(
+        applicant,
         new Notification()
-            .type(NotificationType.LOAN_APPLICATION).relatedId(application.id())
-                .title("Loan Application Received")
+            .type(NotificationType.LOAN_APPLICATION)
+            .relatedId(application.id())
+            .title("Loan Application Received")
             .message(
                 String.format(
                     "Your loan application of amount %.2f has been received. Please wait for approval",
@@ -193,22 +196,25 @@ public class LoanApplicationsService {
   private void generateLoanOnSuccessfulApproval(LoanApplication application) {
     var loanApprovals = this.retrieveLoanApprovals(application);
 
+    var approvals =
+        List.of(loanApprovals.chairman(), loanApprovals.treasurer(), loanApprovals.secretary());
+
     var awaitingApproval =
-        loanApprovals.chairman().status() == LoanApprovalStatus.AWAITING_APPROVAL
-            || loanApprovals.secretary().status() == LoanApprovalStatus.AWAITING_APPROVAL
-            || loanApprovals.treasurer().status() == LoanApprovalStatus.AWAITING_APPROVAL;
+        approvals.stream()
+            .anyMatch(approval -> approval.status() == LoanApprovalStatus.AWAITING_APPROVAL);
 
     var approved =
-        loanApprovals.chairman().status() == LoanApprovalStatus.APPROVED
-            && loanApprovals.secretary().status() == LoanApprovalStatus.APPROVED
-            && loanApprovals.treasurer().status() == LoanApprovalStatus.APPROVED;
+        approvals.stream().allMatch(approval -> approval.status() == LoanApprovalStatus.APPROVED);
 
     var rejected =
-        loanApprovals.chairman().status() == LoanApprovalStatus.REJECTED
-            || loanApprovals.secretary().status() == LoanApprovalStatus.REJECTED
-            || loanApprovals.treasurer().status() == LoanApprovalStatus.REJECTED;
+        !awaitingApproval
+            && approvals.stream()
+                .anyMatch(approval -> approval.status() == LoanApprovalStatus.REJECTED);
 
-    if (!awaitingApproval && approved) {
+    var loanNotification =
+        new Notification().type(NotificationType.LOAN_APPLICATION).relatedId(application.id());
+
+    if (approved) {
       application.approvalStatus(LoanApprovalStatus.APPROVED);
       loanApplicationRepository.save(application);
 
@@ -216,14 +222,28 @@ public class LoanApplicationsService {
           new Loan()
               .member(application.member())
               .amount(application.amount())
-              .reasonForLoan(application.reasonForLoan())
-              .status(LoanStatus.AWAITING_DISBURSEMENT);
+              .reasonForLoan(application.reasonForLoan());
 
       loanRepository.save(loan);
-    } else if (!awaitingApproval && rejected) {
+
+      loanNotification
+          .title("Loan Approved")
+          .message(
+              "Your loan request of %.2f has been approved. Please pick your cheque in the next meeting"
+                  .formatted(application.amount()));
+
+    } else if (rejected) {
       application.approvalStatus(LoanApprovalStatus.REJECTED);
       loanApplicationRepository.save(application);
+
+      loanNotification
+          .title("Loan Rejected")
+          .message(
+              "Your loan of %.2f has been rejected. View loan application for more details"
+                  .formatted(application.amount()));
     }
+
+    this.notificationsService.sendMemberNotification(application.member(), loanNotification);
   }
 
   private Optional<LoanApplication> retrieveActiveApplication(Member member) {

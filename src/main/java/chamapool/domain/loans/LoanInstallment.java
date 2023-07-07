@@ -13,7 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @Accessors(chain = true, fluent = true)
-public class LoanRepayment {
+public class LoanInstallment {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Integer id;

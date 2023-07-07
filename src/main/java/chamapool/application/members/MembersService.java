@@ -4,11 +4,15 @@ import chamapool.application.members.requests.AcceptInvitationRequest;
 import chamapool.application.members.requests.NewMemberRequest;
 import chamapool.application.members.requests.PayBulkMembershipFeesRequest;
 import chamapool.application.members.requests.PayMembershipFeeRequest;
+import chamapool.application.notifications.NotificationsService;
 import chamapool.application.transactions.TransactionsService;
 import chamapool.domain.member.VOs.*;
+import chamapool.domain.member.enums.MembershipFeeStatus;
 import chamapool.domain.member.enums.Status;
 import chamapool.domain.member.models.*;
 import chamapool.domain.member.repositories.*;
+import chamapool.domain.notifications.models.Notification;
+import chamapool.domain.notifications.models.NotificationType;
 import chamapool.domain.transaction.TransactionType;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
@@ -29,7 +33,9 @@ public class MembersService {
   private final OccupationRepository occupationRepository;
   private final AddressRepository addressRepository;
   private final MembershipFeeRepository membershipFeeRepository;
+
   private final TransactionsService transactionsService;
+  private final NotificationsService notificationsService;
 
   public InvitedMemberVO inviteMember(NewMemberRequest request) {
     var username = request.firstName() + "." + request.lastName();
@@ -41,8 +47,19 @@ public class MembersService {
             .nationalId(request.nationalId())
             .phoneNumber(request.phoneNumber())
             .username(username);
-
     var savedMember = invitedMemberRepository.save(member);
+
+    var notification =
+        new Notification()
+            .message(
+                "%s %s has successfully invited  to join Vision Ahead."
+                    .formatted(request.firstName(), request.lastName()))
+            .title("Invitation to join Vision Ahead")
+            .relatedId(savedMember.id())
+            .type(NotificationType.MEMBER_INVITATION);
+
+    this.notificationsService.sendAdminNotification(notification);
+
     return new InvitedMemberVO(savedMember);
   }
 
@@ -55,6 +72,27 @@ public class MembersService {
     var fee = new MembershipFee().amount(this.calculateMembershipFee()).member(member);
     this.membershipFeeRepository.save(fee);
     this.memberRepository.save(member);
+
+    var memberNotification =
+        new Notification()
+            .message(
+                "Welcome to the Vision Ahead,%s. You have an outstanding membership fee of %.2f that you need to pay to start receiving loans. More info will be presented during the next meeting"
+                    .formatted(member.fullName(), fee.amount()))
+            .title("Welcome to Vision Ahead")
+            .relatedId(member.id())
+            .type(NotificationType.MEMBER_INVITATION);
+
+    var adminNotification =
+        new Notification()
+            .message(
+                "%s %s has successfully accepted the invitation to join Vision Ahead."
+                    .formatted(member.firstName(), member.lastName()))
+            .title("Invitation to join Vision Ahead")
+            .relatedId(member.id())
+            .type(NotificationType.MEMBER_INVITATION);
+
+    this.notificationsService.sendAdminNotification(adminNotification);
+    this.notificationsService.sendMemberNotification(member, memberNotification);
 
     return new MemberProfileVO(member);
   }
@@ -213,6 +251,19 @@ public class MembersService {
     this.membershipFeeRepository.save(membershipFee);
 
     this.transactionsService.createTransaction(TransactionType.MEMBERSHIP_FEE, amount);
+
+    var notification =
+            new Notification()
+                    .title("Membership Fee Payment")
+                    .relatedId(memberId)
+                    .type(NotificationType.MEMBERSHIP_FEE)
+                    .message(
+                            "Your membership fee of KES %.2f has been received.".formatted(amount)
+                                    + (membershipFee.status() == MembershipFeeStatus.PAID
+                                    ? "You have fully paid your dues"
+                                    : "You have a balance of KES %.2f".formatted(membershipFee.balance())));
+
+    this.notificationsService.sendMemberNotification(membershipFee.member(), notification);
 
     return membershipFee;
   }

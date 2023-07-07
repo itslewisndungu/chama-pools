@@ -2,6 +2,7 @@ package chamapool.application.loans;
 
 import chamapool.application.loans.requests.LoanInstallmentRequest;
 import chamapool.application.loans.responses.LoanEligibilityResponse;
+import chamapool.domain.loans.VO.LoanInstallmentVO;
 import chamapool.domain.loans.VO.LoanVO;
 import chamapool.domain.member.models.Member;
 import java.util.List;
@@ -14,6 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class LoansController {
   private final LoansService loansService;
   private final LoanApplicationsService applicationsService;
+
+  @GetMapping
+  public List<LoanVO> retrieveAllGroupLoans() {
+    return this.loansService.retrieveAllLoans();
+  }
 
   @GetMapping("/{loanId}")
   public LoanVO retrieveLoan(@PathVariable Integer loanId) {
@@ -35,9 +41,14 @@ public class LoansController {
     return this.loansService.disburseLoan(loanId);
   }
 
-  @PostMapping("/{loanId}/pay-installment")
-  public LoanVO recordLoanInstallment(
+  @PostMapping("/{loanId}/installments")
+  public LoanInstallmentVO recordLoanInstallment(
       @PathVariable Integer loanId, @RequestBody LoanInstallmentRequest request) {
     return this.loansService.payLoanInstallment(loanId, request.amount());
+  }
+
+  @GetMapping("/{loanId}/installments")
+  public List<LoanInstallmentVO> getLoanInstallments(@PathVariable Integer loanId) {
+    return this.loansService.retrieveLoanInstallments(loanId);
   }
 }
