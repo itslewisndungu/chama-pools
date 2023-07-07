@@ -21,6 +21,7 @@ import chamapool.domain.member.repositories.MembershipFeeRepository;
 import chamapool.domain.notifications.models.Notification;
 import chamapool.domain.notifications.models.NotificationType;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -222,7 +223,9 @@ public class LoanApplicationsService {
           new Loan()
               .member(application.member())
               .amount(application.amount())
-              .reasonForLoan(application.reasonForLoan());
+              .reasonForLoan(application.reasonForLoan())
+              .interestRate(10.0)
+              .startDate(LocalDate.now());
 
       loanRepository.save(loan);
 
