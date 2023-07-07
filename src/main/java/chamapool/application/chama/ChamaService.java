@@ -67,8 +67,8 @@ public class ChamaService {
     return res;
   }
 
-  public void getAccountSummary() {
-    var balance = this.chamaRepository.getChama().stream().map(Chama::accountBalance);
+  public HashMap<String, Double> getAccountSummary() {
+    var balance = this.chamaRepository.getChama().stream().mapToDouble(Chama::accountBalance).sum();
 
     var incomeTransactions =
         List.of(
@@ -92,14 +92,26 @@ public class ChamaService {
             .filter(transaction -> incomeTransactions.contains(transaction.type()))
             .mapToDouble(Transaction::amount)
             .sum();
+
+    var res = new HashMap<String, Double>();
+    res.put("accountBalance", balance);
+    res.put("totalExpenses", totalExpenses);
+    res.put("totalIncome", totalIncome);
+
+    return res;
   }
 
-  public void getMeetingsSummary() {
-    var meetings = this.meetingRepository.count();
+  public HashMap<String, Double> getMeetingsSummary() {
+    var meetings = (double) this.meetingRepository.count();
 
     var totalContributions =
         this.meetingContributionRepository.findAll().stream()
             .mapToDouble(MeetingContribution::amount)
             .sum();
+
+    var res = new HashMap<String, Double>();
+    res.put("meetings", meetings);
+    res.put("totalContributions", totalContributions);
+    return res;
   }
 }

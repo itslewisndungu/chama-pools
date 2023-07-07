@@ -170,6 +170,7 @@ public class AppRunner implements CommandLineRunner {
         new Loan()
             .reasonForLoan("To buy a car")
             .amount(100000.0)
+            .interestRate(10.0)
             .member(chairman);
 
     Loan loan2 =
@@ -177,6 +178,7 @@ public class AppRunner implements CommandLineRunner {
             .reasonForLoan("To buy a car")
             .amount(100000.0)
             .member(member)
+            .interestRate(10.0)
             .startDate(LocalDate.now());
 
     loanRepository.saveAll(List.of(loan, loan2));

@@ -29,12 +29,12 @@ public class ChamaController {
   }
 
   @GetMapping("/account-summary")
-  public void getAccountSummary() {
-    this.chamaService.getAccountSummary();
+  public HashMap<String, Double> getAccountSummary() {
+    return this.chamaService.getAccountSummary();
   }
 
   @GetMapping("/meetings-summary")
-  public void getMeetingSummary() {
-    this.chamaService.getMeetingsSummary();
+  public HashMap<String, Double> getMeetingSummary() {
+    return this.chamaService.getMeetingsSummary();
   }
 }
