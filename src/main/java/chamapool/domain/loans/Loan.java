@@ -56,6 +56,6 @@ public class Loan {
   }
 
   public LocalDate dueDate() {
-    return this.startDate.plusMonths(this.durationInMonths);
+    return this.startDate == null ? null : this.startDate.plusMonths(this.durationInMonths);
   }
 }
