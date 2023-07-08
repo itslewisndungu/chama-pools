@@ -24,7 +24,7 @@ public class ChamaController {
   }
 
   @GetMapping("/loans-summary")
-  public HashMap<String, Integer> getLoanSummary() {
+  public HashMap<String, Object> getLoanSummary() {
     return this.chamaService.getLoanSummary();
   }
 
@@ -34,7 +34,7 @@ public class ChamaController {
   }
 
   @GetMapping("/meetings-summary")
-  public HashMap<String, Double> getMeetingSummary() {
+  public HashMap<String, Object> getMeetingSummary() {
     return this.chamaService.getMeetingsSummary();
   }
 }

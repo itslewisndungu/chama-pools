@@ -3,6 +3,7 @@ package chamapool.application.chama;
 import chamapool.domain.chama.Chama;
 import chamapool.domain.chama.ChamaRepository;
 import chamapool.domain.chama.ChamaVO;
+import chamapool.domain.loans.Loan;
 import chamapool.domain.loans.enums.LoanStatus;
 import chamapool.domain.loans.repositories.LoanApplicationRepository;
 import chamapool.domain.loans.repositories.LoanRepository;
@@ -48,17 +49,28 @@ public class ChamaService {
     return res;
   }
 
-  public HashMap<String, Integer> getLoanSummary() {
+  public HashMap<String, Object> getLoanSummary() {
     var issuedLoans = (int) this.loanRepository.count();
     var loanApplications = (int) this.loanApplicationRepository.count();
+
+    var totalAmountBorrowed =
+        this.loanRepository.findAll().stream().mapToDouble(Loan::amount).sum();
+
+    var totalAmountRepaid =
+        this.loanRepository.findAll().stream()
+            .filter(loan -> loan.status() == LoanStatus.REPAID)
+            .mapToDouble(Loan::amountPaid)
+            .sum();
 
     var activeLoans = this.loanRepository.countByStatus(LoanStatus.ACTIVE);
     var overdueLoans = this.loanRepository.countByStatus(LoanStatus.OVERDUE);
     var repaidLoans = this.loanRepository.countByStatus(LoanStatus.REPAID);
     var pendingLoans = this.loanRepository.countByStatus(LoanStatus.AWAITING_DISBURSEMENT);
 
-    var res = new HashMap<String, Integer>();
+    var res = new HashMap<String, Object>();
     res.put("issuedLoans", issuedLoans);
+    res.put("totalAmountBorrowed", totalAmountBorrowed);
+    res.put("totalAmountRepaid", totalAmountRepaid);
     res.put("loanApplications", loanApplications);
     res.put("activeLoans", activeLoans);
     res.put("overdueLoans", overdueLoans);
@@ -101,16 +113,18 @@ public class ChamaService {
     return res;
   }
 
-  public HashMap<String, Double> getMeetingsSummary() {
-    var meetings = (double) this.meetingRepository.count();
+  public HashMap<String, Object> getMeetingsSummary() {
+    var totalMeetingsHeld = (int) this.meetingRepository.count();
+    var scheduledMeetings = this.meetingRepository.countByInitiatedIsFalse();
 
     var totalContributions =
         this.meetingContributionRepository.findAll().stream()
             .mapToDouble(MeetingContribution::amount)
             .sum();
 
-    var res = new HashMap<String, Double>();
-    res.put("meetings", meetings);
+    var res = new HashMap<String, Object>();
+    res.put("meetings", totalMeetingsHeld);
+    res.put("scheduledMeetings", scheduledMeetings);
     res.put("totalContributions", totalContributions);
     return res;
   }
