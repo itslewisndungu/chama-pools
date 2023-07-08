@@ -1,6 +1,7 @@
 package chamapool.application.chama;
 
 import chamapool.domain.chama.ChamaVO;
+import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +13,28 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChamaController {
   private final ChamaService chamaService;
 
-  @GetMapping()
+  @GetMapping
   public ChamaVO getChamaDetails() {
     return this.chamaService.getChamaDetails();
+  }
+
+  @GetMapping("/members-summary")
+  public HashMap<String, Integer> getMemberSummary() {
+    return this.chamaService.getMemberSummary();
+  }
+
+  @GetMapping("/loans-summary")
+  public HashMap<String, Object> getLoanSummary() {
+    return this.chamaService.getLoanSummary();
+  }
+
+  @GetMapping("/account-summary")
+  public HashMap<String, Double> getAccountSummary() {
+    return this.chamaService.getAccountSummary();
+  }
+
+  @GetMapping("/meetings-summary")
+  public HashMap<String, Object> getMeetingSummary() {
+    return this.chamaService.getMeetingsSummary();
   }
 }

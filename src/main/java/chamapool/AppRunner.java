@@ -170,6 +170,7 @@ public class AppRunner implements CommandLineRunner {
         new Loan()
             .reasonForLoan("To buy a car")
             .amount(100000.0)
+            .interestRate(10.0)
             .member(chairman);
 
     Loan loan2 =
@@ -177,6 +178,7 @@ public class AppRunner implements CommandLineRunner {
             .reasonForLoan("To buy a car")
             .amount(100000.0)
             .member(member)
+            .interestRate(10.0)
             .startDate(LocalDate.now());
 
     loanRepository.saveAll(List.of(loan, loan2));
@@ -241,14 +243,14 @@ public class AppRunner implements CommandLineRunner {
             switch (rand) {
               case 0 -> {
                 contribution.amount(1500.0);
-                attendance.isPresent(true);
+                attendance.present(true);
               }
               case 1 -> {
-                attendance.isPresent(false);
+                attendance.present(false);
                 contribution.amount(0.0);
               }
               case 2 -> {
-                attendance.isPresent(false).apology("Feeling sick");
+                attendance.present(false).apology("Feeling sick");
                 contribution.amount(1500.0);
               }
             }

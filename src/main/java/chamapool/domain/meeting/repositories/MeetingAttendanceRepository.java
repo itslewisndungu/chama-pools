@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MeetingAttendanceRepository extends JpaRepository<MeetingAttendance, Integer> {
     Optional<MeetingAttendance> getMeetingAttendanceByMemberAndMeeting(Member member, Meeting meeting);
+
+    Integer countByMemberAndPresentIsTrue(Member member);
 }

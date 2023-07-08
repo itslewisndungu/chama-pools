@@ -30,28 +30,18 @@ public class Loan {
 
   private LocalDate startDate;
   private LocalDate endDate;
+  private Integer durationInMonths = 3;
+  private Double interestRate;
+
+  @Enumerated(EnumType.STRING)
+  private LoanStatus status = LoanStatus.AWAITING_DISBURSEMENT;
 
   @ManyToOne
   @JoinColumn(name = "member_id")
   private Member member;
 
-  //  @Enumerated(EnumType.STRING)
-  //  private LoanStatus status = LoanStatus.AWAITING_DISBURSEMENT;
-
   @OneToMany(mappedBy = "loan")
   private List<LoanInstallment> repayments = new ArrayList<>();
-
-  public Double interestRate() {
-    return 10.0;
-  }
-
-  public LocalDate dueDate() {
-    if (this.startDate != null) {
-      return this.startDate.plusMonths(3);
-    } else {
-      return null;
-    }
-  }
 
   public Double interestEarned() {
     return amount * interestRate() / 100;
@@ -65,15 +55,7 @@ public class Loan {
     return this.amountPayable() - this.amountPaid();
   }
 
-  public LoanStatus status() {
-    if (this.startDate == null) {
-      return LoanStatus.AWAITING_DISBURSEMENT;
-    } else if (LocalDate.now().isAfter(this.dueDate())) {
-      return LoanStatus.OVERDUE;
-    } else if (this.balance() <= 0) {
-      return LoanStatus.REPAID;
-    } else {
-      return LoanStatus.ACTIVE;
-    }
+  public LocalDate dueDate() {
+    return this.startDate == null ? null : this.startDate.plusMonths(this.durationInMonths);
   }
 }

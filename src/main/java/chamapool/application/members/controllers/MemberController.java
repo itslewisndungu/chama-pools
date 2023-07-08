@@ -1,7 +1,7 @@
 package chamapool.application.members.controllers;
 
-import chamapool.application.members.MembersService;
 import chamapool.application.members.responses.MultipleMemberResponse;
+import chamapool.application.members.services.MembersService;
 import chamapool.domain.member.VOs.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

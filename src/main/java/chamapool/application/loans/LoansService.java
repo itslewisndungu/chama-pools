@@ -2,6 +2,7 @@ package chamapool.application.loans;
 
 import chamapool.application.notifications.NotificationsService;
 import chamapool.application.transactions.TransactionsService;
+import chamapool.domain.loans.Loan;
 import chamapool.domain.loans.LoanInstallment;
 import chamapool.domain.loans.VO.*;
 import chamapool.domain.loans.enums.LoanStatus;
@@ -14,6 +15,7 @@ import chamapool.domain.transaction.TransactionType;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +47,8 @@ public class LoansService {
 
     loan.startDate(LocalDate.now());
     loan = this.loanRepository.save(loan);
+
+    this.updateLoanStatus(loan, LoanStatus.ACTIVE);
 
     this.transactionsService.createTransaction(TransactionType.LOAN_DISBURSEMENT, loan.amount());
 
@@ -78,7 +82,10 @@ public class LoansService {
 
     loan.amountPaid(loan.amountPaid() + amount);
     loan.repayments().add(loanRepayment);
+    if (loan.balance() <= 0) loan.endDate(LocalDate.now());
+
     loan = this.loanRepository.save(loan);
+    this.updateLoanStatus(loan);
 
     this.transactionsService.createTransaction(TransactionType.LOAN_REPAYMENT, amount * 0.9);
     this.transactionsService.createTransaction(TransactionType.LOAN_INTEREST, amount * 0.1);
@@ -94,6 +101,25 @@ public class LoansService {
 
     this.notificationsService.sendMemberNotification(loan.member(), loanRepaymentNotification);
     return new LoanInstallmentVO(loanRepayment);
+  }
+
+  private void updateLoanStatus(Loan loan) {
+    var loanOverdue = LocalDate.now().isAfter(loan.dueDate());
+    var loanFullyPaid = loan.balance() == 0 && Objects.equals(loan.amountPayable(), loan.amountPaid());
+    var loanActive = !loanOverdue && loan.balance() > 0;
+
+    if (loanFullyPaid) {
+      this.updateLoanStatus(loan, LoanStatus.REPAID);
+    } else if (loanOverdue) {
+      this.updateLoanStatus(loan, LoanStatus.OVERDUE);
+    } else if (loanActive) {
+      this.updateLoanStatus(loan, LoanStatus.ACTIVE);
+    }
+  }
+
+  private void updateLoanStatus(Loan loan, LoanStatus status) {
+    loan.status(status);
+    this.loanRepository.save(loan);
   }
 
   public List<LoanVO> retrieveAllLoans() {

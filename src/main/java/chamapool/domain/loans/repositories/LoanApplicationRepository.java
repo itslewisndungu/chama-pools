@@ -10,4 +10,5 @@ public interface LoanApplicationRepository extends JpaRepository<LoanApplication
   Optional<LoanApplication> getLoanApplicationByMemberAndApprovalStatus(
       Member member, LoanApprovalStatus approvalStatus);
 
+  Integer countByMemberAndApprovalStatus(Member member, LoanApprovalStatus approvalStatus);
 }
