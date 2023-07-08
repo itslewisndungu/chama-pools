@@ -243,14 +243,14 @@ public class AppRunner implements CommandLineRunner {
             switch (rand) {
               case 0 -> {
                 contribution.amount(1500.0);
-                attendance.isPresent(true);
+                attendance.present(true);
               }
               case 1 -> {
-                attendance.isPresent(false);
+                attendance.present(false);
                 contribution.amount(0.0);
               }
               case 2 -> {
-                attendance.isPresent(false).apology("Feeling sick");
+                attendance.present(false).apology("Feeling sick");
                 contribution.amount(1500.0);
               }
             }

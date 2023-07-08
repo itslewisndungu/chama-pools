@@ -10,4 +10,8 @@ public interface LoanRepository extends JpaRepository<Loan, Integer> {
   List<Loan> getLoansByMember(Member member);
 
   Integer countByStatus(LoanStatus status);
+  Integer countByStatusAndMember(LoanStatus status, Member member);
+
+
+  Integer countByMember(Member member);
 }

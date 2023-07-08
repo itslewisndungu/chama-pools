@@ -90,7 +90,7 @@ public class MeetingsService {
           this.meetingAttendanceRepository
               .getMeetingAttendanceByMemberAndMeeting(member, meeting)
               .orElse(new MeetingAttendance().member(member).meeting(meeting))
-              .isPresent(a.isPresent())
+              .present(a.isPresent())
               .apology(a.isPresent() ? null : "No apology");
 
       meetingAttendance.add(attendance);
@@ -158,7 +158,7 @@ public class MeetingsService {
     var contributions = new ArrayList<MeetingContribution>();
 
     for (var m : members) {
-      var attendance = new MeetingAttendance().member(m).meeting(meeting).isPresent(false);
+      var attendance = new MeetingAttendance().member(m).meeting(meeting).present(false);
       attendances.add(attendance);
 
       var contribution = new MeetingContribution().member(m).meeting(meeting).amount(0.0);

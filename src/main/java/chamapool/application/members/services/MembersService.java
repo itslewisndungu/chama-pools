@@ -1,4 +1,4 @@
-package chamapool.application.members;
+package chamapool.application.members.services;
 
 import chamapool.application.members.requests.AcceptInvitationRequest;
 import chamapool.application.members.requests.NewMemberRequest;
@@ -253,15 +253,15 @@ public class MembersService {
     this.transactionsService.createTransaction(TransactionType.MEMBERSHIP_FEE, amount);
 
     var notification =
-            new Notification()
-                    .title("Membership Fee Payment")
-                    .relatedId(memberId)
-                    .type(NotificationType.MEMBERSHIP_FEE)
-                    .message(
-                            "Your membership fee of KES %.2f has been received.".formatted(amount)
-                                    + (membershipFee.status() == MembershipFeeStatus.PAID
-                                    ? "You have fully paid your dues"
-                                    : "You have a balance of KES %.2f".formatted(membershipFee.balance())));
+        new Notification()
+            .title("Membership Fee Payment")
+            .relatedId(memberId)
+            .type(NotificationType.MEMBERSHIP_FEE)
+            .message(
+                "Your membership fee of KES %.2f has been received.".formatted(amount)
+                    + (membershipFee.status() == MembershipFeeStatus.PAID
+                        ? "You have fully paid your dues"
+                        : "You have a balance of KES %.2f".formatted(membershipFee.balance())));
 
     this.notificationsService.sendMemberNotification(membershipFee.member(), notification);
 

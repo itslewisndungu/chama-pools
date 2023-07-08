@@ -1,9 +1,9 @@
 package chamapool.application.members.controllers;
 
-import chamapool.application.members.MembersService;
 import chamapool.application.members.requests.AcceptInvitationRequest;
 import chamapool.application.members.requests.NewMemberRequest;
 import chamapool.application.members.responses.MultipleInvitationsResponse;
+import chamapool.application.members.services.MembersService;
 import chamapool.domain.member.VOs.InvitedMemberVO;
 import chamapool.domain.member.VOs.MemberProfileVO;
 import lombok.RequiredArgsConstructor;

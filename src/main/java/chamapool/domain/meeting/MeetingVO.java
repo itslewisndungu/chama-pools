@@ -20,7 +20,7 @@ public record MeetingVO(
         meeting.title(),
         meeting.category(),
         meeting.agenda(),
-        meeting.attendances().stream().filter(MeetingAttendance::isPresent).toList().size(),
+        meeting.attendances().stream().filter(MeetingAttendance::present).toList().size(),
         meeting.initiated());
   }
 }

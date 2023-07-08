@@ -1,8 +1,8 @@
 package chamapool.application.members.controllers;
 
-import chamapool.application.members.MembersService;
 import chamapool.application.members.requests.PayBulkMembershipFeesRequest;
 import chamapool.application.members.requests.PayMembershipFeeRequest;
+import chamapool.application.members.services.MembersService;
 import chamapool.domain.member.VOs.MembershipFeeVO;
 import chamapool.domain.member.models.Member;
 import java.util.List;

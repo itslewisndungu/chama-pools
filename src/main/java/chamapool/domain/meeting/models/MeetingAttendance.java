@@ -26,6 +26,6 @@ public class MeetingAttendance {
   @JoinColumn(name = "member_id")
   private Member member;
 
-  private boolean isPresent;
+  private boolean present;
   private String apology;
 }
