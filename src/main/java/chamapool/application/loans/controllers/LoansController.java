@@ -1,7 +1,9 @@
-package chamapool.application.loans;
+package chamapool.application.loans.controllers;
 
 import chamapool.application.loans.requests.LoanInstallmentRequest;
 import chamapool.application.loans.responses.LoanEligibilityResponse;
+import chamapool.application.loans.services.LoanApplicationsService;
+import chamapool.application.loans.services.LoansService;
 import chamapool.domain.loans.VO.LoanInstallmentVO;
 import chamapool.domain.loans.VO.LoanVO;
 import chamapool.domain.member.models.Member;

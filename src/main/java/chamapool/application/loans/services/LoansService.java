@@ -1,4 +1,4 @@
-package chamapool.application.loans;
+package chamapool.application.loans.services;
 
 import chamapool.application.notifications.NotificationsService;
 import chamapool.application.transactions.TransactionsService;
