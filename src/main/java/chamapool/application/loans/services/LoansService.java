@@ -6,7 +6,7 @@ import chamapool.domain.loans.Loan;
 import chamapool.domain.loans.LoanInstallment;
 import chamapool.domain.loans.VO.*;
 import chamapool.domain.loans.enums.LoanStatus;
-import chamapool.domain.loans.repositories.LoanRepaymentRepository;
+import chamapool.domain.loans.repositories.LoanInstallmentsRepository;
 import chamapool.domain.loans.repositories.LoanRepository;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.notifications.models.Notification;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 public class LoansService {
   private final LoanRepository loanRepository;
   private final TransactionsService transactionsService;
-  private final LoanRepaymentRepository loanRepaymentRepository;
+  private final LoanInstallmentsRepository loanRepaymentRepository;
 
   private final NotificationsService notificationsService;
 
