@@ -27,4 +27,19 @@ public class ReportsController {
       return ResponseEntity.badRequest().build();
     }
   }
+
+  @GetMapping("/group-contributions")
+  public ResponseEntity<byte[]> getContributionsReport() {
+    try {
+      var pdf = this.reportsService.generateContributionsReport();
+
+      return ResponseEntity.ok()
+              .header("Content-Type", "application/pdf")
+              .header("Content-Disposition", "inline; filename=group-contributions.pdf")
+              .body(pdf);
+    } catch (JRException e) {
+      e.printStackTrace();
+      return ResponseEntity.badRequest().build();
+    }
+  }
 }
