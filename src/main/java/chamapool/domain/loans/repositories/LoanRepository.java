@@ -5,6 +5,7 @@ import chamapool.domain.loans.enums.LoanStatus;
 import chamapool.domain.member.models.Member;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface LoanRepository extends JpaRepository<Loan, Integer> {
   List<Loan> getLoansByMember(Member member);
@@ -14,4 +15,10 @@ public interface LoanRepository extends JpaRepository<Loan, Integer> {
 
 
   Integer countByMember(Member member);
+
+  @Query("SELECT SUM(l.amountPaid) FROM Loan l")
+  Double sumAmountPaid();
+
+  @Query("SELECT SUM(l.amount) FROM Loan l")
+  Double sumAmountBorrowed();
 }

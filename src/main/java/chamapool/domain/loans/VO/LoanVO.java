@@ -1,29 +1,36 @@
 package chamapool.domain.loans.VO;
 
 import chamapool.domain.loans.Loan;
-import chamapool.domain.loans.enums.LoanStatus;
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-public record LoanVO(
-    Integer id,
-    Integer memberId,
-    String memberName,
-    Double amount,
+@Data
+@AllArgsConstructor
+public class LoanVO {
+  private Integer loanId;
+  private Integer memberId;
+  private String fullName;
+  private String nationalId;
+  private String phoneNumber;
+  private Double amount;
+  private Double interestEarned;
+  private Double amountPayable;
+  private Double balance;
+  private String reasonForLoan;
+  private Double interestRate;
+  private LocalDate startDate;
+  private LocalDate dueDate;
+  private LocalDate endDate;
+  private String status;
 
-    Double interestEarned,
-    Double amountPayable,
-    Double balance,
-    String reasonForLoan,
-    Double interestRate,
-    LocalDate startDate,
-    LocalDate dueDate,
-    LocalDate endDate,
-    LoanStatus status) {
   public LoanVO(Loan loan) {
     this(
         loan.id(),
         loan.member().id(),
         loan.member().fullName(),
+        loan.member().nationalId(),
+        loan.member().phoneNumber(),
         loan.amount(),
         loan.interestEarned(),
         loan.amountPayable(),
@@ -33,6 +40,6 @@ public record LoanVO(
         loan.startDate(),
         loan.dueDate(),
         loan.endDate(),
-        loan.status());
+        loan.status().name());
   }
 }
