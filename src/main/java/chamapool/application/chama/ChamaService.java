@@ -7,7 +7,6 @@ import chamapool.domain.loans.Loan;
 import chamapool.domain.loans.enums.LoanStatus;
 import chamapool.domain.loans.repositories.LoanApplicationRepository;
 import chamapool.domain.loans.repositories.LoanRepository;
-import chamapool.domain.meeting.models.MeetingContribution;
 import chamapool.domain.meeting.repositories.MeetingContributionRepository;
 import chamapool.domain.meeting.repositories.MeetingRepository;
 import chamapool.domain.member.repositories.InvitedMemberRepository;
@@ -117,10 +116,7 @@ public class ChamaService {
     var totalMeetingsHeld = (int) this.meetingRepository.count();
     var scheduledMeetings = this.meetingRepository.countByInitiatedIsFalse();
 
-    var totalContributions =
-        this.meetingContributionRepository.findAll().stream()
-            .mapToDouble(MeetingContribution::amount)
-            .sum();
+    var totalContributions = this.meetingContributionRepository.getTotalContributionsSum();
 
     var res = new HashMap<String, Object>();
     res.put("meetings", totalMeetingsHeld);
