@@ -1,9 +1,11 @@
 package chamapool.application.loans.services;
 
 import chamapool.domain.loans.Loan;
+import chamapool.domain.loans.VO.LoanInstallmentVO;
 import chamapool.domain.loans.VO.LoanVO;
 import chamapool.domain.loans.enums.LoanStatus;
 import chamapool.domain.loans.repositories.LoanApplicationRepository;
+import chamapool.domain.loans.repositories.LoanInstallmentsRepository;
 import chamapool.domain.loans.repositories.LoanRepository;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class LoansReportsService {
   private final LoanRepository loanRepository;
   private final LoanApplicationRepository loanApplicationRepository;
+  private final LoanInstallmentsRepository installmentsRepository;
 
   public byte[] generateLoansReport() throws JRException {
     var loans = this.loanRepository.findAll().stream().map(LoanVO::new).toList();
@@ -53,6 +56,35 @@ public class LoansReportsService {
 
     JasperReport report =
         JasperCompileManager.compileReport("src/main/resources/reports/group-loans-report.jrxml");
+    JasperPrint print = JasperFillManager.fillReport(report, params, new JREmptyDataSource());
+
+    return JasperExportManager.exportReportToPdf(print);
+  }
+
+  public byte[] generateLoanReport(Integer loanId) throws JRException {
+    var loan = this.loanRepository.getReferenceById(loanId);
+    var loanInstallments = this.installmentsRepository.findLoanInstallmentsByLoan(loan)
+            .stream()
+            .map(LoanInstallmentVO::new).toList();
+
+    JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(loanInstallments, false);
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("amountPayable", loan.amountPayable());
+    params.put("phoneNumber", loan.member().phoneNumber());
+    params.put("nationalId", loan.member().nationalId());
+    params.put("fullName", loan.member().fullName());
+    params.put("balance", loan.balance());
+    params.put("interestRate", loan.interestRate());
+    params.put("memberId", loan.member().id());
+    params.put("dueDate", loan.dueDate());
+    params.put("startDate", loan.startDate());
+    params.put("amount", loan.amount());
+    params.put("loanId", loanId);
+    params.put("loanInstallments", dataSource);
+
+    JasperReport report =
+        JasperCompileManager.compileReport("src/main/resources/reports/loan-report.jrxml");
     JasperPrint print = JasperFillManager.fillReport(report, params, new JREmptyDataSource());
 
     return JasperExportManager.exportReportToPdf(print);
