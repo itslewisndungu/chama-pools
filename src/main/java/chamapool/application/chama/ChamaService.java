@@ -80,9 +80,7 @@ public class ChamaService {
     return res;
   }
 
-  public HashMap<String, Double> getAccountSummary() {
-    var balance = this.chamaRepository.getChama().stream().mapToDouble(Chama::accountBalance).sum();
-
+  public double getIncomeRevenue(List<Transaction> transactions) {
     var incomeTransactions =
         List.of(
             TransactionType.INVESTMENT_INCOME,
@@ -90,26 +88,30 @@ public class ChamaService {
             TransactionType.CONTRIBUTION,
             TransactionType.MEMBERSHIP_FEE);
 
+    return transactions.stream()
+        .filter(transaction -> incomeTransactions.contains(transaction.type()))
+        .mapToDouble(Transaction::amount)
+        .sum();
+  }
+
+  public double getExpensesRevenue(List<Transaction> transactions) {
+
     var expenseTransactions = List.of(TransactionType.DIVIDEND, TransactionType.WITHDRAWAL);
+    return transactions.stream()
+        .filter(transaction -> expenseTransactions.contains(transaction.type()))
+        .mapToDouble(Transaction::amount)
+        .sum();
+  }
+
+  public HashMap<String, Double> getAccountSummary() {
+    var balance = this.chamaRepository.getChama().stream().mapToDouble(Chama::accountBalance).sum();
 
     var transactions = this.transactionRepository.findAll();
 
-    var totalExpenses =
-        transactions.stream()
-            .filter(transaction -> expenseTransactions.contains(transaction.type()))
-            .mapToDouble(Transaction::amount)
-            .sum();
-
-    var totalIncome =
-        transactions.stream()
-            .filter(transaction -> incomeTransactions.contains(transaction.type()))
-            .mapToDouble(Transaction::amount)
-            .sum();
-
     var res = new HashMap<String, Double>();
     res.put("accountBalance", balance);
-    res.put("totalExpenses", totalExpenses);
-    res.put("totalIncome", totalIncome);
+    res.put("totalExpenses", getIncomeRevenue(transactions));
+    res.put("totalIncome", getExpensesRevenue(transactions));
 
     return res;
   }
