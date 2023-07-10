@@ -1,5 +1,6 @@
 package chamapool.application.loans.services;
 
+import chamapool.application.loans.responses.LoanInstallmentsResponse;
 import chamapool.application.notifications.NotificationsService;
 import chamapool.application.transactions.TransactionsService;
 import chamapool.domain.loans.Loan;
@@ -105,7 +106,8 @@ public class LoansService {
 
   private void updateLoanStatus(Loan loan) {
     var loanOverdue = LocalDate.now().isAfter(loan.dueDate());
-    var loanFullyPaid = loan.balance() == 0 && Objects.equals(loan.amountPayable(), loan.amountPaid());
+    var loanFullyPaid =
+        loan.balance() == 0 && Objects.equals(loan.amountPayable(), loan.amountPaid());
     var loanActive = !loanOverdue && loan.balance() > 0;
 
     if (loanFullyPaid) {
@@ -126,8 +128,11 @@ public class LoansService {
     return this.loanRepository.findAll().stream().map(LoanVO::new).collect(Collectors.toList());
   }
 
-  public List<LoanInstallmentVO> retrieveLoanInstallments(Integer loanId) {
+  public LoanInstallmentsResponse retrieveLoanInstallments(Integer loanId) {
     var loan = this.loanRepository.getReferenceById(loanId);
-    return loan.repayments().stream().map(LoanInstallmentVO::new).collect(Collectors.toList());
+    var installments =
+        loan.repayments().stream().map(LoanInstallmentVO::new).collect(Collectors.toList());
+
+    return new LoanInstallmentsResponse(installments, loan.balance(), loan.amountPaid());
   }
 }

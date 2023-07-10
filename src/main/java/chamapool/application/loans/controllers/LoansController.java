@@ -2,6 +2,7 @@ package chamapool.application.loans.controllers;
 
 import chamapool.application.loans.requests.LoanInstallmentRequest;
 import chamapool.application.loans.responses.LoanEligibilityResponse;
+import chamapool.application.loans.responses.LoanInstallmentsResponse;
 import chamapool.application.loans.services.LoanApplicationsService;
 import chamapool.application.loans.services.LoansService;
 import chamapool.domain.loans.VO.LoanInstallmentVO;
@@ -50,7 +51,7 @@ public class LoansController {
   }
 
   @GetMapping("/{loanId}/installments")
-  public List<LoanInstallmentVO> getLoanInstallments(@PathVariable Integer loanId) {
+  public LoanInstallmentsResponse getLoanInstallments(@PathVariable Integer loanId) {
     return this.loansService.retrieveLoanInstallments(loanId);
   }
 }
