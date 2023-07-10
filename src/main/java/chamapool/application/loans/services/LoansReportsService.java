@@ -7,6 +7,7 @@ import chamapool.domain.loans.enums.LoanStatus;
 import chamapool.domain.loans.repositories.LoanApplicationRepository;
 import chamapool.domain.loans.repositories.LoanInstallmentsRepository;
 import chamapool.domain.loans.repositories.LoanRepository;
+import chamapool.domain.member.models.Member;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +35,7 @@ public class LoansReportsService {
     var loanApplications = (int) this.loanApplicationRepository.count();
     var totalOutstandingBalances =
         this.loanRepository.findAll().stream()
-            .filter(
-                loan -> loan.status() == LoanStatus.ACTIVE || loan.status() == LoanStatus.OVERDUE)
+            .filter(loan -> loan.status() != LoanStatus.AWAITING_DISBURSEMENT)
             .mapToDouble(Loan::balance)
             .sum();
 
@@ -52,7 +52,7 @@ public class LoansReportsService {
     params.put("totalAmountRepaid", totalAmountRepaid);
     params.put("totalAmountBorrowed", totalAmountBorrowed);
     params.put("issuedLoans", issuedLoans);
-    params.put("loansDataSet", dataSource);
+    params.put("groupLoansDataset", dataSource);
 
     JasperReport report =
         JasperCompileManager.compileReport("src/main/resources/reports/group-loans-report.jrxml");
@@ -63,13 +63,15 @@ public class LoansReportsService {
 
   public byte[] generateLoanReport(Integer loanId) throws JRException {
     var loan = this.loanRepository.getReferenceById(loanId);
-    var loanInstallments = this.installmentsRepository.findLoanInstallmentsByLoan(loan)
-            .stream()
-            .map(LoanInstallmentVO::new).toList();
+    var loanInstallments =
+        this.installmentsRepository.findLoanInstallmentsByLoan(loan).stream()
+            .map(LoanInstallmentVO::new)
+            .toList();
 
     JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(loanInstallments, false);
 
     Map<String, Object> params = new HashMap<>();
+
     params.put("amountPayable", loan.amountPayable());
     params.put("phoneNumber", loan.member().phoneNumber());
     params.put("nationalId", loan.member().nationalId());
@@ -81,10 +83,33 @@ public class LoansReportsService {
     params.put("startDate", loan.startDate());
     params.put("amount", loan.amount());
     params.put("loanId", loanId);
-    params.put("loanInstallments", dataSource);
+    params.put("installmentsDataset", dataSource);
 
     JasperReport report =
         JasperCompileManager.compileReport("src/main/resources/reports/loan-report.jrxml");
+    JasperPrint print = JasperFillManager.fillReport(report, params, dataSource);
+
+    return JasperExportManager.exportReportToPdf(print);
+  }
+
+  public byte[] generateMemberLoansReport(Member member) throws JRException {
+    var loans = this.loanRepository.getLoansByMember(member).stream().map(LoanVO::new).toList();
+    JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(loans, false);
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("phoneNumber", member.phoneNumber());
+    params.put("nationalId", member.nationalId());
+    params.put("memberName", member.fullName());
+    params.put("memberId", member.id());
+    params.put("totalAmountBorrowed", this.loanRepository.sumAmountBorrowedByMember(member));
+    params.put("totalAmountRepaid", this.loanRepository.sumAmountPaidByMember(member));
+    params.put("totalLoansBorrowed", this.loanRepository.countByMember(member));
+
+    params.put("personalLoansInstallments", dataSource);
+
+    JasperReport report =
+        JasperCompileManager.compileReport(
+            "src/main/resources/reports/personal-loans-report.jrxml");
     JasperPrint print = JasperFillManager.fillReport(report, params, new JREmptyDataSource());
 
     return JasperExportManager.exportReportToPdf(print);

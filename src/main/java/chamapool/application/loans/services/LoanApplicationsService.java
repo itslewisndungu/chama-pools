@@ -23,6 +23,7 @@ import chamapool.domain.notifications.models.NotificationType;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -127,7 +128,9 @@ public class LoanApplicationsService {
   }
 
   public LoanApplicationVO retrieveMemberActiveApplication(Member member) {
-    var application = this.retrieveActiveApplication(member).orElseThrow();
+    var application = this.retrieveActiveApplication(member)
+        .orElseThrow(
+            () -> new NoSuchElementException("You have no active applications"));
 
     return new LoanApplicationVO(application, this.retrieveLoanApprovals(application));
   }

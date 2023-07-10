@@ -52,13 +52,13 @@ public class ChamaService {
     var issuedLoans = (int) this.loanRepository.count();
     var loanApplications = (int) this.loanApplicationRepository.count();
 
-    var totalAmountBorrowed =
-        this.loanRepository.findAll().stream().mapToDouble(Loan::amount).sum();
+    var totalAmountBorrowed = this.loanRepository.sumAmountBorrowed();
+    var totalAmountRepaid = this.loanRepository.sumAmountPaid();
 
-    var totalAmountRepaid =
+    var outstandingBalance =
         this.loanRepository.findAll().stream()
-            .filter(loan -> loan.status() == LoanStatus.REPAID)
-            .mapToDouble(Loan::amountPaid)
+            .filter(loan -> loan.status() != LoanStatus.AWAITING_DISBURSEMENT)
+            .mapToDouble(Loan::balance)
             .sum();
 
     var activeLoans = this.loanRepository.countByStatus(LoanStatus.ACTIVE);
@@ -66,15 +66,18 @@ public class ChamaService {
     var repaidLoans = this.loanRepository.countByStatus(LoanStatus.REPAID);
     var pendingLoans = this.loanRepository.countByStatus(LoanStatus.AWAITING_DISBURSEMENT);
 
+
     var res = new HashMap<String, Object>();
     res.put("issuedLoans", issuedLoans);
     res.put("totalAmountBorrowed", totalAmountBorrowed);
     res.put("totalAmountRepaid", totalAmountRepaid);
+    res.put("outstandingBalance", outstandingBalance);
     res.put("loanApplications", loanApplications);
     res.put("activeLoans", activeLoans);
     res.put("overdueLoans", overdueLoans);
     res.put("repaidLoans", repaidLoans);
     res.put("pendingLoans", pendingLoans);
+
     return res;
   }
 
