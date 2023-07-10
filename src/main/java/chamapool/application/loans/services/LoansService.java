@@ -51,7 +51,10 @@ public class LoansService {
 
     this.updateLoanStatus(loan, LoanStatus.ACTIVE);
 
-    this.transactionsService.createTransaction(TransactionType.LOAN_DISBURSEMENT, loan.amount());
+    this.transactionsService.createTransaction(
+        TransactionType.LOAN_DISBURSEMENT,
+        loan.amount(),
+        "Disburse loan with id %d to %s".formatted(loanId, loan.member().fullName()));
 
     var loanDisbursementNotification =
         new Notification()
@@ -88,8 +91,13 @@ public class LoansService {
     loan = this.loanRepository.save(loan);
     this.updateLoanStatus(loan);
 
-    this.transactionsService.createTransaction(TransactionType.LOAN_REPAYMENT, amount * 0.9);
-    this.transactionsService.createTransaction(TransactionType.LOAN_INTEREST, amount * 0.1);
+    this.transactionsService.createTransaction(
+        TransactionType.LOAN_REPAYMENT, amount * 0.9, "Repay loan with id %d".formatted(loanId));
+
+    this.transactionsService.createTransaction(
+        TransactionType.LOAN_INTEREST,
+        amount * 0.1,
+        "Repay interest for loan with id %d".formatted(loanId));
 
     var loanRepaymentNotification =
         new Notification()

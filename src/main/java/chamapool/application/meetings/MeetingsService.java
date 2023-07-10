@@ -123,7 +123,10 @@ public class MeetingsService {
       contributions.add(contribution);
 
       // Record transaction
-      this.transactionsService.createTransaction(TransactionType.CONTRIBUTION, c.amount());
+      this.transactionsService.createTransaction(
+          TransactionType.CONTRIBUTION,
+          c.amount(),
+          "Record meeting contribution for %s by %s".formatted(meeting.title(), member.fullName()));
 
       // Send notification
       var contributionNotification =

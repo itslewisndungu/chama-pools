@@ -66,7 +66,6 @@ public class ChamaService {
     var repaidLoans = this.loanRepository.countByStatus(LoanStatus.REPAID);
     var pendingLoans = this.loanRepository.countByStatus(LoanStatus.AWAITING_DISBURSEMENT);
 
-
     var res = new HashMap<String, Object>();
     res.put("issuedLoans", issuedLoans);
     res.put("totalAmountBorrowed", totalAmountBorrowed);
@@ -86,7 +85,7 @@ public class ChamaService {
 
     var incomeTransactions =
         List.of(
-            TransactionType.DEPOSIT,
+            TransactionType.INVESTMENT_INCOME,
             TransactionType.LOAN_INTEREST,
             TransactionType.CONTRIBUTION,
             TransactionType.MEMBERSHIP_FEE);

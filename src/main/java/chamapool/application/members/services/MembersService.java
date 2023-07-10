@@ -102,17 +102,8 @@ public class MembersService {
     return new MemberProfileVO(member);
   }
 
-  public MemberVO retrieveMember(String username) {
-    var member = this.getMemberByUsername(username);
-    return new MemberVO(member);
-  }
-
   public List<MemberVO> retrieveMembers() {
     return this.memberRepository.findAll().stream().map(MemberVO::new).toList();
-  }
-
-  public List<MemberProfileVO> retrieveMemberProfiles() {
-    return this.memberRepository.findAll().stream().map(MemberProfileVO::new).toList();
   }
 
   public InvitedMemberVO getInvitation(Integer inviteId) {
@@ -250,7 +241,10 @@ public class MembersService {
     if (membershipFee.balance() <= 0) membershipFee.paymentDate(LocalDate.now());
     this.membershipFeeRepository.save(membershipFee);
 
-    this.transactionsService.createTransaction(TransactionType.MEMBERSHIP_FEE, amount);
+    this.transactionsService.createTransaction(
+        TransactionType.MEMBERSHIP_FEE,
+        amount,
+        "Record membership fees for member %s".formatted(membershipFee.member().fullName()));
 
     var notification =
         new Notification()

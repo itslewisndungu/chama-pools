@@ -18,10 +18,10 @@ public class TransactionsService {
   private final ChamaRepository chamaRepository;
 
   @Transactional
-  public void createTransaction(TransactionType type, Double amount) {
+  public void createTransaction(TransactionType type, Double amount, String descriptions) {
     log.info("Creating transaction of type {} with amount {} at {}", type, amount, LocalDate.now());
 
-    var transaction = new Transaction().amount(amount).type(type);
+    var transaction = new Transaction().amount(amount).type(type).description(descriptions);
 
     this.transactionRepository.save(transaction);
     this.syncGroupAccount(type, amount);
@@ -39,7 +39,7 @@ public class TransactionsService {
       case WITHDRAWAL, LOAN_DISBURSEMENT -> {
         chama.accountBalance(chama.accountBalance() - amount);
       }
-      case DEPOSIT, LOAN_REPAYMENT, MEMBERSHIP_FEE, CONTRIBUTION, LOAN_INTEREST -> {
+      case INVESTMENT_INCOME, LOAN_REPAYMENT, MEMBERSHIP_FEE, CONTRIBUTION, LOAN_INTEREST -> {
         chama.accountBalance(chama.accountBalance() + amount);
       }
     }

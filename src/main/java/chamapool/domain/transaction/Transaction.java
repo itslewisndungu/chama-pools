@@ -24,4 +24,6 @@ public class Transaction {
   private TransactionType type;
 
   private Double amount;
+
+  private String description;
 }
