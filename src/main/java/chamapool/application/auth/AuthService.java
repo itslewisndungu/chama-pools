@@ -3,6 +3,7 @@ package chamapool.application.auth;
 import chamapool.application.auth.requests.ChangePasswordRequest;
 import chamapool.application.auth.requests.LoginRequest;
 import chamapool.application.notifications.NotificationsService;
+import chamapool.application.sms.MessageService;
 import chamapool.domain.member.models.Member;
 import chamapool.domain.member.models.PasswordResetToken;
 import chamapool.domain.member.repositories.MemberRepository;
@@ -25,6 +26,7 @@ public class AuthService {
   private final PasswordResetTokenRepository resetTokenRepository;
 
   private final NotificationsService notificationsService;
+  private final MessageService messageService;
 
   public Member login(LoginRequest request) {
     return memberRepository
@@ -51,13 +53,18 @@ public class AuthService {
 
     this.resetTokenRepository.save(PasswordResetToken);
 
+    this.messageService.sendSmsMessage(
+        "We have received a request to reset your password. To reset it, visit http://localhost:3000/reset-password?token=%s"
+            .formatted(token),
+        new String[] {user.phoneNumber()});
+
     return token;
   }
 
-  public void changePassword(String token, ChangePasswordRequest req) {
+  public void changePassword(ChangePasswordRequest req) {
     var resetToken =
         this.resetTokenRepository
-            .findByToken(token)
+            .findByToken(req.token())
             .filter(
                 t -> {
                   var isExpired = t.expiryDate().compareTo(Instant.now());

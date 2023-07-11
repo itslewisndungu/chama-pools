@@ -26,17 +26,14 @@ public class AuthController {
 
   @PostMapping("/{username}/reset-password")
   @ResponseStatus(HttpStatus.CREATED)
-  public String resetPassword(@PathVariable String username) {
-    var token = this.authService.resetPassword(username);
-    return """
-    { "token": "%s" }
-        """.formatted(token);
+  public void resetPassword(@PathVariable String username) {
+    this.authService.resetPassword(username);
   }
 
   @PostMapping("/change-password")
   @ResponseStatus(HttpStatus.CREATED)
-  public void changePassword(@RequestParam String token, @RequestBody ChangePasswordRequest req) {
-    this.authService.changePassword(token, req);
+  public void changePassword(@RequestBody ChangePasswordRequest req) {
+    this.authService.changePassword(req);
   }
 
   @PostMapping("/update-password")

@@ -21,9 +21,6 @@ public class MessageService {
   private String shortCode;
 
   public void sendSmsMessage(String message, String[] recipients) {
-    /* Set your app credentials */
-
-    /* Initialize SDK */
     AfricasTalking.initialize(USERNAME, API_KEY);
     SmsService sms = AfricasTalking.getService(AfricasTalking.SERVICE_SMS);
 
