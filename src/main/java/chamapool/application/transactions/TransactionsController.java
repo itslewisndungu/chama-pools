@@ -16,6 +16,5 @@ public class TransactionsController {
     @GetMapping
     public List<TransactionVO> getTransactions() {
         return this.service.retrieveTransactions();
-
     }
 }

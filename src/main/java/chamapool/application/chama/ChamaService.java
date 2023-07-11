@@ -1,5 +1,6 @@
 package chamapool.application.chama;
 
+import chamapool.application.transactions.TransactionsService;
 import chamapool.domain.chama.Chama;
 import chamapool.domain.chama.ChamaRepository;
 import chamapool.domain.chama.ChamaVO;
@@ -11,11 +12,9 @@ import chamapool.domain.meeting.repositories.MeetingContributionRepository;
 import chamapool.domain.meeting.repositories.MeetingRepository;
 import chamapool.domain.member.repositories.InvitedMemberRepository;
 import chamapool.domain.member.repositories.MemberRepository;
-import chamapool.domain.transaction.Transaction;
 import chamapool.domain.transaction.TransactionRepository;
 import chamapool.domain.transaction.TransactionType;
 import java.util.HashMap;
-import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +30,8 @@ public class ChamaService {
   private final TransactionRepository transactionRepository;
   private final MeetingRepository meetingRepository;
   private final MeetingContributionRepository meetingContributionRepository;
+  private final TransactionsService transactionsService;
+  private final AccountService accountService;
 
   public ChamaVO getChamaDetails() {
     return this.chamaRepository
@@ -80,27 +81,32 @@ public class ChamaService {
     return res;
   }
 
-  public double getIncomeRevenue(List<Transaction> transactions) {
-    var incomeTransactions =
-        List.of(
-            TransactionType.INVESTMENT_INCOME,
-            TransactionType.LOAN_INTEREST,
-            TransactionType.CONTRIBUTION,
-            TransactionType.MEMBERSHIP_FEE);
+  public void disburseDividends(DisburseDividendRequest request) {
+    var membersCount = this.memberRepository.count();
+    var members = this.memberRepository.findAll();
 
-    return transactions.stream()
-        .filter(transaction -> incomeTransactions.contains(transaction.type()))
-        .mapToDouble(Transaction::amount)
-        .sum();
+    var amountPerMember = request.amount() / membersCount;
+
+    for (var member : members) {
+      this.transactionsService.createTransaction(
+          TransactionType.DIVIDEND,
+          amountPerMember,
+          String.format("Dividend disbursement to %s", member.fullName()));
+    }
   }
 
-  public double getExpensesRevenue(List<Transaction> transactions) {
+  public void recordIncome(RecordIncomeRequest request) {
+    for (var income : request.incomes()) {
+      this.transactionsService.createTransaction(
+          TransactionType.INVESTMENT_INCOME, income.amount(), income.description());
+    }
+  }
 
-    var expenseTransactions = List.of(TransactionType.DIVIDEND, TransactionType.WITHDRAWAL);
-    return transactions.stream()
-        .filter(transaction -> expenseTransactions.contains(transaction.type()))
-        .mapToDouble(Transaction::amount)
-        .sum();
+  public void recordWithdrawal(RecordWithdrawalRequest request) {
+    for (var withdrawal : request.withdrawals()) {
+      this.transactionsService.createTransaction(
+          TransactionType.WITHDRAWAL, withdrawal.amount(), withdrawal.description());
+    }
   }
 
   public HashMap<String, Double> getAccountSummary() {
@@ -110,8 +116,8 @@ public class ChamaService {
 
     var res = new HashMap<String, Double>();
     res.put("accountBalance", balance);
-    res.put("totalExpenses", getIncomeRevenue(transactions));
-    res.put("totalIncome", getExpensesRevenue(transactions));
+    res.put("totalExpenses", this.accountService.getIncomeRevenue(transactions));
+    res.put("totalIncome", this.accountService.getExpensesRevenue(transactions));
 
     return res;
   }

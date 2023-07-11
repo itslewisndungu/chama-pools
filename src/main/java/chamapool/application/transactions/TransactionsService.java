@@ -1,6 +1,5 @@
 package chamapool.application.transactions;
 
-import chamapool.application.chama.ChamaService;
 import chamapool.domain.chama.ChamaRepository;
 import chamapool.domain.transaction.Transaction;
 import chamapool.domain.transaction.TransactionRepository;
@@ -22,16 +21,24 @@ import org.springframework.stereotype.Service;
 public class TransactionsService {
   private final TransactionRepository transactionRepository;
   private final ChamaRepository chamaRepository;
-  private final ChamaService chamaService;
 
-  @Transactional
   public void createTransaction(TransactionType type, Double amount, String descriptions) {
     log.info("Creating transaction of type {} with amount {} at {}", type, amount, LocalDate.now());
 
     var transaction = new Transaction().amount(amount).type(type).description(descriptions);
+    this.createTransaction(transaction);
+  }
+
+  @Transactional
+  public void createTransaction(Transaction transaction) {
+    log.info(
+        "Creating transaction of type {} with amount {} at {}",
+        transaction.type(),
+        transaction.amount(),
+        LocalDate.now());
 
     this.transactionRepository.save(transaction);
-    this.syncGroupAccount(type, amount);
+    this.syncGroupAccount(transaction.type(), transaction.amount());
   }
 
   private void syncGroupAccount(TransactionType type, Double amount) {
@@ -43,10 +50,15 @@ public class TransactionsService {
             .orElseThrow(() -> new RuntimeException("Chama not initialized"));
 
     switch (type) {
-      case WITHDRAWAL, LOAN_DISBURSEMENT -> {
+      case WITHDRAWAL, LOAN_DISBURSEMENT, DIVIDEND -> {
         chama.accountBalance(chama.accountBalance() - amount);
       }
-      case INVESTMENT_INCOME, LOAN_REPAYMENT, MEMBERSHIP_FEE, CONTRIBUTION, LOAN_INTEREST -> {
+      case INVESTMENT_INCOME,
+          LOAN_REPAYMENT,
+          DEPOSIT,
+          MEMBERSHIP_FEE,
+          CONTRIBUTION,
+          LOAN_INTEREST -> {
         chama.accountBalance(chama.accountBalance() + amount);
       }
     }
@@ -68,8 +80,8 @@ public class TransactionsService {
     var params = new HashMap<String, Object>();
 
     params.put("accountBalance", chama.accountBalance());
-    params.put("incomeRevenue", this.chamaService.getIncomeRevenue(tnx));
-    params.put("expenditureRevenue", this.chamaService.getExpensesRevenue(tnx));
+    params.put("incomeRevenue", this.getIncomeRevenue(tnx));
+    params.put("expenditureRevenue", this.getExpensesRevenue(tnx));
     params.put("transactionsDataset", dataSource);
 
     JasperReport report =
@@ -78,5 +90,25 @@ public class TransactionsService {
     JasperPrint print = JasperFillManager.fillReport(report, params, new JREmptyDataSource());
 
     return JasperExportManager.exportReportToPdf(print);
+  }
+
+  private double getIncomeRevenue(List<Transaction> transactions) {
+    var incomeTransactions =
+        List.of(TransactionType.INVESTMENT_INCOME, TransactionType.LOAN_INTEREST);
+
+    return transactions.stream()
+        .filter(transaction -> incomeTransactions.contains(transaction.type()))
+        .mapToDouble(Transaction::amount)
+        .sum();
+  }
+
+  private double getExpensesRevenue(List<Transaction> transactions) {
+
+    var expenseTransactions = List.of(TransactionType.DIVIDEND, TransactionType.WITHDRAWAL);
+
+    return transactions.stream()
+        .filter(transaction -> expenseTransactions.contains(transaction.type()))
+        .mapToDouble(Transaction::amount)
+        .sum();
   }
 }
