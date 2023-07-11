@@ -16,6 +16,12 @@
     <properties>
         <java.version>20</java.version>
     </properties>
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -69,6 +75,12 @@
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
             <version>6.20.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.AfricasTalkingLtd.africastalking-java</groupId>
+            <artifactId>core</artifactId>
+            <version>3.4.9</version>
         </dependency>
     </dependencies>
 

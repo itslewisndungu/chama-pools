@@ -178,3 +178,4 @@ target
 README.html
 .exercism
 .idea/httpRequests/**
+/src/main/resources/application-dev.yaml

@@ -5,6 +5,7 @@ import chamapool.application.members.requests.NewMemberRequest;
 import chamapool.application.members.requests.PayBulkMembershipFeesRequest;
 import chamapool.application.members.requests.PayMembershipFeeRequest;
 import chamapool.application.notifications.NotificationsService;
+import chamapool.application.sms.MessageService;
 import chamapool.application.transactions.TransactionsService;
 import chamapool.domain.member.VOs.*;
 import chamapool.domain.member.enums.MembershipFeeStatus;
@@ -34,6 +35,7 @@ public class MembersService {
   private final AddressRepository addressRepository;
   private final MembershipFeeRepository membershipFeeRepository;
 
+  private final MessageService messageService;
   private final TransactionsService transactionsService;
   private final NotificationsService notificationsService;
 
@@ -59,6 +61,11 @@ public class MembersService {
             .type(NotificationType.MEMBER_INVITATION);
 
     this.notificationsService.sendAdminNotification(notification);
+    this.messageService.sendSmsMessage(
+        ("You have been invited to join Vision Ahead."
+                + " Please visit http://localhost:3000/accept-invitation/%d to accept the invitation")
+            .formatted(savedMember.id()),
+        new String[] {savedMember.phoneNumber()});
 
     return new InvitedMemberVO(savedMember);
   }
