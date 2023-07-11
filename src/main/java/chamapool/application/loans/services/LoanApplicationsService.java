@@ -4,6 +4,8 @@ import chamapool.application.loans.requests.LoanApplicationRequest;
 import chamapool.application.loans.requests.LoanApprovalRequest;
 import chamapool.application.loans.responses.LoanEligibilityResponse;
 import chamapool.application.notifications.NotificationsService;
+import chamapool.domain.chama.Chama;
+import chamapool.domain.chama.ChamaRepository;
 import chamapool.domain.loans.Loan;
 import chamapool.domain.loans.LoanApplication;
 import chamapool.domain.loans.LoanApproval;
@@ -39,6 +41,7 @@ public class LoanApplicationsService {
   private final MemberRepository memberRepository;
   private final NotificationsService notificationsService;
   private final MembershipFeeRepository membershipFeeRepository;
+  private final ChamaRepository chamaRepository;
 
   public List<LoanApplicationVO> retrieveAllApplications() {
     return this.loanApplicationRepository.findAll().stream()
@@ -128,9 +131,9 @@ public class LoanApplicationsService {
   }
 
   public LoanApplicationVO retrieveMemberActiveApplication(Member member) {
-    var application = this.retrieveActiveApplication(member)
-        .orElseThrow(
-            () -> new NoSuchElementException("You have no active applications"));
+    var application =
+        this.retrieveActiveApplication(member)
+            .orElseThrow(() -> new NoSuchElementException("You have no active applications"));
 
     return new LoanApplicationVO(application, this.retrieveLoanApprovals(application));
   }
@@ -144,9 +147,8 @@ public class LoanApplicationsService {
       return new LoanEligibilityResponse(
           false,
           null,
-          "You have not paid your membership fee fully. You have an outstanding balance of KES "
-              + membershipFee.balance()
-              + ".");
+          "You have not paid your membership fee fully. You have an outstanding balance of KES %.2f"
+              .formatted(membershipFee.balance()));
     }
 
     if (application.isPresent()) {
@@ -158,7 +160,12 @@ public class LoanApplicationsService {
           false, null, "You have an active loan. Please pay up first");
     }
 
-    return new LoanEligibilityResponse(true, 100000, null);
+    var amountInAccount = this.chamaRepository.getChama().map(Chama::accountBalance).orElseThrow();
+    var amountBorrowable = amountInAccount * 0.9;
+    var noOfMembers = this.memberRepository.count();
+    var amountEligible = amountBorrowable / noOfMembers;
+
+    return new LoanEligibilityResponse(true, amountEligible, null);
   }
 
   private Optional<Loan> getActiveMemberLoan(Member member) {
