@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    password:
+    username:
+    url: jdbc:postgresql://localhost:5432/chama-pool
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: create-drop
+    #    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+rsa:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem
+
+africastalking:
+  api-key: 678a92a3923e11aa39e84b86416402ec04d4d483fd8c4e67f5e6480bc15367d3
+  username: sandbox
+  short-code: 9326
+
