@@ -2,7 +2,8 @@ spring:
   datasource:
     password: 0XqFYoqbm7Rl9JSBM24YFOMLUlnilRHM
     username: chamapool_user
-    url: jdbc:postgres://dpg-cjivom8cfp5c73br9aog-a/chamapool
+    # url: jdbc:postgresql://localhost:5432/chama-pool
+    url: jdbc:postgresql://dpg-cjivom8cfp5c73br9aog-a.oregon-postgres.render.com/chamapool
     driver-class-name: org.postgresql.Driver
   jpa:
     database: postgresql
@@ -19,5 +20,5 @@ rsa:
 
 africastalking:
   api-key: ${AFRICAS_TALKING_API_KEY}
-  username: ${AFRICAS_TALKING_USERNAME}
-  short-code: 9326
+  username: ${AFRICAS_TALKING_API_KEY}
+  short-code: ${AFRICAS_TALKING_SHORT_CODE}

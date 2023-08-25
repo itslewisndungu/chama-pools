@@ -1,8 +1,9 @@
 spring:
   datasource:
-    password:
-    username:
-    url: jdbc:postgresql://localhost:5432/chama-pool
+    password: 0XqFYoqbm7Rl9JSBM24YFOMLUlnilRHM
+    username: chamapool_user
+    # url: jdbc:postgresql://localhost:5432/chama-pool
+    url: jdbc:postgresql://dpg-cjivom8cfp5c73br9aog-a.oregon-postgres.render.com/chamapool
     driver-class-name: org.postgresql.Driver
   jpa:
     database: postgresql
