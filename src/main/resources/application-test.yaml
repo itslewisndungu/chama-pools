@@ -17,9 +17,3 @@ spring:
 rsa:
   private-key: classpath:certs/private.pem
   public-key: classpath:certs/public.pem
-
-africastalking:
-  api-key: 678a92a3923e11aa39e84b86416402ec04d4d483fd8c4e67f5e6480bc15367d3
-  username: sandbox
-  short-code: 9326
-
