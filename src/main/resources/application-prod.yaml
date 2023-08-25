@@ -19,6 +19,6 @@ rsa:
   public-key: classpath:certs/public.pem
 
 africastalking:
-  api-key: ${AFRICAS_TALKING_API_KEY}
-  username: ${AFRICAS_TALKING_API_KEY}
-  short-code: ${AFRICAS_TALKING_SHORT_CODE}
+  api-key: 678a92a3923e11aa39e84b86416402ec04d4d483fd8c4e67f5e6480bc15367d3
+  username: sandbox
+  short-code: 9326
