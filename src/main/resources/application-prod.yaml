@@ -2,7 +2,7 @@ spring:
   datasource:
     password: 0XqFYoqbm7Rl9JSBM24YFOMLUlnilRHM
     username: chamapool_user
-    url: jdbc:postgres://chamapool_user:0XqFYoqbm7Rl9JSBM24YFOMLUlnilRHM@dpg-cjivom8cfp5c73br9aog-a/chamapool
+    url: jdbc:postgres://dpg-cjivom8cfp5c73br9aog-a/chamapool
     driver-class-name: org.postgresql.Driver
   jpa:
     database: postgresql
